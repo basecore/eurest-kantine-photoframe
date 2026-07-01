@@ -7,7 +7,7 @@ Scraping-Strategie:
   3. Privacy-Policy-Checkbox aktivieren + OK klicken.
   4. Sprache 'Deutsch' waehlen + 'weiter' klicken.
   5. Optionales 'persoenlicher Filter'-Modal mit 'nein' schliessen.
-  6. Fuer jeden Werktag: Tages-Button klicken, DOM extrahieren.
+  6. Fuer jeden Werktag: Tag via select.menuDaySelect auswaehlen, DOM extrahieren.
   7. Render: 800x600 JPEG im gleichen Stil wie siemens-kantine-photoframe.
 
 Umgebungsvariablen:
@@ -16,7 +16,6 @@ Umgebungsvariablen:
   WEEK_OFFSET           0 = aktuelle Woche, 1 = naechste Woche (default: 1)
 """
 import os
-import re
 import sys
 import json
 from pathlib import Path
@@ -136,32 +135,91 @@ def _is_today(day_key_str, today_date):
         return date(today_date.year, int(dm[1]), int(dm[0])) == today_date
     except: return False
 
-# ── Eurest-Scraper ─────────────────────────────────────────────────────────────
+# ── Diagnostik-JS ──────────────────────────────────────────────────────────────
 
-# Diagnostik: listet alle gefundenen Tages-Divs in .day-navigation auf
-JS_LIST_DAYS = """
+JS_DEBUG_DOM = """
 (function(){
-  var nav = document.querySelector('.day-navigation');
-  if (!nav) return 'NO .day-navigation found';
-  var children = Array.from(nav.children);
-  var info = children.map(function(div, i){
-    var dayEl  = div.querySelector('.day');
-    var dayNum = dayEl ? dayEl.textContent.trim() : '?';
-    var divs   = Array.from(div.querySelectorAll('div'));
-    var month  = divs.length >= 3 ? divs[2].textContent.trim() : '?';
-    return i + ':day=' + dayNum + ',month=' + month + ',cls=' + div.className;
-  });
-  return info.join(' | ');
+  var out = [];
+  // menuDaySelect
+  var sel = document.querySelector('select.menuDaySelect');
+  if (sel) {
+    var opts = Array.from(sel.options).map(function(o){ return o.value + '=' + o.text.trim(); });
+    out.push('menuDaySelect options: ' + opts.join(', '));
+    out.push('menuDaySelect current value: ' + sel.value);
+  } else {
+    out.push('NO select.menuDaySelect');
+  }
+  // menuListWrapper
+  var mlw = document.querySelector('.menuListWrapper');
+  out.push('menuListWrapper: ' + (mlw ? 'FOUND' : 'NOT FOUND'));
+  // category-wrapper (alte Struktur)
+  var cws = document.querySelectorAll('.category-wrapper');
+  out.push('category-wrapper count: ' + cws.length);
+  // meal-wrapper (in beiden Strukturen)
+  var mws = document.querySelectorAll('.meal-wrapper');
+  out.push('meal-wrapper count: ' + mws.length);
+  // categoryName (neue Struktur)
+  var cns = document.querySelectorAll('.categoryName');
+  var cnTexts = Array.from(cns).map(function(el){ return el.textContent.trim(); });
+  out.push('categoryName elements: ' + cnTexts.join(', '));
+  // erste 3 mealNameWrapper
+  var mnws = Array.from(document.querySelectorAll('.mealNameWrapper')).slice(0,3);
+  var mnwTexts = mnws.map(function(el){ return el.textContent.trim().substring(0,50); });
+  out.push('first mealNames: ' + mnwTexts.join(' | '));
+  return out.join(' || ');
 })()
 """
 
+JS_EXTRACT = """
+(function(){
+  var result = [];
+
+  // Neue Struktur: .menuListWrapper mit .meal-wrapper, Kategorie in .categoryName
+  var mlw = document.querySelector('.menuListWrapper');
+  if (mlw) {
+    var mealEls = Array.from(mlw.querySelectorAll('.meal-wrapper'));
+    for (var mel of mealEls) {
+      var catEl = mel.querySelector('.categoryName');
+      var cat = catEl ? catEl.textContent.trim() : '';
+      var nameNode = mel.querySelector('.mealNameWrapper');
+      var mealName = nameNode ? nameNode.textContent.trim().replace(/\u00a0/g,' ') : '';
+      var priceNode = mel.querySelector('.price-value');
+      var price = priceNode ? priceNode.textContent.trim().replace(/\u00a0/g,' ') : '';
+      var featureImgs = Array.from(mel.querySelectorAll('.image-feature'));
+      var features = featureImgs.map(function(img){ return (img.alt || img.src || '').toLowerCase(); });
+      if (mealName) result.push({category: cat, name: mealName, price: price, features: features});
+    }
+    if (result.length > 0) return JSON.stringify(result);
+  }
+
+  // Fallback: alte Struktur mit .category-wrapper + .category-name-container
+  var catWrappers = Array.from(document.querySelectorAll('.category-wrapper'));
+  for (var cw of catWrappers) {
+    var nameEl = cw.querySelector('.category-name-container');
+    var catName = nameEl ? nameEl.textContent.trim() : '';
+    if (!catName) continue;
+    var mealEls2 = Array.from(cw.querySelectorAll('.meal-wrapper'));
+    for (var mel2 of mealEls2) {
+      var nameNode2 = mel2.querySelector('.mealNameWrapper');
+      var mealName2 = nameNode2 ? nameNode2.textContent.trim().replace(/\u00a0/g,' ') : '';
+      var priceNode2 = mel2.querySelector('.price-value');
+      var price2 = priceNode2 ? priceNode2.textContent.trim().replace(/\u00a0/g,' ') : '';
+      var featureImgs2 = Array.from(mel2.querySelectorAll('.image-feature'));
+      var features2 = featureImgs2.map(function(img){ return (img.alt || img.src || '').toLowerCase(); });
+      if (mealName2) result.push({category: catName, name: mealName2, price: price2, features: features2});
+    }
+  }
+  return JSON.stringify(result);
+})()
+"""
+
+# ── Eurest-Scraper ─────────────────────────────────────────────────────────────
 def setup_eurest(page):
     """Oeffnet die Eurest-Seite, waehlt Kantine, bestaetigt Privacy, Sprache, Weiter."""
     print(f"[setup] Oeffne {EUREST_URL}")
     page.goto(EUREST_URL, wait_until="domcontentloaded", timeout=45000)
     page.wait_for_timeout(2000)
 
-    # Kantine auswaehlen
     print(f"[setup] Waehle location {LOCATION_ID} ({LOCATION_LABEL})")
     try:
         page.select_option("select.locationSelection", value=LOCATION_ID, timeout=8000)
@@ -169,7 +227,6 @@ def setup_eurest(page):
     except Exception as e:
         print(f"[setup] locationSelection Fehler: {e}")
 
-    # Privacy-Policy-Checkbox + OK (erscheint beim ersten Aufruf)
     try:
         page.wait_for_selector("input#featureFilterSelective", timeout=5000)
         cb = page.query_selector("input#featureFilterSelective")
@@ -187,7 +244,6 @@ def setup_eurest(page):
     except Exception:
         print("[setup] Privacy-Modal nicht erschienen (OK)")
 
-    # Sprache Deutsch auswaehlen
     try:
         page.select_option("select.languageSelection", value="1", timeout=5000)
         print("[setup] Sprache Deutsch gewaehlt")
@@ -195,7 +251,6 @@ def setup_eurest(page):
     except Exception as e:
         print(f"[setup] languageSelection Fehler: {e}")
 
-    # Weiter-Button
     for sel in ["button.submit", "button:has-text('weiter')", "button:has-text('Weiter')",
                 "button.uppercase", "button:has-text('next')"]:
         try:
@@ -205,7 +260,6 @@ def setup_eurest(page):
         except: pass
     page.wait_for_timeout(2000)
 
-    # Optionales 'persoenlicher Filter'-Modal mit 'Nein' schliessen
     try:
         page.wait_for_selector(".ReactModal__Content", timeout=4000)
         for sel in ["button:has-text('nein')", "button:has-text('Nein')", "button:has-text('no')"]:
@@ -218,60 +272,84 @@ def setup_eurest(page):
     except Exception:
         print("[setup] Kein persoenlicher-Filter-Modal (OK)")
 
-    # Warten bis .day-navigation erscheint (echte Tagesnavigation)
+    # Warten bis Speiseplan geladen – menuDaySelect oder Fallback
+    loaded = False
     try:
-        page.wait_for_selector(".day-navigation", timeout=15000)
-        print("[setup] .day-navigation bereit")
+        page.wait_for_selector("select.menuDaySelect", timeout=12000)
+        print("[setup] select.menuDaySelect bereit")
+        loaded = True
     except Exception:
-        print("[setup] WARNUNG: .day-navigation nicht gefunden – versuche Fallback-Selektoren")
-        for sel in [".category-name-container", ".meal-wrapper", ".menuListWrapper", ".defaultContainer"]:
+        print("[setup] WARNUNG: select.menuDaySelect nicht gefunden")
+
+    if not loaded:
+        for sel in [".menuListWrapper", ".category-wrapper", ".meal-wrapper"]:
             try:
                 page.wait_for_selector(sel, timeout=8000)
                 print(f"[setup] Fallback-Selektor bereit via {sel!r}")
+                loaded = True
                 break
             except: pass
 
-    # Diagnostik: zeige alle gefundenen Tage
+    # DOM-Diagnostik ausgeben
     try:
-        days_info = page.evaluate(JS_LIST_DAYS)
-        print(f"[setup] JS_LIST_DAYS: {days_info}")
+        dbg = page.evaluate(JS_DEBUG_DOM)
+        print(f"[setup] DOM-Debug: {dbg}")
     except Exception as e:
-        print(f"[setup] JS_LIST_DAYS Fehler: {e}")
+        print(f"[setup] DOM-Debug Fehler: {e}")
 
     print("[setup] Abgeschlossen")
 
 
-JS_EXTRACT = r"""
-(function(){
-  var result = [];
-  var catWrappers = Array.from(document.querySelectorAll('.category-wrapper'));
-  for (var cw of catWrappers) {
-    var nameEl = cw.querySelector('.category-name-container');
-    var catName = nameEl ? nameEl.textContent.trim() : '';
-    if (!catName) continue;
-    var meals = [];
-    var mealEls = Array.from(cw.querySelectorAll('.meal-wrapper'));
-    for (var mel of mealEls) {
-      var nameNode = mel.querySelector('.mealNameWrapper');
-      var mealName = nameNode ? nameNode.textContent.trim().replace(/\u00a0/g,' ') : '';
-      var priceNode = mel.querySelector('.price-value');
-      var price = priceNode ? priceNode.textContent.trim().replace(/\u00a0/g,' ') : '';
-      // Feature-Icons (vegetarisch, vegan, schwein, ...)
-      var featureImgs = Array.from(mel.querySelectorAll('.image-feature'));
-      var features = featureImgs.map(function(img){ return (img.alt || img.src || '').toLowerCase(); });
-      // Bild-URL
-      var imgEl = mel.querySelector('.image-meal');
-      var imgSrc = imgEl ? imgEl.src : '';
-      if (mealName) meals.push({name: mealName, price: price, features: features, img: imgSrc});
-    }
-    result.push({category: catName, meals: meals});
-  }
-  return JSON.stringify(result);
-})()
-"""
+def _get_available_dates(page):
+    """Liest alle verfuegbaren Datumswerte aus select.menuDaySelect."""
+    js = """
+    (function(){
+      var sel = document.querySelector('select.menuDaySelect');
+      if (!sel) return '[]';
+      var opts = Array.from(sel.options).map(function(o){ return o.value; });
+      return JSON.stringify(opts);
+    })()
+    """
+    try:
+        raw = page.evaluate(js)
+        vals = json.loads(raw)
+        print(f"[dates] Verfuegbare Datumswerte im Select: {vals}")
+        return vals
+    except Exception as e:
+        print(f"[dates] Fehler beim Lesen der Datumswerte: {e}")
+        return []
+
+
+def click_day(page, date_obj, available_values):
+    """Waehlt den Tag im select.menuDaySelect aus.
+
+    Die Option-Values sind ISO-Strings wie '2026-07-01T00:00:00.000Z'.
+    Wir suchen den passenden Wert anhand des Datums (Jahr, Monat, Tag).
+    """
+    target = date_obj.strftime('%Y-%m-%d')
+    date_label = date_obj.strftime('%d.%m.')
+
+    # Finde passenden ISO-Wert
+    matched_value = None
+    for v in available_values:
+        if v.startswith(target):
+            matched_value = v
+            break
+
+    if not matched_value:
+        print(f"  [day-click] {date_label!r} -> kein passender Wert in menuDaySelect (target={target})")
+        return False
+
+    try:
+        page.select_option("select.menuDaySelect", value=matched_value, timeout=5000)
+        print(f"  [day-click] {date_label!r} -> gewaehlt: {matched_value!r}")
+        return True
+    except Exception as e:
+        print(f"  [day-click] {date_label!r} -> select_option Fehler: {e}")
+        return False
+
 
 def _detect_vv(name, features):
-    """Erkennt vegan/vegetarisch aus Gerichtsname und Feature-Bildern."""
     low = name.lower()
     feat_str = ' '.join(features)
     if 'vegan' in low or 'vegan' in feat_str: return 'VG'
@@ -279,108 +357,56 @@ def _detect_vv(name, features):
     if 'vegetarisch' in feat_str: return 'V'
     return ''
 
+
 def parse_eurest_dom(raw_json):
-    """Parst das JSON aus JS_EXTRACT zu einer flachen Liste von Gerichten."""
     try:
         data = json.loads(raw_json)
     except Exception as e:
         print(f"  [parse] JSON-Fehler: {e}")
         return []
     dishes = []
-    for cat_entry in data:
-        cat = cat_entry.get('category', '').strip()
-        if not cat: continue
-        for m in cat_entry.get('meals', []):
-            name = m.get('name', '').strip().replace('\n', ' ')
-            price = m.get('price', '').strip()
-            features = m.get('features', [])
-            vv = _detect_vv(name, features)
-            dishes.append({
-                'kategorie': cat,
-                'name': name,
-                'preis': price,
-                'vv': vv,
-            })
-            print(f"  [parse] {cat:20s} | vv={vv!r:3s} | {name[:45]!r} | {price!r}")
+    for entry in data:
+        cat   = entry.get('category', '').strip()
+        name  = entry.get('name', '').strip().replace('\n', ' ')
+        price = entry.get('price', '').strip()
+        features = entry.get('features', [])
+        vv = _detect_vv(name, features)
+        dishes.append({'kategorie': cat, 'name': name, 'preis': price, 'vv': vv})
+        print(f"  [parse] {cat:20s} | vv={vv!r:3s} | {name[:45]!r} | {price!r}")
     return dishes
 
 
-# Deutsche Monatsabkürzungen wie sie die Seite verwendet
-_MONTH_ABBR = {
-    1: 'Jan.', 2: 'Feb.', 3: 'Mrz.', 4: 'Apr.',
-    5: 'Mai.', 6: 'Jun.', 7: 'Jul.', 8: 'Aug.',
-    9: 'Sep.', 10: 'Okt.', 11: 'Nov.', 12: 'Dez.',
-}
-
-def click_day(page, date_obj):
-    """Klickt den Tages-Button fuer das angegebene Datum.
-
-    Die Seite verwendet .day-navigation > div mit:
-      - erstes Kind-div: Wochentag (Mo, Di, ...)
-      - .day: Tag-Zahl (01, 02, ...)
-      - drittes Kind-div: Monatsabkuerzung (Jul., Jan., ...)
-    """
-    day_num   = date_obj.strftime('%d').lstrip('0')  # "01" -> "1", aber auch "1" direkt pruefen
-    day_num_z = date_obj.strftime('%d')               # zero-padded: "01"
-    month_abbr = _MONTH_ABBR.get(date_obj.month, '')
-
-    js = f"""
-    (function(){{
-      var nav = document.querySelector('.day-navigation');
-      if (!nav) return 'NO .day-navigation';
-      var children = Array.from(nav.children);
-      for (var div of children) {{
-        var dayEl = div.querySelector('.day');
-        if (!dayEl) continue;
-        var dayNum = dayEl.textContent.trim();
-        // drittes Kind-div ist der Monat
-        var allDivs = Array.from(div.querySelectorAll('div'));
-        var monthText = allDivs.length >= 3 ? allDivs[2].textContent.trim() : '';
-        if ((dayNum === '{day_num}' || dayNum === '{day_num_z}') && monthText === '{month_abbr}') {{
-          div.click();
-          return 'clicked:' + dayNum + monthText;
-        }}
-      }}
-      // Fallback: nur Tageszahl pruefen
-      for (var div2 of children) {{
-        var dayEl2 = div2.querySelector('.day');
-        if (!dayEl2) continue;
-        var dn2 = dayEl2.textContent.trim();
-        if (dn2 === '{day_num}' || dn2 === '{day_num_z}') {{
-          div2.click();
-          return 'clicked-fallback:' + dn2;
-        }}
-      }}
-      return 'not found';
-    }})()
-    """
-    date_label = date_obj.strftime('%d.%m.')
-    result = page.evaluate(js)
-    print(f"  [day-click] {date_label!r} ({day_num_z} {month_abbr}) -> {result!r}")
-    return 'clicked' in result
-
-
-def scrape_day(page, date_obj):
-    """Klickt den Tag im Speiseplan und extrahiert die Gerichte via DOM."""
+def scrape_day(page, date_obj, available_values):
+    """Waehlt den Tag im Speiseplan und extrahiert die Gerichte via DOM."""
     date_label = date_obj.strftime('%d.%m.')
     print(f"\n[scrape] Tag {date_label}")
 
-    if not click_day(page, date_obj):
-        print(f"  [scrape] Tag-Button {date_label!r} nicht gefunden, ueberspringe")
+    if not click_day(page, date_obj, available_values):
+        print(f"  [scrape] Tag {date_label!r} nicht im Select gefunden, ueberspringe")
         return []
 
     page.wait_for_timeout(1200)
 
-    for sel in [".meal-wrapper", ".mealNameWrapper", ".category-wrapper"]:
+    # Warten bis Inhalte geladen
+    for sel in [".menuListWrapper", ".meal-wrapper", ".mealNameWrapper"]:
         try:
             page.wait_for_selector(sel, timeout=8000)
+            print(f"  [scrape] Inhalt bereit via {sel!r}")
             break
         except: pass
 
+    # DOM-Zustand diagnostizieren
+    try:
+        dbg = page.evaluate(JS_DEBUG_DOM)
+        print(f"  [scrape] DOM-Debug: {dbg}")
+    except Exception as e:
+        print(f"  [scrape] DOM-Debug Fehler: {e}")
+
     try:
         raw_json = page.evaluate(JS_EXTRACT)
-        print(f"  [dom] JS_EXTRACT Laenge: {len(raw_json) if raw_json else 0}")
-        if raw_json and raw_json != '[]':
+        length = len(raw_json) if raw_json else 0
+        print(f"  [dom] JS_EXTRACT Laenge: {length}")
+        if raw_json and raw_json not in ('[]', 'null', ''):
             dishes = parse_eurest_dom(raw_json)
             print(f"  [dom] {len(dishes)} Gerichte")
             return dishes
@@ -475,7 +501,6 @@ def _fit_font(draw, text, max_w, max_h, size_start=19, size_min=10, bold=False):
     f = lf(size_min, bold)
     return f, _line_h(draw, f), wrap_text(draw, text, f, max_w, max_lines=20)
 
-
 def _draw_stub_label(d, label, x0, y0, stub_w, row_h):
     for size in range(11, 6, -1):
         f = lf(size, bold=True)
@@ -492,7 +517,6 @@ def _draw_stub_label(d, label, x0, y0, stub_w, row_h):
 
 # ── Render ─────────────────────────────────────────────────────────────────────
 def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date):
-    """Rendert das 800x600 JPEG fuer die Woche."""
     img = Image.new('RGB', (W, H), (255, 255, 255))
     d = ImageDraw.Draw(img)
 
@@ -510,7 +534,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
     TODAY_BW = 3
     PAD      = 5
 
-    # ── Header ─────────────────────────────────────────────────────────────────
     d.rectangle([(0,0),(W,HDR_H)], fill=BLUE)
     friday_date = monday_date + timedelta(4)
     date_range  = f"{monday_date.strftime('%d.%m.%Y')} – {friday_date.strftime('%d.%m.%Y')}"
@@ -523,7 +546,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
     d.text(((W-(bd[2]-bd[0]))//2, ty+(bt[3]-bt[1])+3), date_range, font=fdate, fill=(180,210,240))
     y = HDR_H
 
-    # ── Tages-Header ───────────────────────────────────────────────────────────
     all_days = list(holiday_map.keys())
     dw = (W - STUB_W) // len(all_days)
     d.rectangle([(0,y),(STUB_W-1,y+DAY_H-1)], fill=BLUE)
@@ -544,7 +566,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
             d.line([(x,y),(x+dw,y)], fill=C_TODAY, width=TODAY_BW)
     y += DAY_H
 
-    # ── Kategorien bestimmen ───────────────────────────────────────────────────
     all_cats_ordered = []
     seen_cats = set()
     for day in all_days:
@@ -560,15 +581,11 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
     n_cats = len(all_cats_ordered)
     row_h  = max(avail // n_cats, 1) if n_cats else max(avail, 1)
 
-    # ── Zeilen ─────────────────────────────────────────────────────────────────
     for ri, cat in enumerate(all_cats_ordered):
         rh = row_h if ri < n_cats - 1 else max(H - y - FOOTER_H - LEGEND_H - 4 - row_h * (n_cats - 1), 1)
         d.line([(STUB_W, y),(W, y)], fill=GRID, width=1)
 
-        avw   = dw - 2*PAD
-        f_sm  = lf(10)
-        lh_sm = _line_h(d, f_sm)
-
+        avw = dw - 2*PAD
         candidate_texts = []
         for day in all_days:
             if holiday_map[day] is not None: continue
@@ -656,7 +673,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
         d.line([(STUB_W,y),(STUB_W,y+rh)], fill=GRID, width=1)
         short_label = cat[:9] if len(cat) > 9 else cat
         _draw_stub_label(d, short_label, 0, y, STUB_W, rh)
-
         y += rh
 
     for i, day in enumerate(all_days):
@@ -664,7 +680,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
             x = STUB_W + i * dw
             d.line([(x,y),(x+dw,y)], fill=C_TODAY, width=TODAY_BW)
 
-    # ── Legende ────────────────────────────────────────────────────────────────
     d.line([(0,y),(W,y)], fill=GRID, width=1); y += 1
     d.rectangle([(0,y),(W,y+LEGEND_H)], fill=(245,249,253))
     fleg = lf(11)
@@ -676,7 +691,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
         d.text((lx+15, y+4), txt, font=fleg, fill=C_TXT)
         lx += 15 + (b[2]-b[0]) + 12
 
-    # ── Footer ─────────────────────────────────────────────────────────────────
     footer_txt = (f'KW {kw:02d} / {label}  –  '
                   f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
                   f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}")
@@ -725,9 +739,11 @@ def main():
         )
         setup_eurest(page)
 
+        available_values = _get_available_dates(page)
+
         for date_obj in scrape_dates:
-            dk    = day_key(date_obj)
-            dishes = scrape_day(page, date_obj)
+            dk     = day_key(date_obj)
+            dishes = scrape_day(page, date_obj, available_values)
             if dishes:
                 week_data[dk] = dishes
 
