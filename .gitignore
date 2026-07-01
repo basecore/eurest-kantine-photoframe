@@ -8,9 +8,5 @@ build/
 .venv/
 venv/
 
-# Nur .gitkeep behalten, generierte Bilder ignorieren
-docs/images/*.jpg
-!docs/images/.gitkeep
-
-# RSS-Feeds werden committed, aber lokale Test-Outputs ignorieren
+# RSS-Feeds werden committed, lokale Test-Outputs ignorieren
 *.log
