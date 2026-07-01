@@ -137,6 +137,24 @@ def _is_today(day_key_str, today_date):
     except: return False
 
 # ── Eurest-Scraper ─────────────────────────────────────────────────────────────
+
+# Diagnostik: listet alle gefundenen Tages-Divs in .day-navigation auf
+JS_LIST_DAYS = """
+(function(){
+  var nav = document.querySelector('.day-navigation');
+  if (!nav) return 'NO .day-navigation found';
+  var children = Array.from(nav.children);
+  var info = children.map(function(div, i){
+    var dayEl  = div.querySelector('.day');
+    var dayNum = dayEl ? dayEl.textContent.trim() : '?';
+    var divs   = Array.from(div.querySelectorAll('div'));
+    var month  = divs.length >= 3 ? divs[2].textContent.trim() : '?';
+    return i + ':day=' + dayNum + ',month=' + month + ',cls=' + div.className;
+  });
+  return info.join(' | ');
+})()
+"""
+
 def setup_eurest(page):
     """Oeffnet die Eurest-Seite, waehlt Kantine, bestaetigt Privacy, Sprache, Weiter."""
     print(f"[setup] Oeffne {EUREST_URL}")
@@ -159,7 +177,6 @@ def setup_eurest(page):
             cb.click()
             print("[setup] Privacy-Checkbox aktiviert")
         page.wait_for_timeout(400)
-        # OK-Button klicken
         for sel in ["button.min-w-8rem", "button:has-text('ok')", "button:has-text('OK')"]:
             try:
                 page.click(sel, timeout=3000)
@@ -201,13 +218,26 @@ def setup_eurest(page):
     except Exception:
         print("[setup] Kein persoenlicher-Filter-Modal (OK)")
 
-    # Warten bis Speiseplan geladen
-    for sel in [".category-name-container", ".meal-wrapper", ".menuListWrapper", ".defaultContainer"]:
-        try:
-            page.wait_for_selector(sel, timeout=12000)
-            print(f"[setup] Speiseplan bereit via {sel!r}")
-            break
-        except: pass
+    # Warten bis .day-navigation erscheint (echte Tagesnavigation)
+    try:
+        page.wait_for_selector(".day-navigation", timeout=15000)
+        print("[setup] .day-navigation bereit")
+    except Exception:
+        print("[setup] WARNUNG: .day-navigation nicht gefunden – versuche Fallback-Selektoren")
+        for sel in [".category-name-container", ".meal-wrapper", ".menuListWrapper", ".defaultContainer"]:
+            try:
+                page.wait_for_selector(sel, timeout=8000)
+                print(f"[setup] Fallback-Selektor bereit via {sel!r}")
+                break
+            except: pass
+
+    # Diagnostik: zeige alle gefundenen Tage
+    try:
+        days_info = page.evaluate(JS_LIST_DAYS)
+        print(f"[setup] JS_LIST_DAYS: {days_info}")
+    except Exception as e:
+        print(f"[setup] JS_LIST_DAYS Fehler: {e}")
+
     print("[setup] Abgeschlossen")
 
 
@@ -275,36 +305,58 @@ def parse_eurest_dom(raw_json):
     return dishes
 
 
-def click_day(page, date_label):
-    """Klickt den Tages-Button fuer das angegebene Datum (z.B. '01.07.').
+# Deutsche Monatsabkürzungen wie sie die Seite verwendet
+_MONTH_ABBR = {
+    1: 'Jan.', 2: 'Feb.', 3: 'Mrz.', 4: 'Apr.',
+    5: 'Mai.', 6: 'Jun.', 7: 'Jul.', 8: 'Aug.',
+    9: 'Sep.', 10: 'Okt.', 11: 'Nov.', 12: 'Dez.',
+}
 
-    Die Seite verwendet <p class="dayBtn"> mit einem Kind-<span class="dayDate">
-    – kein <button>-Element. Der Klick erfolgt daher via JavaScript-Evaluation.
+def click_day(page, date_obj):
+    """Klickt den Tages-Button fuer das angegebene Datum.
+
+    Die Seite verwendet .day-navigation > div mit:
+      - erstes Kind-div: Wochentag (Mo, Di, ...)
+      - .day: Tag-Zahl (01, 02, ...)
+      - drittes Kind-div: Monatsabkuerzung (Jul., Jan., ...)
     """
+    day_num   = date_obj.strftime('%d').lstrip('0')  # "01" -> "1", aber auch "1" direkt pruefen
+    day_num_z = date_obj.strftime('%d')               # zero-padded: "01"
+    month_abbr = _MONTH_ABBR.get(date_obj.month, '')
+
     js = f"""
     (function(){{
-      var btns = Array.from(document.querySelectorAll('p.dayBtn'));
-      for (var btn of btns) {{
-        var dateSpan = btn.querySelector('span.dayDate');
-        if (dateSpan && dateSpan.textContent.trim() === '{date_label}') {{
-          btn.click();
-          return 'clicked:' + dateSpan.textContent.trim();
+      var nav = document.querySelector('.day-navigation');
+      if (!nav) return 'NO .day-navigation';
+      var children = Array.from(nav.children);
+      for (var div of children) {{
+        var dayEl = div.querySelector('.day');
+        if (!dayEl) continue;
+        var dayNum = dayEl.textContent.trim();
+        // drittes Kind-div ist der Monat
+        var allDivs = Array.from(div.querySelectorAll('div'));
+        var monthText = allDivs.length >= 3 ? allDivs[2].textContent.trim() : '';
+        if ((dayNum === '{day_num}' || dayNum === '{day_num_z}') && monthText === '{month_abbr}') {{
+          div.click();
+          return 'clicked:' + dayNum + monthText;
         }}
       }}
-      // Fallback: alle Elemente mit Klasse dayBtn (falls kein <p>)
-      var all = Array.from(document.querySelectorAll('.dayBtn'));
-      for (var el of all) {{
-        var ds = el.querySelector('.dayDate');
-        if (ds && ds.textContent.trim() === '{date_label}') {{
-          el.click();
-          return 'clicked-fallback:' + ds.textContent.trim();
+      // Fallback: nur Tageszahl pruefen
+      for (var div2 of children) {{
+        var dayEl2 = div2.querySelector('.day');
+        if (!dayEl2) continue;
+        var dn2 = dayEl2.textContent.trim();
+        if (dn2 === '{day_num}' || dn2 === '{day_num_z}') {{
+          div2.click();
+          return 'clicked-fallback:' + dn2;
         }}
       }}
       return 'not found';
     }})()
     """
+    date_label = date_obj.strftime('%d.%m.')
     result = page.evaluate(js)
-    print(f"  [day-click] {date_label!r} -> {result!r}")
+    print(f"  [day-click] {date_label!r} ({day_num_z} {month_abbr}) -> {result!r}")
     return 'clicked' in result
 
 
@@ -313,14 +365,12 @@ def scrape_day(page, date_obj):
     date_label = date_obj.strftime('%d.%m.')
     print(f"\n[scrape] Tag {date_label}")
 
-    # Tages-Button klicken
-    if not click_day(page, date_label):
+    if not click_day(page, date_obj):
         print(f"  [scrape] Tag-Button {date_label!r} nicht gefunden, ueberspringe")
         return []
 
     page.wait_for_timeout(1200)
 
-    # Warten bis Inhalte geladen
     for sel in [".meal-wrapper", ".mealNameWrapper", ".category-wrapper"]:
         try:
             page.wait_for_selector(sel, timeout=8000)
@@ -494,7 +544,7 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
             d.line([(x,y),(x+dw,y)], fill=C_TODAY, width=TODAY_BW)
     y += DAY_H
 
-    # ── Kategorien bestimmen (alle vorkommenden, sortiert nach erstem Auftreten) ──
+    # ── Kategorien bestimmen ───────────────────────────────────────────────────
     all_cats_ordered = []
     seen_cats = set()
     for day in all_days:
@@ -519,7 +569,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
         f_sm  = lf(10)
         lh_sm = _line_h(d, f_sm)
 
-        # Einheitliche Schriftgroesse fuer alle Tage in dieser Zeile
         candidate_texts = []
         for day in all_days:
             if holiday_map[day] is not None: continue
@@ -582,7 +631,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
             it = items[0]
             cy = y + PAD
 
-            # VG/V-Badge
             if it['vv']:
                 bl = 'Vegan' if it['vv'] == 'VG' else 'Veg.'
                 bc = C_VG if it['vv'] == 'VG' else C_V
@@ -597,7 +645,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
                 d.text((x+PAD, cy), ln, font=fn, fill=C_TXT)
                 cy += lhn
 
-            # Preis unten rechts
             if it['preis']:
                 b = d.textbbox((0,0), it['preis'], font=fprc)
                 d.text((x+dw-(b[2]-b[0])-PAD, y+rh-(b[3]-b[1])-3), it['preis'], font=fprc, fill=LIGHT)
@@ -605,7 +652,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
             if is_today:
                 d.line([(x,y+rh-1),(x+dw,y+rh-1)], fill=C_TODAY, width=TODAY_BW)
 
-        # Stub-Label
         d.rectangle([(0,y),(STUB_W-1,y+rh-1)], fill=BLUE)
         d.line([(STUB_W,y),(STUB_W,y+rh)], fill=GRID, width=1)
         short_label = cat[:9] if len(cat) > 9 else cat
@@ -613,7 +659,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
 
         y += rh
 
-    # Heute-Unterkante
     for i, day in enumerate(all_days):
         if _is_today(day, today_date):
             x = STUB_W + i * dw
@@ -700,13 +745,11 @@ def main():
     img.save(str(out_path), 'JPEG', quality=92)
     print(f'Saved: {out_path}  ({img.size[0]}x{img.size[1]})')
 
-    # latest.jpg aktualisieren
     latest_path = OUT_DIR / f'latest_{LOCATION_NAME}.jpg'
     import shutil
     shutil.copy(str(out_path), str(latest_path))
     print(f'latest_{LOCATION_NAME}.jpg aktualisiert')
 
-    # Alte Bilder aufraeumen
     pattern = f'kantine_*_{LOCATION_NAME}.jpg'
     for old in sorted(OUT_DIR.glob(pattern))[:-MAX_KEEP]:
         old.unlink()
