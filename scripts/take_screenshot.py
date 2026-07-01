@@ -17,6 +17,7 @@ Umgebungsvariablen:
 """
 import os
 import re
+import sys
 import json
 from pathlib import Path
 from datetime import date, datetime, timezone, timedelta
@@ -275,15 +276,28 @@ def parse_eurest_dom(raw_json):
 
 
 def click_day(page, date_label):
-    """Klickt den Tages-Button fuer das angegebene Datum (z.B. '01.07.')."""
+    """Klickt den Tages-Button fuer das angegebene Datum (z.B. '01.07.').
+
+    Die Seite verwendet <p class="dayBtn"> mit einem Kind-<span class="dayDate">
+    – kein <button>-Element. Der Klick erfolgt daher via JavaScript-Evaluation.
+    """
     js = f"""
     (function(){{
-      var btns = Array.from(document.querySelectorAll('.dayBtn'));
+      var btns = Array.from(document.querySelectorAll('p.dayBtn'));
       for (var btn of btns) {{
-        var dateSpan = btn.querySelector('.dayDate');
+        var dateSpan = btn.querySelector('span.dayDate');
         if (dateSpan && dateSpan.textContent.trim() === '{date_label}') {{
           btn.click();
           return 'clicked:' + dateSpan.textContent.trim();
+        }}
+      }}
+      // Fallback: alle Elemente mit Klasse dayBtn (falls kein <p>)
+      var all = Array.from(document.querySelectorAll('.dayBtn'));
+      for (var el of all) {{
+        var ds = el.querySelector('.dayDate');
+        if (ds && ds.textContent.trim() === '{date_label}') {{
+          el.click();
+          return 'clicked-fallback:' + ds.textContent.trim();
         }}
       }}
       return 'not found';
@@ -301,7 +315,6 @@ def scrape_day(page, date_obj):
 
     # Tages-Button klicken
     if not click_day(page, date_label):
-        # Fallback: Warte auf naechste KW falls noetig
         print(f"  [scrape] Tag-Button {date_label!r} nicht gefunden, ueberspringe")
         return []
 
@@ -495,11 +508,11 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
 
     avail  = H - y - FOOTER_H - LEGEND_H - 4
     n_cats = len(all_cats_ordered)
-    row_h  = avail // n_cats if n_cats else avail
+    row_h  = max(avail // n_cats, 1) if n_cats else max(avail, 1)
 
     # ── Zeilen ─────────────────────────────────────────────────────────────────
     for ri, cat in enumerate(all_cats_ordered):
-        rh = row_h if ri < n_cats - 1 else (H - y - FOOTER_H - LEGEND_H - 4 - row_h * (n_cats - 1))
+        rh = row_h if ri < n_cats - 1 else max(H - y - FOOTER_H - LEGEND_H - 4 - row_h * (n_cats - 1), 1)
         d.line([(STUB_W, y),(W, y)], fill=GRID, width=1)
 
         avw   = dw - 2*PAD
@@ -678,6 +691,10 @@ def main():
     days_filled = len(week_data)
     days_avail  = len(scrape_dates)
     print(f'\nErgebnis   : {list(week_data.keys())}  ({days_filled}/{days_avail})')
+
+    if not week_data:
+        print("Keine Speisedaten gefunden – kein Bild wird erzeugt. Pruefe Scraping-Log oben.")
+        sys.exit(0)
 
     img = render(week_data, kw, label, local, holiday_map, today_date, target_monday)
     img.save(str(out_path), 'JPEG', quality=92)
