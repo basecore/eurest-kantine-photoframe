@@ -140,32 +140,29 @@ def _is_today(day_key_str, today_date):
 JS_DEBUG_DOM = """
 (function(){
   var out = [];
-  // menuDaySelect
   var sel = document.querySelector('select.menuDaySelect');
   if (sel) {
     var opts = Array.from(sel.options).map(function(o){ return o.value + '=' + o.text.trim(); });
     out.push('menuDaySelect options: ' + opts.join(', '));
-    out.push('menuDaySelect current value: ' + sel.value);
+    out.push('menuDaySelect current: ' + sel.value);
   } else {
     out.push('NO select.menuDaySelect');
   }
-  // menuListWrapper
   var mlw = document.querySelector('.menuListWrapper');
   out.push('menuListWrapper: ' + (mlw ? 'FOUND' : 'NOT FOUND'));
-  // category-wrapper (alte Struktur)
-  var cws = document.querySelectorAll('.category-wrapper');
-  out.push('category-wrapper count: ' + cws.length);
-  // meal-wrapper (in beiden Strukturen)
   var mws = document.querySelectorAll('.meal-wrapper');
   out.push('meal-wrapper count: ' + mws.length);
-  // categoryName (neue Struktur)
   var cns = document.querySelectorAll('.categoryName');
-  var cnTexts = Array.from(cns).map(function(el){ return el.textContent.trim(); });
-  out.push('categoryName elements: ' + cnTexts.join(', '));
-  // erste 3 mealNameWrapper
-  var mnws = Array.from(document.querySelectorAll('.mealNameWrapper')).slice(0,3);
-  var mnwTexts = mnws.map(function(el){ return el.textContent.trim().substring(0,50); });
-  out.push('first mealNames: ' + mnwTexts.join(' | '));
+  out.push('categoryName: ' + Array.from(cns).map(function(e){ return e.textContent.trim(); }).join(', '));
+  var btns = Array.from(document.querySelectorAll('button')).map(function(b){
+    return (b.textContent.trim().substring(0,30) || b.className.substring(0,30));
+  });
+  out.push('buttons: ' + btns.join(' | '));
+  var selects = Array.from(document.querySelectorAll('select')).map(function(s){
+    return s.className + '[' + s.options.length + ']';
+  });
+  out.push('selects: ' + selects.join(', '));
+  out.push('body snippet: ' + document.body.innerHTML.substring(0, 300).replace(/\s+/g,' '));
   return out.join(' || ');
 })()
 """
@@ -214,19 +211,91 @@ JS_EXTRACT = """
 """
 
 # ── Eurest-Scraper ─────────────────────────────────────────────────────────────
+
+def _dump_debug(page, label):
+    try:
+        dbg = page.evaluate(JS_DEBUG_DOM)
+        print(f"[debug:{label}] {dbg}")
+    except Exception as e:
+        print(f"[debug:{label}] Fehler: {e}")
+
+
+def _click_weiter(page):
+    """Versucht den Weiter/Submit-Button auf allen moeglichen Wegen zu klicken."""
+    # 1. Alle sichtbaren Buttons loggen
+    try:
+        btn_info = page.evaluate("""
+        Array.from(document.querySelectorAll('button')).map(function(b){
+          return JSON.stringify({
+            text: b.textContent.trim().substring(0,40),
+            cls: b.className.substring(0,60),
+            disabled: b.disabled,
+            visible: b.offsetParent !== null
+          });
+        }).join('\\n')
+        """)
+        print(f"[weiter] Alle Buttons:\n{btn_info}")
+    except Exception as e:
+        print(f"[weiter] Button-Dump Fehler: {e}")
+
+    # 2. Direkt per Text (case-insensitive via JS)
+    clicked = page.evaluate("""
+    (function(){
+      var btns = Array.from(document.querySelectorAll('button'));
+      var keywords = ['weiter', 'next', 'submit', 'ok', 'bestätigen', 'bestatigen', 'los'];
+      for (var b of btns) {
+        var t = b.textContent.trim().toLowerCase();
+        for (var kw of keywords) {
+          if (t.indexOf(kw) !== -1) {
+            b.click();
+            return 'clicked:' + b.textContent.trim();
+          }
+        }
+      }
+      return 'no-match';
+    })()
+    """)
+    print(f"[weiter] JS-click Ergebnis: {clicked!r}")
+    if 'clicked' in clicked:
+        return True
+
+    # 3. Playwright-Selektoren als Fallback
+    for sel in [
+        "button.submit", "button[type='submit']",
+        "button:has-text('Weiter')", "button:has-text('weiter')",
+        "button:has-text('Next')", "button:has-text('next')",
+        "button.uppercase", "button.btn-primary", "button.min-w-8rem",
+        ".submit-btn", "input[type='submit']",
+    ]:
+        try:
+            page.click(sel, timeout=2000)
+            print(f"[weiter] Playwright-click via {sel!r}")
+            return True
+        except: pass
+
+    print("[weiter] WARNUNG: Weiter-Button nicht gefunden!")
+    return False
+
+
 def setup_eurest(page):
     """Oeffnet die Eurest-Seite, waehlt Kantine, bestaetigt Privacy, Sprache, Weiter."""
     print(f"[setup] Oeffne {EUREST_URL}")
-    page.goto(EUREST_URL, wait_until="domcontentloaded", timeout=45000)
+    page.goto(EUREST_URL, wait_until="networkidle", timeout=60000)
     page.wait_for_timeout(2000)
+    _dump_debug(page, "nach-goto")
 
+    # Location auswaehlen
     print(f"[setup] Waehle location {LOCATION_ID} ({LOCATION_LABEL})")
     try:
+        page.wait_for_selector("select.locationSelection", timeout=8000)
         page.select_option("select.locationSelection", value=LOCATION_ID, timeout=8000)
-        page.wait_for_timeout(1500)
+        page.wait_for_timeout(1000)
+        print("[setup] locationSelection gesetzt")
     except Exception as e:
         print(f"[setup] locationSelection Fehler: {e}")
+    _dump_debug(page, "nach-location")
 
+    # Privacy-Modal
     try:
         page.wait_for_selector("input#featureFilterSelective", timeout=5000)
         cb = page.query_selector("input#featureFilterSelective")
@@ -234,74 +303,82 @@ def setup_eurest(page):
             cb.click()
             print("[setup] Privacy-Checkbox aktiviert")
         page.wait_for_timeout(400)
-        for sel in ["button.min-w-8rem", "button:has-text('ok')", "button:has-text('OK')"]:
+        for sel in ["button.min-w-8rem", "button:has-text('ok')", "button:has-text('OK')",
+                    "button:has-text('Akzeptieren')", "button:has-text('Zustimmen')"]:
             try:
-                page.click(sel, timeout=3000)
-                print(f"[setup] OK geklickt via {sel!r}")
+                page.click(sel, timeout=2000)
+                print(f"[setup] Privacy-OK via {sel!r}")
                 break
             except: pass
         page.wait_for_timeout(1000)
     except Exception:
         print("[setup] Privacy-Modal nicht erschienen (OK)")
+    _dump_debug(page, "nach-privacy")
 
+    # Sprache
     try:
+        page.wait_for_selector("select.languageSelection", timeout=5000)
         page.select_option("select.languageSelection", value="1", timeout=5000)
         print("[setup] Sprache Deutsch gewaehlt")
         page.wait_for_timeout(500)
     except Exception as e:
         print(f"[setup] languageSelection Fehler: {e}")
+    _dump_debug(page, "nach-sprache")
 
-    for sel in ["button.submit", "button:has-text('weiter')", "button:has-text('Weiter')",
-                "button.uppercase", "button:has-text('next')"]:
-        try:
-            page.click(sel, timeout=3000)
-            print(f"[setup] Weiter geklickt via {sel!r}")
-            break
-        except: pass
-    page.wait_for_timeout(2000)
+    # Weiter-Button – aggressiv
+    _click_weiter(page)
+    page.wait_for_timeout(3000)
+    _dump_debug(page, "nach-weiter-1")
 
+    # Nochmal versuchen falls noch nix geladen
+    sel_found = False
+    try:
+        page.wait_for_selector("select.menuDaySelect", timeout=5000)
+        sel_found = True
+    except: pass
+
+    if not sel_found:
+        print("[setup] menuDaySelect noch nicht da – zweiter Weiter-Versuch")
+        _click_weiter(page)
+        page.wait_for_timeout(3000)
+        _dump_debug(page, "nach-weiter-2")
+
+    # Persoenlicher Filter Modal
     try:
         page.wait_for_selector(".ReactModal__Content", timeout=4000)
         for sel in ["button:has-text('nein')", "button:has-text('Nein')", "button:has-text('no')"]:
             try:
                 page.click(sel, timeout=2000)
-                print(f"[setup] Persoenlicher-Filter-Modal mit {sel!r} geschlossen")
+                print(f"[setup] Filter-Modal geschlossen via {sel!r}")
                 break
             except: pass
         page.wait_for_timeout(1000)
     except Exception:
-        print("[setup] Kein persoenlicher-Filter-Modal (OK)")
+        print("[setup] Kein Filter-Modal (OK)")
 
-    # Warten bis Speiseplan geladen – menuDaySelect oder Fallback
+    # Finales Warten auf Speiseplan
     loaded = False
     try:
-        page.wait_for_selector("select.menuDaySelect", timeout=12000)
+        page.wait_for_selector("select.menuDaySelect", timeout=15000)
         print("[setup] select.menuDaySelect bereit")
         loaded = True
     except Exception:
-        print("[setup] WARNUNG: select.menuDaySelect nicht gefunden")
+        print("[setup] WARNUNG: select.menuDaySelect immer noch nicht gefunden")
 
     if not loaded:
-        for sel in [".menuListWrapper", ".category-wrapper", ".meal-wrapper"]:
+        for sel in [".menuListWrapper", ".meal-wrapper", ".mealNameWrapper"]:
             try:
                 page.wait_for_selector(sel, timeout=8000)
-                print(f"[setup] Fallback-Selektor bereit via {sel!r}")
+                print(f"[setup] Fallback bereit via {sel!r}")
                 loaded = True
                 break
             except: pass
 
-    # DOM-Diagnostik ausgeben
-    try:
-        dbg = page.evaluate(JS_DEBUG_DOM)
-        print(f"[setup] DOM-Debug: {dbg}")
-    except Exception as e:
-        print(f"[setup] DOM-Debug Fehler: {e}")
-
+    _dump_debug(page, "final")
     print("[setup] Abgeschlossen")
 
 
 def _get_available_dates(page):
-    """Liest alle verfuegbaren Datumswerte aus select.menuDaySelect."""
     js = """
     (function(){
       var sel = document.querySelector('select.menuDaySelect');
@@ -313,23 +390,17 @@ def _get_available_dates(page):
     try:
         raw = page.evaluate(js)
         vals = json.loads(raw)
-        print(f"[dates] Verfuegbare Datumswerte im Select: {vals}")
+        print(f"[dates] Verfuegbare Datumswerte: {vals}")
         return vals
     except Exception as e:
-        print(f"[dates] Fehler beim Lesen der Datumswerte: {e}")
+        print(f"[dates] Fehler: {e}")
         return []
 
 
 def click_day(page, date_obj, available_values):
-    """Waehlt den Tag im select.menuDaySelect aus.
-
-    Die Option-Values sind ISO-Strings wie '2026-07-01T00:00:00.000Z'.
-    Wir suchen den passenden Wert anhand des Datums (Jahr, Monat, Tag).
-    """
     target = date_obj.strftime('%Y-%m-%d')
     date_label = date_obj.strftime('%d.%m.')
 
-    # Finde passenden ISO-Wert
     matched_value = None
     for v in available_values:
         if v.startswith(target):
@@ -337,7 +408,7 @@ def click_day(page, date_obj, available_values):
             break
 
     if not matched_value:
-        print(f"  [day-click] {date_label!r} -> kein passender Wert in menuDaySelect (target={target})")
+        print(f"  [day-click] {date_label!r} -> kein Wert fuer {target} im Select")
         return False
 
     try:
@@ -377,30 +448,23 @@ def parse_eurest_dom(raw_json):
 
 
 def scrape_day(page, date_obj, available_values):
-    """Waehlt den Tag im Speiseplan und extrahiert die Gerichte via DOM."""
     date_label = date_obj.strftime('%d.%m.')
     print(f"\n[scrape] Tag {date_label}")
 
     if not click_day(page, date_obj, available_values):
-        print(f"  [scrape] Tag {date_label!r} nicht im Select gefunden, ueberspringe")
+        print(f"  [scrape] Tag {date_label!r} nicht im Select, ueberspringe")
         return []
 
     page.wait_for_timeout(1200)
 
-    # Warten bis Inhalte geladen
     for sel in [".menuListWrapper", ".meal-wrapper", ".mealNameWrapper"]:
         try:
             page.wait_for_selector(sel, timeout=8000)
-            print(f"  [scrape] Inhalt bereit via {sel!r}")
+            print(f"  [scrape] Inhalt via {sel!r}")
             break
         except: pass
 
-    # DOM-Zustand diagnostizieren
-    try:
-        dbg = page.evaluate(JS_DEBUG_DOM)
-        print(f"  [scrape] DOM-Debug: {dbg}")
-    except Exception as e:
-        print(f"  [scrape] DOM-Debug Fehler: {e}")
+    _dump_debug(page, f"scrape-{date_label}")
 
     try:
         raw_json = page.evaluate(JS_EXTRACT)
