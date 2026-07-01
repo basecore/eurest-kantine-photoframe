@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eurest Kantine Regensburg – Speiseplan</title>
+  <style>
+    body { font-family: sans-serif; background: #f0f4f8; margin: 0; padding: 1rem; }
+    h1 { color: #003366; }
+    .grid { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .card { background: white; border-radius: 8px; padding: 1rem; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .card h2 { margin-top: 0; color: #005baa; }
+    .card img { max-width: 100%; border-radius: 4px; }
+    .feed-links a { display: inline-block; margin: 0.25rem 0.5rem 0.25rem 0; padding: 0.3rem 0.8rem; background: #005baa; color: white; border-radius: 4px; text-decoration: none; font-size: 0.85rem; }
+    .feed-links a:hover { background: #003366; }
+  </style>
+</head>
+<body>
+  <h1>Eurest Kantine Regensburg – Wochenspeiseplan</h1>
+  <div class="grid">
+    <div class="card">
+      <h2>SCHAEFFLER Regensburg (0967)</h2>
+      <img src="images/latest_schaeffler.jpg" alt="Schaeffler Speiseplan" onerror="this.style.display='none'">
+      <div class="feed-links">
+        <a href="feed_schaeffler.xml">RSS (HTTPS)</a>
+        <a href="feed_schaeffler.php">RSS (HTTP/bplaced)</a>
+      </div>
+    </div>
+    <div class="card">
+      <h2>AUMOVIO Regensburg (1553)</h2>
+      <img src="images/latest_aumovio.jpg" alt="Aumovio Speiseplan" onerror="this.style.display='none'">
+      <div class="feed-links">
+        <a href="feed_aumovio.xml">RSS (HTTPS)</a>
+        <a href="feed_aumovio.php">RSS (HTTP/bplaced)</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
