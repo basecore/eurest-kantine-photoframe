@@ -29,6 +29,7 @@ jobs:
   screenshot:
     runs-on: ubuntu-latest
     strategy:
+      max-parallel: 1
       matrix:
         include:
           - location_id: '8949'
