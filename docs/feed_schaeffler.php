@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="ISO-8859-1"?>';
 		<title>Eurest Kantine SCHAEFFLER Regensburg Regensburg – Wochenspeiseplan</title>
 		<link>http://basecore.bplaced.net/eurest</link>
 		<description></description>
-		<pubDate>Wed, 01 Jul 2026 13:16:55 +0000</pubDate>
-		<lastBuildDate>Wed, 01 Jul 2026 13:16:55 +0000</lastBuildDate>
+		<pubDate>Wed, 01 Jul 2026 15:18:11 +0000</pubDate>
+		<lastBuildDate>Wed, 01 Jul 2026 15:18:11 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net/eurest</generator>
 		<image>
 			<url>http://basecore.bplaced.net/eurest/images/icon.jpg</url>
