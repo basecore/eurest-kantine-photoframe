@@ -7,13 +7,16 @@ Scraping-Strategie:
   3. Privacy-Policy-Checkbox aktivieren + OK klicken.
   4. Sprache 'Deutsch' waehlen + 'weiter' klicken.
   5. Optionales 'persoenlicher Filter'-Modal mit 'nein' schliessen.
-  6. Fuer jeden Werktag: Tag via select.menuDaySelect auswaehlen, DOM extrahieren.
-  7. Render: 800x600 JPEG im gleichen Stil wie siemens-kantine-photoframe.
+  6. Fuer den Ziel-Tag: Tag via select.menuDaySelect auswaehlen, DOM extrahieren.
+  7. Render: 800x600 JPEG – Tagesansicht (default) oder Wochenansicht.
 
 Umgebungsvariablen:
   EUREST_LOCATION_ID    8949 = Schaeffler, 8950 = Aumovio (default: 8949)
   EUREST_LOCATION_NAME  schaeffler / aumovio (default: schaeffler)
-  WEEK_OFFSET           0 = aktuelle Woche, 1 = naechste Woche (default: 1)
+  WEEK_OFFSET           0 = aktuelle Woche, 1 = naechste Woche (default: 0)
+  DISPLAY_MODE          day = Tagesansicht (default), week = Wochenansicht
+  DISPLAY_DAY           Ziel-Tag manuell: monday|tuesday|wednesday|thursday|friday
+                        (leer = Automatik: vor 13:30 heute, ab 13:30 naechster Werktag)
 """
 import os
 import sys
@@ -28,7 +31,12 @@ from PIL import Image, ImageDraw, ImageFont
 EUREST_URL      = "https://eurest.webspeiseplan.de/39799C127F748D639984F4CDBEB44846"
 LOCATION_ID     = os.environ.get("EUREST_LOCATION_ID", "8949").strip()
 LOCATION_NAME   = os.environ.get("EUREST_LOCATION_NAME", "schaeffler").strip().lower()
-WEEK_OFFSET     = int(os.environ.get("WEEK_OFFSET", "1"))
+WEEK_OFFSET     = int(os.environ.get("WEEK_OFFSET", "0"))
+DISPLAY_MODE    = os.environ.get("DISPLAY_MODE", "day").strip().lower()   # day | week
+DISPLAY_DAY     = os.environ.get("DISPLAY_DAY", "").strip().lower()       # monday..friday | ""
+
+SWITCH_HOUR_LOCAL = 13  # ab 13:30 Uhr CEST -> naechster Tag
+SWITCH_MINUTE_LOCAL = 30
 
 LOCATION_LABELS = {
     "8949": "SCHAEFFLER Regensburg",
@@ -36,15 +44,22 @@ LOCATION_LABELS = {
 }
 LOCATION_LABEL = LOCATION_LABELS.get(LOCATION_ID, f"Kantine {LOCATION_ID}")
 
-# Kategorie-Reihenfolge als Fallback, falls week_data leer
 CATEGORY_FALLBACK = {
     "8949": ["Suppe", "Ostenviertel", "Kumpfm\u00fchl", "Stadtamhof", "Reinhausen", "Salatbar", "Dessert"],
     "8950": ["Suppe", "Ostenviertel", "Weichs", "Brandlberg", "Niederwinzer", "Oberwinzer", "Salatbar", "Dessert"],
 }
 
+DAY_NAME_MAP = {
+    "monday": 0, "montag": 0, "mo": 0,
+    "tuesday": 1, "dienstag": 1, "di": 1,
+    "wednesday": 2, "mittwoch": 2, "mi": 2,
+    "thursday": 3, "donnerstag": 3, "do": 3,
+    "friday": 4, "freitag": 4, "fr": 4,
+}
+
 OUT_DIR  = Path("docs/images")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-MAX_KEEP = 8
+MAX_KEEP = 14
 W, H     = 800, 600
 FOOTER_H = 20
 
@@ -141,8 +156,49 @@ def _is_today(day_key_str, today_date):
         return date(today_date.year, int(dm[1]), int(dm[0])) == today_date
     except: return False
 
-# ── Diagnostik-JS ──────────────────────────────────────────────────────────────
+# ── Ziel-Tag-Berechnung ────────────────────────────────────────────────────────
+def resolve_target_date(local_dt, holidays_all):
+    """Gibt das Datum zurueck, das angezeigt werden soll.
+    Logik:
+      - DISPLAY_DAY gesetzt -> nimm den naechsten Wochentag dieser Bezeichnung
+        (in der aktuellen oder naechsten Woche)
+      - sonst: vor 13:30 Uhr -> heutiger Werktag
+               ab 13:30 Uhr -> naechster Werktag (ueberspringt Feiertage + WE)
+    """
+    today = local_dt.date()
 
+    # Manueller Override via DISPLAY_DAY
+    if DISPLAY_DAY and DISPLAY_DAY in DAY_NAME_MAP:
+        target_weekday = DAY_NAME_MAP[DISPLAY_DAY]
+        # Naechsten (oder heutigen) Wochentag dieser Nummer suchen
+        days_ahead = (target_weekday - today.weekday()) % 7
+        candidate = today + timedelta(days=days_ahead)
+        print(f"[target] DISPLAY_DAY={DISPLAY_DAY!r} -> {candidate}")
+        return candidate
+
+    after_switch = (
+        local_dt.hour > SWITCH_HOUR_LOCAL or
+        (local_dt.hour == SWITCH_HOUR_LOCAL and local_dt.minute >= SWITCH_MINUTE_LOCAL)
+    )
+
+    if not after_switch:
+        # Vor 13:30: zeige heutigen Tag (wenn Werktag), sonst naechsten
+        candidate = today
+    else:
+        # Ab 13:30: naechster Werktag
+        candidate = today + timedelta(days=1)
+
+    # Vorwaerts springen bis Werktag (Mo-Fr) und kein Feiertag
+    for _ in range(14):
+        if candidate.weekday() < 5 and candidate not in holidays_all:
+            break
+        candidate += timedelta(days=1)
+
+    print(f"[target] after_switch={after_switch}, today={today} -> Ziel: {candidate}")
+    return candidate
+
+
+# ── Diagnostik-JS ──────────────────────────────────────────────────────────────
 JS_DEBUG_DOM = r"""
 (function(){
   var out = [];
@@ -177,7 +233,6 @@ JS_EXTRACT = r"""
 (function(){
   var result = [];
 
-  // Neue Struktur: .menuListWrapper mit .meal-wrapper, Kategorie in .categoryName
   var mlw = document.querySelector('.menuListWrapper');
   if (mlw) {
     var mealEls = Array.from(mlw.querySelectorAll('.meal-wrapper'));
@@ -186,7 +241,6 @@ JS_EXTRACT = r"""
       var cat = catEl ? catEl.textContent.trim() : '';
       var nameNode = mel.querySelector('.mealNameWrapper');
       var mealName = nameNode ? nameNode.textContent.trim().replace(/\u00a0/g,' ') : '';
-      // Explizit nur die "Preis"-Zeile nehmen (nicht "Extern")
       var priceRows = Array.from(mel.querySelectorAll('.price-row'));
       var priceRow = priceRows.find(function(r){
         var lbl = r.querySelector('.price-label');
@@ -201,7 +255,6 @@ JS_EXTRACT = r"""
     if (result.length > 0) return JSON.stringify(result);
   }
 
-  // Fallback: alte Struktur mit .category-wrapper + .category-name-container
   var catWrappers = Array.from(document.querySelectorAll('.category-wrapper'));
   for (var cw of catWrappers) {
     var nameEl = cw.querySelector('.category-name-container');
@@ -228,7 +281,6 @@ JS_EXTRACT = r"""
 """
 
 # ── Eurest-Scraper ─────────────────────────────────────────────────────────────
-
 def _dump_debug(page, label):
     try:
         dbg = page.evaluate(JS_DEBUG_DOM)
@@ -238,7 +290,6 @@ def _dump_debug(page, label):
 
 
 def _click_weiter(page):
-    """Versucht den Weiter/Submit-Button auf allen moeglichen Wegen zu klicken."""
     try:
         btn_info = page.evaluate("""
         Array.from(document.querySelectorAll('button')).map(function(b){
@@ -292,7 +343,6 @@ def _click_weiter(page):
 
 
 def setup_eurest(page):
-    """Oeffnet die Eurest-Seite, waehlt Kantine, bestaetigt Privacy, Sprache, Weiter."""
     print(f"[setup] Oeffne {EUREST_URL}")
     page.goto(EUREST_URL, wait_until="networkidle", timeout=60000)
     page.wait_for_timeout(2000)
@@ -407,17 +457,14 @@ def _get_available_dates(page):
 def click_day(page, date_obj, available_values):
     target = date_obj.strftime('%Y-%m-%d')
     date_label = date_obj.strftime('%d.%m.')
-
     matched_value = None
     for v in available_values:
         if v.startswith(target):
             matched_value = v
             break
-
     if not matched_value:
         print(f"  [day-click] {date_label!r} -> kein Wert fuer {target} im Select")
         return False
-
     try:
         page.select_option("select.menuDaySelect", value=matched_value, timeout=5000)
         print(f"  [day-click] {date_label!r} -> gewaehlt: {matched_value!r}")
@@ -428,14 +475,11 @@ def click_day(page, date_obj, available_values):
 
 
 def _wait_for_stable_meals(page, max_wait_ms=8000, interval_ms=400):
-    """Wartet bis .meal-wrapper Anzahl stabil ist (mind. 2 Runden gleich)."""
     prev_count = -1
     stable_rounds = 0
     for _ in range(max_wait_ms // interval_ms):
         page.wait_for_timeout(interval_ms)
-        count = page.evaluate(
-            "document.querySelectorAll('.meal-wrapper').length"
-        )
+        count = page.evaluate("document.querySelectorAll('.meal-wrapper').length")
         print(f"  [stable] meal-wrapper count: {count}")
         if count == prev_count and count > 0:
             stable_rounds += 1
@@ -477,23 +521,17 @@ def parse_eurest_dom(raw_json):
 def scrape_day(page, date_obj, available_values):
     date_label = date_obj.strftime('%d.%m.')
     print(f"\n[scrape] Tag {date_label}")
-
     if not click_day(page, date_obj, available_values):
         print(f"  [scrape] Tag {date_label!r} nicht im Select, ueberspringe")
         return []
-
-    # Warte auf stabile meal-wrapper Anzahl statt fixem Timeout
     _wait_for_stable_meals(page)
-
     for sel in [".menuListWrapper", ".meal-wrapper", ".mealNameWrapper"]:
         try:
             page.wait_for_selector(sel, timeout=8000)
             print(f"  [scrape] Inhalt via {sel!r}")
             break
         except: pass
-
     _dump_debug(page, f"scrape-{date_label}")
-
     try:
         raw_json = page.evaluate(JS_EXTRACT)
         length = len(raw_json) if raw_json else 0
@@ -570,6 +608,16 @@ def _line_h(draw, font):
     b = draw.textbbox((0,0), 'Ag', font=font)
     return b[3] - b[1] + 4
 
+def _fit_font(draw, text, max_w, max_h, size_start=19, size_min=10, bold=False):
+    for size in range(size_start, size_min - 1, -1):
+        f = lf(size, bold)
+        lh = _line_h(draw, f)
+        lines = wrap_text(draw, text, f, max_w, max_lines=20)
+        if not lines: return f, lh, lines
+        if lh * len(lines) <= max_h: return f, lh, lines
+    f = lf(size_min, bold)
+    return f, _line_h(draw, f), wrap_text(draw, text, f, max_w, max_lines=20)
+
 def _find_uniform_font_size(draw, texts, max_w, max_h, size_start=19, size_min=10, bold=False):
     for size in range(size_start, size_min - 1, -1):
         f = lf(size, bold)
@@ -582,16 +630,6 @@ def _find_uniform_font_size(draw, texts, max_w, max_h, size_start=19, size_min=1
             if lh * len(lines) > max_h: all_fit = False; break
         if all_fit: return size
     return size_min
-
-def _fit_font(draw, text, max_w, max_h, size_start=19, size_min=10, bold=False):
-    for size in range(size_start, size_min - 1, -1):
-        f = lf(size, bold)
-        lh = _line_h(draw, f)
-        lines = wrap_text(draw, text, f, max_w, max_lines=20)
-        if not lines: return f, lh, lines
-        if lh * len(lines) <= max_h: return f, lh, lines
-    f = lf(size_min, bold)
-    return f, _line_h(draw, f), wrap_text(draw, text, f, max_w, max_lines=20)
 
 def _draw_stub_label(d, label, x0, y0, stub_w, row_h):
     for size in range(11, 6, -1):
@@ -607,8 +645,147 @@ def _draw_stub_label(d, label, x0, y0, stub_w, row_h):
     d.text((x0+(stub_w-tw)//2, y0+(row_h-th)//2), label, font=f, fill=WHITE)
 
 
-# ── Render ─────────────────────────────────────────────────────────────────────
-def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date):
+# ── Render Tagesansicht ────────────────────────────────────────────────────────
+def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
+    """Rendert alle Gerichte eines einzelnen Tages schoen verteilt auf 800x600."""
+    img = Image.new('RGB', (W, H), (255, 255, 255))
+    d = ImageDraw.Draw(img)
+
+    ftit  = lf(20, True)
+    fdate = lf(13)
+    fbdg  = lf(13, True)
+    fprc  = lf(14, True)
+    fftr  = lf(10)
+    fcat  = lf(12, True)
+
+    HDR_H    = 58
+    LEGEND_H = 22
+    PAD      = 8
+
+    # Header
+    d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
+    weekday_names = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag']
+    day_str  = f"{weekday_names[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}"
+    title_str = f"{LOCATION_LABEL}  |  KW {kw:02d}"
+    bt = d.textbbox((0,0), title_str, font=ftit)
+    bd = d.textbbox((0,0), day_str, font=fdate)
+    total_h = (bt[3]-bt[1]) + 3 + (bd[3]-bd[1])
+    ty = (HDR_H - total_h) // 2
+    d.text(((W-(bt[2]-bt[0]))//2, ty), title_str, font=ftit, fill=WHITE)
+    d.text(((W-(bd[2]-bd[0]))//2, ty+(bt[3]-bt[1])+3), day_str, font=fdate, fill=(180, 210, 240))
+
+    y = HDR_H
+    content_h = H - HDR_H - FOOTER_H - LEGEND_H - 4
+
+    # Feiertag-Ansicht
+    if is_holiday:
+        d.rectangle([(0, y), (W, H - FOOTER_H)], fill=C_HOL_BG)
+        msg = f"Feiertag: {is_holiday}"
+        fm = lf(28, True)
+        bm = d.textbbox((0,0), msg, font=fm)
+        d.text(((W-(bm[2]-bm[0]))//2, y + (content_h-(bm[3]-bm[1]))//2), msg, font=fm, fill=C_HOL_TXT)
+    elif not dishes:
+        d.rectangle([(0, y), (W, H - FOOTER_H)], fill=(248, 248, 248))
+        msg = "Keine Speisedaten verfügbar"
+        fm = lf(22, True)
+        bm = d.textbbox((0,0), msg, font=fm)
+        d.text(((W-(bm[2]-bm[0]))//2, y + (content_h-(bm[3]-bm[1]))//2), msg, font=fm, fill=(160,160,160))
+    else:
+        # Kategorien aus Gerichten ableiten (Reihenfolge beibehalten)
+        cats_ordered = []
+        seen = set()
+        for dish in dishes:
+            cat = dish['kategorie']
+            if cat not in seen:
+                cats_ordered.append(cat)
+                seen.add(cat)
+
+        n_rows = len(cats_ordered)
+        row_h = max(content_h // n_rows, 1) if n_rows else content_h
+
+        # Einheitliche Schriftgroesse fuer alle Gerichtenamen bestimmen
+        col_name_w = W - 140 - 3 * PAD  # Platz fuer Name (ohne Kategorie-Spalte + Preis)
+        all_names = [d2['name'] for d2 in dishes]
+        uniform_size = _find_uniform_font_size(d, all_names, col_name_w,
+                                               row_h - PAD * 2 - 20,
+                                               size_start=20, size_min=10)
+        fn  = lf(uniform_size)
+        lhn = _line_h(d, fn)
+
+        CAT_W  = 120  # Kategorie-Spalte links
+        PRC_W  = 90   # Preis-Spalte rechts
+        NAME_W = W - CAT_W - PRC_W - 4 * PAD
+
+        for ri, cat in enumerate(cats_ordered):
+            rh = row_h if ri < n_rows - 1 else max(
+                H - y - FOOTER_H - LEGEND_H - 4 - row_h * (n_rows - 1), 1)
+
+            bg = R_ODD if ri % 2 == 0 else R_EVEN
+            d.rectangle([(0, y), (W - 1, y + rh - 1)], fill=bg)
+            d.line([(0, y), (W, y)], fill=GRID, width=1)
+
+            # Kategorie-Block links (blau)
+            d.rectangle([(0, y), (CAT_W - 1, y + rh - 1)], fill=BLUE)
+            d.line([(CAT_W, y), (CAT_W, y + rh)], fill=GRID, width=1)
+            short_cat = cat[:12] if len(cat) > 12 else cat
+            _draw_stub_label(d, short_cat, 0, y, CAT_W, rh)
+
+            # Gericht(e) dieser Kategorie (normalerweise 1)
+            items = [it for it in dishes if it['kategorie'] == cat]
+            it = items[0]
+            cx = CAT_W + PAD
+            cy = y + PAD
+
+            # Vegan/Veg Badge
+            if it['vv']:
+                bl = 'Vegan' if it['vv'] == 'VG' else 'Veg.'
+                bc = C_VG if it['vv'] == 'VG' else C_V
+                b = d.textbbox((0,0), bl, font=fbdg)
+                bw2 = b[2]-b[0]+8; bh2 = b[3]-b[1]+4
+                d.rounded_rectangle([(cx, cy), (cx+bw2, cy+bh2)], radius=3, fill=bc)
+                d.text((cx+4, cy+2), bl, font=fbdg, fill=WHITE)
+                cy += bh2 + 3
+
+            # Gerichtsname
+            name_lines = wrap_text(d, it['name'], fn, NAME_W, max_lines=20)
+            for ln in name_lines:
+                d.text((cx, cy), ln, font=fn, fill=C_TXT)
+                cy += lhn
+
+            # Preis rechts unten
+            if it['preis']:
+                b = d.textbbox((0,0), it['preis'], font=fprc)
+                px = W - PAD - (b[2]-b[0])
+                py = y + rh - (b[3]-b[1]) - PAD
+                d.text((px, py), it['preis'], font=fprc, fill=LIGHT)
+
+            y += rh
+
+    # Legende
+    d.line([(0, y), (W, y)], fill=GRID, width=1); y += 1
+    d.rectangle([(0, y), (W, y + LEGEND_H)], fill=(245, 249, 253))
+    fleg = lf(11)
+    lx = 6
+    for col, txt in [(C_VG,'Vegan'),(C_V,'Vegetarisch'),(C_HOL_HDR,'Feiertag'),(C_TODAY,'Heute')]:
+        d.rectangle([(lx, y+5), (lx+12, y+15)], fill=col)
+        b = d.textbbox((0,0), txt, font=fleg)
+        d.text((lx+15, y+4), txt, font=fleg, fill=C_TXT)
+        lx += 15 + (b[2]-b[0]) + 12
+
+    # Footer
+    footer_txt = (f'KW {kw:02d} / {label}  \u2013  '
+                  f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  \u2013  "
+                  f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}")
+    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
+    b = d.textbbox((0,0), footer_txt, font=fftr)
+    d.text(((W-(b[2]-b[0]))//2, H-FOOTER_H+(FOOTER_H-(b[3]-b[1]))//2),
+           footer_txt, font=fftr, fill=WHITE)
+
+    return img
+
+
+# ── Render Wochenansicht (unveraendert) ────────────────────────────────────────
+def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_date):
     img = Image.new('RGB', (W, H), (255, 255, 255))
     d = ImageDraw.Draw(img)
 
@@ -628,7 +805,7 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
 
     d.rectangle([(0,0),(W,HDR_H)], fill=BLUE)
     friday_date = monday_date + timedelta(4)
-    date_range  = f"{monday_date.strftime('%d.%m.%Y')} – {friday_date.strftime('%d.%m.%Y')}"
+    date_range  = f"{monday_date.strftime('%d.%m.%Y')} \u2013 {friday_date.strftime('%d.%m.%Y')}"
     title_str   = f"{LOCATION_LABEL}  |  KW {kw:02d}"
     bt = d.textbbox((0,0), title_str, font=ftit)
     bd = d.textbbox((0,0), date_range, font=fdate)
@@ -658,7 +835,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
             d.line([(x,y),(x+dw,y)], fill=C_TODAY, width=TODAY_BW)
     y += DAY_H
 
-    # Kategorien dynamisch aus week_data ableiten, Fallback per Location
     all_cats_ordered = []
     seen_cats = set()
     for day in all_days:
@@ -668,10 +844,7 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
                 all_cats_ordered.append(cat)
                 seen_cats.add(cat)
     if not all_cats_ordered:
-        all_cats_ordered = CATEGORY_FALLBACK.get(
-            LOCATION_ID,
-            ["Suppe", "Salatbar", "Dessert"]
-        )
+        all_cats_ordered = CATEGORY_FALLBACK.get(LOCATION_ID, ["Suppe", "Salatbar", "Dessert"])
 
     avail  = H - y - FOOTER_H - LEGEND_H - 4
     n_cats = len(all_cats_ordered)
@@ -743,7 +916,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
 
             it = items[0]
             cy = y + PAD
-
             if it['vv']:
                 bl = 'Vegan' if it['vv'] == 'VG' else 'Veg.'
                 bc = C_VG if it['vv'] == 'VG' else C_V
@@ -752,16 +924,13 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
                 d.rounded_rectangle([(x+PAD,cy),(x+PAD+bw2,cy+bh2)], radius=3, fill=bc)
                 d.text((x+PAD+4, cy+2), bl, font=fbdg, fill=WHITE)
                 cy += bh2 + 3
-
             name_lines = wrap_text(d, it['name'], fn, avw, max_lines=20)
             for ln in name_lines:
                 d.text((x+PAD, cy), ln, font=fn, fill=C_TXT)
                 cy += lhn
-
             if it['preis']:
                 b = d.textbbox((0,0), it['preis'], font=fprc)
                 d.text((x+dw-(b[2]-b[0])-PAD, y+rh-(b[3]-b[1])-3), it['preis'], font=fprc, fill=LIGHT)
-
             if is_today:
                 d.line([(x,y+rh-1),(x+dw,y+rh-1)], fill=C_TODAY, width=TODAY_BW)
 
@@ -793,7 +962,6 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
     d.rectangle([(0,H-FOOTER_H),(W,H)], fill=BLUE)
     b = d.textbbox((0,0), footer_txt, font=fftr)
     d.text(((W-(b[2]-b[0]))//2, H-FOOTER_H+(FOOTER_H-(b[3]-b[1]))//2), footer_txt, font=fftr, fill=WHITE)
-
     return img
 
 
@@ -802,70 +970,123 @@ def main():
     now        = datetime.now(timezone.utc)
     local      = german_time(now)
     today_date = local.date()
-    target_monday = today_date - timedelta(days=today_date.weekday()) + timedelta(weeks=WEEK_OFFSET)
-    label, kw = kw_label(datetime.combine(target_monday, datetime.min.time(), tzinfo=timezone.utc))
-    out_path  = OUT_DIR / f'kantine_{label}_{LOCATION_NAME}.jpg'
 
     print(f'Kantine    : {LOCATION_LABEL} (ID: {LOCATION_ID})')
-    print(f'Week label : {label}  (KW {kw:02d})')
-    print(f'Today      : {today_date}')
-    print(f'WEEK_OFFSET: {WEEK_OFFSET}  ->  Woche ab {target_monday}')
+    print(f'DISPLAY_MODE: {DISPLAY_MODE}')
+    print(f'DISPLAY_DAY : {DISPLAY_DAY!r}')
+    print(f'Today       : {today_date}  {local.strftime("%H:%M")} CEST')
 
-    holiday_map = week_holiday_map(target_monday)
-    hol_days    = [k for k, v in holiday_map.items() if v]
-    all_week_dates = [
-        datetime.combine(target_monday + timedelta(i), datetime.min.time(), tzinfo=timezone.utc)
-        for i in range(5)
-    ]
-    if WEEK_OFFSET == 0:
-        scrape_dates = [dt for dt in all_week_dates
-                        if dt.date() >= today_date and day_key(dt) not in hol_days]
+    # Alle Feiertage fuer heuristische Checks
+    all_holidays = {}
+    for yr in [today_date.year, today_date.year + 1]:
+        all_holidays.update(bavaria_holidays(yr))
+
+    if DISPLAY_MODE == 'day':
+        # ── Tagesansicht ──────────────────────────────────────────────────────
+        target_date = resolve_target_date(local, all_holidays)
+
+        # Woche des Ziel-Tages bestimmen
+        target_monday = target_date - timedelta(days=target_date.weekday())
+        label, kw = kw_label(datetime.combine(target_monday, datetime.min.time(), tzinfo=timezone.utc))
+        holiday_map = week_holiday_map(target_monday)
+        dk = day_key(datetime.combine(target_date, datetime.min.time()))
+        is_holiday = holiday_map.get(dk)
+
+        out_path = OUT_DIR / f'kantine_{label}_{target_date.strftime("%a").lower()}_{LOCATION_NAME}.jpg'
+
+        print(f'Ziel-Tag   : {dk}  ({target_date})')
+        print(f'Feiertag   : {is_holiday or "nein"}')
+
+        dishes = []
+        if not is_holiday:
+            with sync_playwright() as pw:
+                browser = pw.chromium.launch()
+                page = browser.new_page(
+                    viewport={"width": 1400, "height": 900},
+                    extra_http_headers={"Accept-Language": "de-DE,de;q=0.9,en;q=0.1"},
+                )
+                setup_eurest(page)
+                available_values = _get_available_dates(page)
+                dishes = scrape_day(page, target_date, available_values)
+                browser.close()
+
+        print(f'Gerichte   : {len(dishes)}')
+
+        img = render_day(dishes, target_date, kw, label, local, is_holiday)
+        img.save(str(out_path), 'JPEG', quality=92)
+        print(f'Saved: {out_path}')
+
+        latest_path = OUT_DIR / f'latest_{LOCATION_NAME}.jpg'
+        import shutil
+        shutil.copy(str(out_path), str(latest_path))
+        print(f'latest_{LOCATION_NAME}.jpg aktualisiert')
+
+        pattern = f'kantine_*_{LOCATION_NAME}.jpg'
+        for old in sorted(OUT_DIR.glob(pattern))[:-MAX_KEEP]:
+            old.unlink()
+            print(f'Removed: {old}')
+
     else:
-        scrape_dates = [dt for dt in all_week_dates if day_key(dt) not in hol_days]
+        # ── Wochenansicht ─────────────────────────────────────────────────────
+        target_monday = today_date - timedelta(days=today_date.weekday()) + timedelta(weeks=WEEK_OFFSET)
+        label, kw = kw_label(datetime.combine(target_monday, datetime.min.time(), tzinfo=timezone.utc))
+        out_path  = OUT_DIR / f'kantine_{label}_{LOCATION_NAME}.jpg'
 
-    print(f'Feiertage  : {[(k, holiday_map[k]) for k in hol_days] or "keine"}')
-    print(f'Scraping   : {[day_key(dt) for dt in scrape_dates]}')
+        print(f'Week label : {label}  (KW {kw:02d})')
+        print(f'WEEK_OFFSET: {WEEK_OFFSET}  ->  Woche ab {target_monday}')
 
-    week_data = {}
-    with sync_playwright() as pw:
-        browser = pw.chromium.launch()
-        page = browser.new_page(
-            viewport={"width": 1400, "height": 900},
-            extra_http_headers={"Accept-Language": "de-DE,de;q=0.9,en;q=0.1"},
-        )
-        setup_eurest(page)
+        holiday_map = week_holiday_map(target_monday)
+        hol_days    = [k for k, v in holiday_map.items() if v]
+        all_week_dates = [
+            datetime.combine(target_monday + timedelta(i), datetime.min.time(), tzinfo=timezone.utc)
+            for i in range(5)
+        ]
+        if WEEK_OFFSET == 0:
+            scrape_dates = [dt for dt in all_week_dates
+                            if dt.date() >= today_date and day_key(dt) not in hol_days]
+        else:
+            scrape_dates = [dt for dt in all_week_dates if day_key(dt) not in hol_days]
 
-        available_values = _get_available_dates(page)
+        print(f'Feiertage  : {[(k, holiday_map[k]) for k in hol_days] or "keine"}')
+        print(f'Scraping   : {[day_key(dt) for dt in scrape_dates]}')
 
-        for date_obj in scrape_dates:
-            dk     = day_key(date_obj)
-            dishes = scrape_day(page, date_obj, available_values)
-            if dishes:
-                week_data[dk] = dishes
+        week_data = {}
+        with sync_playwright() as pw:
+            browser = pw.chromium.launch()
+            page = browser.new_page(
+                viewport={"width": 1400, "height": 900},
+                extra_http_headers={"Accept-Language": "de-DE,de;q=0.9,en;q=0.1"},
+            )
+            setup_eurest(page)
+            available_values = _get_available_dates(page)
+            for date_obj in scrape_dates:
+                dk     = day_key(date_obj)
+                dishes = scrape_day(page, date_obj, available_values)
+                if dishes:
+                    week_data[dk] = dishes
+            browser.close()
 
-        browser.close()
+        days_filled = len(week_data)
+        days_avail  = len(scrape_dates)
+        print(f'\nErgebnis   : {list(week_data.keys())}  ({days_filled}/{days_avail})')
 
-    days_filled = len(week_data)
-    days_avail  = len(scrape_dates)
-    print(f'\nErgebnis   : {list(week_data.keys())}  ({days_filled}/{days_avail})')
+        if not week_data:
+            print("Keine Speisedaten gefunden – kein Bild wird erzeugt.")
+            sys.exit(0)
 
-    if not week_data:
-        print("Keine Speisedaten gefunden – kein Bild wird erzeugt. Pruefe Scraping-Log oben.")
-        sys.exit(0)
+        img = render_week(week_data, kw, label, local, holiday_map, today_date, target_monday)
+        img.save(str(out_path), 'JPEG', quality=92)
+        print(f'Saved: {out_path}  ({img.size[0]}x{img.size[1]})')
 
-    img = render(week_data, kw, label, local, holiday_map, today_date, target_monday)
-    img.save(str(out_path), 'JPEG', quality=92)
-    print(f'Saved: {out_path}  ({img.size[0]}x{img.size[1]})')
+        latest_path = OUT_DIR / f'latest_{LOCATION_NAME}.jpg'
+        import shutil
+        shutil.copy(str(out_path), str(latest_path))
+        print(f'latest_{LOCATION_NAME}.jpg aktualisiert')
 
-    latest_path = OUT_DIR / f'latest_{LOCATION_NAME}.jpg'
-    import shutil
-    shutil.copy(str(out_path), str(latest_path))
-    print(f'latest_{LOCATION_NAME}.jpg aktualisiert')
-
-    pattern = f'kantine_*_{LOCATION_NAME}.jpg'
-    for old in sorted(OUT_DIR.glob(pattern))[:-MAX_KEEP]:
-        old.unlink()
-        print(f'Removed: {old}')
+        pattern = f'kantine_*_{LOCATION_NAME}.jpg'
+        for old in sorted(OUT_DIR.glob(pattern))[:-MAX_KEEP]:
+            old.unlink()
+            print(f'Removed: {old}')
 
 
 if __name__ == '__main__':
