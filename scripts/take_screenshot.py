@@ -36,6 +36,12 @@ LOCATION_LABELS = {
 }
 LOCATION_LABEL = LOCATION_LABELS.get(LOCATION_ID, f"Kantine {LOCATION_ID}")
 
+# Kategorie-Reihenfolge als Fallback, falls week_data leer
+CATEGORY_FALLBACK = {
+    "8949": ["Suppe", "Ostenviertel", "Kumpfm\u00fchl", "Stadtamhof", "Reinhausen", "Salatbar", "Dessert"],
+    "8950": ["Suppe", "Ostenviertel", "Weichs", "Brandlberg", "Niederwinzer", "Oberwinzer", "Salatbar", "Dessert"],
+}
+
 OUT_DIR  = Path("docs/images")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
 MAX_KEEP = 8
@@ -137,7 +143,7 @@ def _is_today(day_key_str, today_date):
 
 # ── Diagnostik-JS ──────────────────────────────────────────────────────────────
 
-JS_DEBUG_DOM = """
+JS_DEBUG_DOM = r"""
 (function(){
   var out = [];
   var sel = document.querySelector('select.menuDaySelect');
@@ -167,7 +173,7 @@ JS_DEBUG_DOM = """
 })()
 """
 
-JS_EXTRACT = """
+JS_EXTRACT = r"""
 (function(){
   var result = [];
 
@@ -180,7 +186,13 @@ JS_EXTRACT = """
       var cat = catEl ? catEl.textContent.trim() : '';
       var nameNode = mel.querySelector('.mealNameWrapper');
       var mealName = nameNode ? nameNode.textContent.trim().replace(/\u00a0/g,' ') : '';
-      var priceNode = mel.querySelector('.price-value');
+      // Explizit nur die "Preis"-Zeile nehmen (nicht "Extern")
+      var priceRows = Array.from(mel.querySelectorAll('.price-row'));
+      var priceRow = priceRows.find(function(r){
+        var lbl = r.querySelector('.price-label');
+        return lbl && lbl.textContent.trim().toLowerCase() === 'preis';
+      });
+      var priceNode = priceRow ? priceRow.querySelector('.price-value') : mel.querySelector('.price-value');
       var price = priceNode ? priceNode.textContent.trim().replace(/\u00a0/g,' ') : '';
       var featureImgs = Array.from(mel.querySelectorAll('.image-feature'));
       var features = featureImgs.map(function(img){ return (img.alt || img.src || '').toLowerCase(); });
@@ -199,7 +211,12 @@ JS_EXTRACT = """
     for (var mel2 of mealEls2) {
       var nameNode2 = mel2.querySelector('.mealNameWrapper');
       var mealName2 = nameNode2 ? nameNode2.textContent.trim().replace(/\u00a0/g,' ') : '';
-      var priceNode2 = mel2.querySelector('.price-value');
+      var priceRows2 = Array.from(mel2.querySelectorAll('.price-row'));
+      var priceRow2 = priceRows2.find(function(r){
+        var lbl = r.querySelector('.price-label');
+        return lbl && lbl.textContent.trim().toLowerCase() === 'preis';
+      });
+      var priceNode2 = priceRow2 ? priceRow2.querySelector('.price-value') : mel2.querySelector('.price-value');
       var price2 = priceNode2 ? priceNode2.textContent.trim().replace(/\u00a0/g,' ') : '';
       var featureImgs2 = Array.from(mel2.querySelectorAll('.image-feature'));
       var features2 = featureImgs2.map(function(img){ return (img.alt || img.src || '').toLowerCase(); });
@@ -222,7 +239,6 @@ def _dump_debug(page, label):
 
 def _click_weiter(page):
     """Versucht den Weiter/Submit-Button auf allen moeglichen Wegen zu klicken."""
-    # 1. Alle sichtbaren Buttons loggen
     try:
         btn_info = page.evaluate("""
         Array.from(document.querySelectorAll('button')).map(function(b){
@@ -238,7 +254,6 @@ def _click_weiter(page):
     except Exception as e:
         print(f"[weiter] Button-Dump Fehler: {e}")
 
-    # 2. Direkt per Text (case-insensitive via JS)
     clicked = page.evaluate("""
     (function(){
       var btns = Array.from(document.querySelectorAll('button'));
@@ -259,7 +274,6 @@ def _click_weiter(page):
     if 'clicked' in clicked:
         return True
 
-    # 3. Playwright-Selektoren als Fallback
     for sel in [
         "button.submit", "button[type='submit']",
         "button:has-text('Weiter')", "button:has-text('weiter')",
@@ -284,7 +298,6 @@ def setup_eurest(page):
     page.wait_for_timeout(2000)
     _dump_debug(page, "nach-goto")
 
-    # Location auswaehlen
     print(f"[setup] Waehle location {LOCATION_ID} ({LOCATION_LABEL})")
     try:
         page.wait_for_selector("select.locationSelection", timeout=8000)
@@ -295,7 +308,6 @@ def setup_eurest(page):
         print(f"[setup] locationSelection Fehler: {e}")
     _dump_debug(page, "nach-location")
 
-    # Privacy-Modal
     try:
         page.wait_for_selector("input#featureFilterSelective", timeout=5000)
         cb = page.query_selector("input#featureFilterSelective")
@@ -315,7 +327,6 @@ def setup_eurest(page):
         print("[setup] Privacy-Modal nicht erschienen (OK)")
     _dump_debug(page, "nach-privacy")
 
-    # Sprache
     try:
         page.wait_for_selector("select.languageSelection", timeout=5000)
         page.select_option("select.languageSelection", value="1", timeout=5000)
@@ -325,12 +336,10 @@ def setup_eurest(page):
         print(f"[setup] languageSelection Fehler: {e}")
     _dump_debug(page, "nach-sprache")
 
-    # Weiter-Button – aggressiv
     _click_weiter(page)
     page.wait_for_timeout(3000)
     _dump_debug(page, "nach-weiter-1")
 
-    # Nochmal versuchen falls noch nix geladen
     sel_found = False
     try:
         page.wait_for_selector("select.menuDaySelect", timeout=5000)
@@ -343,7 +352,6 @@ def setup_eurest(page):
         page.wait_for_timeout(3000)
         _dump_debug(page, "nach-weiter-2")
 
-    # Persoenlicher Filter Modal
     try:
         page.wait_for_selector(".ReactModal__Content", timeout=4000)
         for sel in ["button:has-text('nein')", "button:has-text('Nein')", "button:has-text('no')"]:
@@ -356,7 +364,6 @@ def setup_eurest(page):
     except Exception:
         print("[setup] Kein Filter-Modal (OK)")
 
-    # Finales Warten auf Speiseplan
     loaded = False
     try:
         page.wait_for_selector("select.menuDaySelect", timeout=15000)
@@ -379,7 +386,7 @@ def setup_eurest(page):
 
 
 def _get_available_dates(page):
-    js = """
+    js = r"""
     (function(){
       var sel = document.querySelector('select.menuDaySelect');
       if (!sel) return '[]';
@@ -420,6 +427,26 @@ def click_day(page, date_obj, available_values):
         return False
 
 
+def _wait_for_stable_meals(page, max_wait_ms=8000, interval_ms=400):
+    """Wartet bis .meal-wrapper Anzahl stabil ist (mind. 2 Runden gleich)."""
+    prev_count = -1
+    stable_rounds = 0
+    for _ in range(max_wait_ms // interval_ms):
+        page.wait_for_timeout(interval_ms)
+        count = page.evaluate(
+            "document.querySelectorAll('.meal-wrapper').length"
+        )
+        print(f"  [stable] meal-wrapper count: {count}")
+        if count == prev_count and count > 0:
+            stable_rounds += 1
+            if stable_rounds >= 2:
+                print(f"  [stable] Stabil bei {count} Gerichten")
+                break
+        else:
+            stable_rounds = 0
+        prev_count = count
+
+
 def _detect_vv(name, features):
     low = name.lower()
     feat_str = ' '.join(features)
@@ -455,7 +482,8 @@ def scrape_day(page, date_obj, available_values):
         print(f"  [scrape] Tag {date_label!r} nicht im Select, ueberspringe")
         return []
 
-    page.wait_for_timeout(1200)
+    # Warte auf stabile meal-wrapper Anzahl statt fixem Timeout
+    _wait_for_stable_meals(page)
 
     for sel in [".menuListWrapper", ".meal-wrapper", ".mealNameWrapper"]:
         try:
@@ -630,6 +658,7 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
             d.line([(x,y),(x+dw,y)], fill=C_TODAY, width=TODAY_BW)
     y += DAY_H
 
+    # Kategorien dynamisch aus week_data ableiten, Fallback per Location
     all_cats_ordered = []
     seen_cats = set()
     for day in all_days:
@@ -639,7 +668,10 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
                 all_cats_ordered.append(cat)
                 seen_cats.add(cat)
     if not all_cats_ordered:
-        all_cats_ordered = ['Suppe', 'Ostenviertel', 'Kumpfmuehl', 'Stadtamhof', 'Salatbar', 'Dessert']
+        all_cats_ordered = CATEGORY_FALLBACK.get(
+            LOCATION_ID,
+            ["Suppe", "Salatbar", "Dessert"]
+        )
 
     avail  = H - y - FOOTER_H - LEGEND_H - 4
     n_cats = len(all_cats_ordered)
@@ -705,8 +737,8 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
 
             items = [it for it in week_data.get(day, []) if it['kategorie'] == cat]
             if not items:
-                b = d.textbbox((0,0), '–', font=lf(17))
-                d.text((x+(dw-(b[2]-b[0]))//2, y+rh//2-11), '–', font=lf(17), fill=(180,180,180))
+                b = d.textbbox((0,0), '\u2013', font=lf(17))
+                d.text((x+(dw-(b[2]-b[0]))//2, y+rh//2-11), '\u2013', font=lf(17), fill=(180,180,180))
                 continue
 
             it = items[0]
@@ -755,8 +787,8 @@ def render(week_data, kw, label, local_dt, holiday_map, today_date, monday_date)
         d.text((lx+15, y+4), txt, font=fleg, fill=C_TXT)
         lx += 15 + (b[2]-b[0]) + 12
 
-    footer_txt = (f'KW {kw:02d} / {label}  –  '
-                  f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
+    footer_txt = (f'KW {kw:02d} / {label}  \u2013  '
+                  f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  \u2013  "
                   f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}")
     d.rectangle([(0,H-FOOTER_H),(W,H)], fill=BLUE)
     b = d.textbbox((0,0), footer_txt, font=fftr)

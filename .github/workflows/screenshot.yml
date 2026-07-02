@@ -26,10 +26,9 @@ env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
-  screenshot:
+  scrape:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 1
       matrix:
         include:
           - location_id: '8949'
@@ -86,15 +85,13 @@ jobs:
         if: env.SKIP != 'true' && steps.screenshot.outcome == 'success'
         run: python scripts/generate_rss.py
 
-      - name: Commit and push – ${{ matrix.location_name }}
+      - name: Upload docs artifact
         if: env.SKIP != 'true' && steps.screenshot.outcome == 'success'
-        run: |
-          git config user.name  "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/
-          git diff --cached --quiet || git commit -m "chore: kantine update $(date -u +%Y-%m-%d) ${{ matrix.location_name }} KW-OFFSET=$WEEK_OFFSET"
-          git pull --rebase origin main
-          git push
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-${{ matrix.location_name }}
+          path: docs/
+          retention-days: 1
 
       - name: Upload debug artifacts
         if: always()
@@ -103,3 +100,36 @@ jobs:
           name: kantine-debug-${{ matrix.location_name }}-${{ github.run_number }}
           path: docs/images/
           retention-days: 10
+
+  commit:
+    needs: scrape
+    runs-on: ubuntu-latest
+    # Laeuft auch wenn einzelne scrape-Jobs geskippt wurden,
+    # aber nicht wenn ALLE fehlgeschlagen sind
+    if: always() && needs.scrape.result != 'failure'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download schaeffler artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-schaeffler
+          path: docs/
+        continue-on-error: true
+
+      - name: Download aumovio artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: docs-aumovio
+          path: docs/
+        continue-on-error: true
+
+      - name: Commit and push
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/
+          git diff --cached --quiet && echo "Keine Aenderungen – nichts zu committen" && exit 0
+          git commit -m "chore: kantine update $(date -u +%Y-%m-%d) KW-OFFSET=${WEEK_OFFSET:-?}"
+          git push
