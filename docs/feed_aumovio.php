@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="ISO-8859-1"?>';
 		<title>Eurest Kantine AUMOVIO Regensburg Regensburg – Wochenspeiseplan</title>
 		<link>http://basecore.bplaced.net/eurest</link>
 		<description></description>
-		<pubDate>Thu, 02 Jul 2026 07:59:03 +0000</pubDate>
-		<lastBuildDate>Thu, 02 Jul 2026 07:59:03 +0000</lastBuildDate>
+		<pubDate>Thu, 02 Jul 2026 13:22:27 +0000</pubDate>
+		<lastBuildDate>Thu, 02 Jul 2026 13:22:27 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net/eurest</generator>
 		<image>
 			<url>http://basecore.bplaced.net/eurest/images/icon.jpg</url>
