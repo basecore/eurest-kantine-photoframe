@@ -9,20 +9,12 @@ Umgebungsvariablen:
   DISPLAY_DAY           Ziel-Tag manuell: monday|tuesday|wednesday|thursday|friday
                         (leer = Automatik: vor 13:30 heute, ab 13:30 naechster Werktag)
 
-v4.1:
-- Primaere Tagesnavigation ueber sichtbare Tageskandidaten:
-  * .dayBtn
-  * dayName/dayDate-Strukturen
-  * textbasierte Toolbar-Kandidaten
-- KW-Navigation ueber sichtbare Wochenbuttons
-- select.menuDaySelect nur noch als Fallback
-- PDF-Fallback:
-  * PDF-Link der aktiven Woche aus DOM holen
-  * PDF laden
-  * Text via pypdf / PyPDF2 / pdftotext / eingebautem Fallback extrahieren
-  * Zieltag heuristisch aus Wochen-PDF parsen
-- Harte Fehler nur noch, wenn DOM UND PDF-Fallback scheitern.
-- latest_<location>.jpg wird dann NICHT mit falschem/leerem Inhalt ueberschrieben.
+v5:
+- DOM-Scraping ueber dayBtn/dayName/dayDate/Textkandidaten
+- Netzwerk-/JSON-Scraping als zusaetzlicher Haupt-Fallback
+- HTML-Extraktion aus Response-Bodies
+- PDF-Fallback als letzter Rettungsanker
+- Debug-Dumps fuer HTML, PNG, Netzwerk und PDF-Text
 """
 
 import io
@@ -48,8 +40,8 @@ EUREST_URL = "https://eurest.webspeiseplan.de/39799C127F748D639984F4CDBEB44846"
 LOCATION_ID = os.environ.get("EUREST_LOCATION_ID", "8949").strip()
 LOCATION_NAME = os.environ.get("EUREST_LOCATION_NAME", "schaeffler").strip().lower()
 WEEK_OFFSET = int(os.environ.get("WEEK_OFFSET", "0"))
-DISPLAY_MODE = os.environ.get("DISPLAY_MODE", "day").strip().lower()   # day | week
-DISPLAY_DAY = os.environ.get("DISPLAY_DAY", "").strip().lower()        # monday..friday | ""
+DISPLAY_MODE = os.environ.get("DISPLAY_MODE", "day").strip().lower()
+DISPLAY_DAY = os.environ.get("DISPLAY_DAY", "").strip().lower()
 
 SWITCH_HOUR_LOCAL = 13
 SWITCH_MINUTE_LOCAL = 30
@@ -300,6 +292,15 @@ def _save_debug_dump(page, label):
         print(f"[debug-dump] PNG-Fehler: {e}")
 
 
+def _save_json_dump(label, data):
+    path = OUT_DIR / f"debug_{_sanitize_label(label)}.json"
+    try:
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"[debug-dump] JSON geschrieben: {path}")
+    except Exception as e:
+        print(f"[debug-dump] JSON-Fehler: {e}")
+
+
 def _unique_preserve(items):
     out = []
     seen = set()
@@ -312,6 +313,136 @@ def _unique_preserve(items):
 
 def _category_candidates():
     return _unique_preserve(CATEGORY_FALLBACK.get(LOCATION_ID, []) + EXTRA_CATEGORY_CANDIDATES)
+
+
+def _strip_tags(html):
+    html = re.sub(r"<br\s*/?>", "\n", html, flags=re.I)
+    html = re.sub(r"</div>|</p>|</section>|</li>|</tr>", "\n", html, flags=re.I)
+    html = re.sub(r"<[^>]+>", " ", html)
+    html = unescape(html)
+    html = re.sub(r"[ \t]+", " ", html)
+    html = re.sub(r"\n{2,}", "\n", html)
+    return html.strip()
+
+
+# ── Netzwerk-Capture ───────────────────────────────────────────────────────────
+class ResponseCapture:
+    def __init__(self, target_date):
+        self.target_date = target_date
+        self.entries = []
+        self.counter = 0
+
+    def attach(self, page):
+        def on_response(response):
+            try:
+                self._handle_response(response)
+            except Exception as e:
+                print(f"[net] response-capture Fehler: {e}")
+
+        page.on("response", on_response)
+
+    def _score_text(self, url, content_type, text):
+        if not text:
+            return 0
+
+        score = 0
+        target_iso = self.target_date.strftime("%Y-%m-%d")
+        target_dm = self.target_date.strftime("%d.%m.")
+        target_dm2 = self.target_date.strftime("%d.%m")
+        day_short = GERMAN_DAY_SHORT[self.target_date.weekday()]
+        day_long = GERMAN_DAY_LONG[self.target_date.weekday()]
+
+        low = text.lower()
+        low_url = url.lower()
+        low_ct = content_type.lower()
+
+        if target_iso in text:
+            score += 20
+        if target_dm in text or target_dm2 in text:
+            score += 12
+        if day_short.lower() in low and (target_dm in text or target_dm2 in text):
+            score += 8
+        if day_long.lower() in low and (target_dm in text or target_dm2 in text):
+            score += 8
+
+        for cat in _category_candidates():
+            if cat.lower() in low:
+                score += 1
+
+        for token in ["meal-wrapper", "mealnamewrapper", "categoryname", "menuListWrapper".lower(), "menuDaySelect".lower()]:
+            if token in low:
+                score += 3
+
+        for token in ["json", "api", "menu", "speise", "outlet", "week", "tag", "day"]:
+            if token in low_url or token in low_ct:
+                score += 1
+
+        return score
+
+    def _handle_response(self, response):
+        url = response.url
+        status = response.status
+        req_type = getattr(response.request, "resource_type", "")
+        headers = response.headers or {}
+        content_type = headers.get("content-type", "")
+
+        capture_text = False
+        if any(x in content_type.lower() for x in ["json", "javascript", "text", "html"]):
+            capture_text = True
+        if any(x in url.lower() for x in ["menu", "speise", "outlet", "api", "json", "week", "day"]):
+            capture_text = True
+        if req_type in ["xhr", "fetch", "document"]:
+            capture_text = True
+
+        body = ""
+        score = 0
+
+        if capture_text:
+            try:
+                body = response.text()
+            except Exception:
+                body = ""
+
+            if len(body) > 2_500_000:
+                body = body[:2_500_000]
+
+            score = self._score_text(url, content_type, body)
+
+        entry = {
+            "idx": self.counter,
+            "url": url,
+            "status": status,
+            "resource_type": req_type,
+            "content_type": content_type,
+            "score": score,
+            "body": body,
+            "body_excerpt": body[:3000] if body else "",
+        }
+        self.entries.append(entry)
+        self.counter += 1
+
+    def dump(self, label):
+        serializable = [
+            {
+                "idx": e["idx"],
+                "url": e["url"],
+                "status": e["status"],
+                "resource_type": e["resource_type"],
+                "content_type": e["content_type"],
+                "score": e["score"],
+                "body_excerpt": e["body_excerpt"],
+            }
+            for e in self.entries
+        ]
+        _save_json_dump(label, serializable)
+
+    def candidate_entries(self):
+        sorted_entries = sorted(
+            self.entries,
+            key=lambda e: (e.get("score", 0), e.get("idx", 0)),
+            reverse=True,
+        )
+        return [e for e in sorted_entries if e.get("body")]
 
 
 # ── JS / DOM Helfer ────────────────────────────────────────────────────────────
@@ -1390,6 +1521,257 @@ def ensure_target_week(page, expected_date):
     return True
 
 
+# ── Netzwerk-/JSON-/HTML-Fallback ─────────────────────────────────────────────
+MEAL_NAME_KEYS = [
+    "name", "mealName", "meal_name", "title", "description", "desc", "label",
+    "text", "bezeichnung", "gericht", "speise"
+]
+CATEGORY_KEYS = [
+    "category", "categoryName", "category_name", "line", "station",
+    "group", "type", "bereich", "kategorie"
+]
+PRICE_KEYS = [
+    "price", "preis", "amount", "employeePrice", "employee_price",
+    "priceEmployee", "price_value", "value"
+]
+FEATURE_KEYS = [
+    "features", "icons", "tags", "attributes"
+]
+
+
+def _node_mentions_target(node, target_date):
+    target_iso = target_date.strftime("%Y-%m-%d")
+    target_dm = target_date.strftime("%d.%m.")
+    target_dm2 = target_date.strftime("%d.%m")
+    day_short = GERMAN_DAY_SHORT[target_date.weekday()].lower()
+    day_long = GERMAN_DAY_LONG[target_date.weekday()].lower()
+
+    def check_val(v):
+        if v is None:
+            return False
+        s = str(v)
+        low = s.lower()
+        if target_iso in s:
+            return True
+        if target_dm in s or target_dm2 in s:
+            return True
+        if day_short in low and (target_dm in s or target_dm2 in s):
+            return True
+        if day_long in low and (target_dm in s or target_dm2 in s):
+            return True
+        return False
+
+    if isinstance(node, dict):
+        return any(check_val(v) for v in node.values())
+    if isinstance(node, list):
+        return any(check_val(v) for v in node[:20])
+    return check_val(node)
+
+
+def _first_key_value(d, keys):
+    for k in keys:
+        if k in d and d[k] not in [None, ""]:
+            return d[k]
+    for key, value in d.items():
+        if isinstance(key, str):
+            low = key.lower()
+            for k in keys:
+                if k.lower() == low and value not in [None, ""]:
+                    return value
+    return None
+
+
+def _stringify_price(value):
+    if value is None:
+        return ""
+    if isinstance(value, (int, float)):
+        if value > 0:
+            return f"{value:.2f}".replace(".", ",") + " €"
+        return ""
+    s = str(value).strip()
+    if not s:
+        return ""
+    m = re.search(r"(\d{1,2},\d{2}\s*€)", s)
+    if m:
+        return m.group(1)
+    m = re.search(r"(\d{1,2}\.\d{2})", s)
+    if m:
+        return m.group(1).replace(".", ",") + " €"
+    return s
+
+
+def _extract_meal_from_node(node):
+    if not isinstance(node, dict):
+        return None
+
+    name = _first_key_value(node, MEAL_NAME_KEYS)
+    cat = _first_key_value(node, CATEGORY_KEYS)
+    price = _first_key_value(node, PRICE_KEYS)
+    features = _first_key_value(node, FEATURE_KEYS)
+
+    if not name:
+        return None
+
+    name_s = str(name).strip()
+    if len(name_s) < 3:
+        return None
+
+    cat_s = str(cat).strip() if cat else ""
+    price_s = _stringify_price(price)
+
+    feat_list = []
+    if isinstance(features, list):
+        feat_list = [str(x).lower() for x in features]
+    elif isinstance(features, str):
+        feat_list = [features.lower()]
+
+    vv = _detect_vv(name_s, feat_list)
+
+    return {
+        "kategorie": cat_s or "",
+        "name": name_s,
+        "preis": price_s,
+        "vv": vv,
+    }
+
+
+def _dedupe_dishes(dishes):
+    out = []
+    seen = set()
+    for d in dishes:
+        key = (d.get("kategorie", "").strip(), d.get("name", "").strip(), d.get("preis", "").strip())
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(d)
+    return out
+
+
+def _extract_dishes_from_json_payload(text, target_date):
+    try:
+        data = json.loads(text)
+    except Exception:
+        return []
+
+    dishes = []
+
+    def walk(node, ancestor_target=False):
+        current_target = ancestor_target or _node_mentions_target(node, target_date)
+
+        if isinstance(node, dict):
+            meal = _extract_meal_from_node(node)
+            if meal and (current_target or meal["kategorie"] in _category_candidates()):
+                dishes.append(meal)
+            for v in node.values():
+                walk(v, current_target)
+        elif isinstance(node, list):
+            for item in node:
+                walk(item, current_target)
+
+    walk(data, False)
+    dishes = _dedupe_dishes(dishes)
+
+    # Wenn kaum Daten und Kategorien fehlen, unbrauchbar
+    useful = [d for d in dishes if d.get("name")]
+    if len(useful) >= 3:
+        print(f"[net-json] {len(useful)} Gerichte aus JSON extrahiert")
+        return useful
+    return []
+
+
+def _extract_dishes_from_html_text(text, target_date, strict=True):
+    target_iso = target_date.strftime("%Y-%m-%d")
+    target_dm = target_date.strftime("%d.%m.")
+    target_dm2 = target_date.strftime("%d.%m")
+    target_day = _weekday_token_for_button(target_date)
+
+    if strict:
+        low = text.lower()
+        has_target = (
+            target_iso in text or
+            target_dm in text or
+            target_dm2 in text or
+            (target_day.lower() in low and (target_dm in text or target_dm2 in text))
+        )
+        if not has_target:
+            return []
+
+    pattern = re.compile(
+        r'<div class="meal-wrapper">.*?<div class="categoryName">(.*?)</div>.*?<div class="mealNameWrapper[^"]*">(.*?)</div>.*?(?:<div class="price-value[^"]*">(.*?)</div>)?',
+        re.S | re.I,
+    )
+
+    dishes = []
+    for cat, name, price in pattern.findall(text):
+        cat_s = _strip_tags(cat)
+        name_s = _strip_tags(name)
+        price_s = _strip_tags(price)
+
+        if not name_s:
+            continue
+
+        vv = _detect_vv(name_s, [])
+        dishes.append({
+            "kategorie": cat_s,
+            "name": name_s,
+            "preis": price_s,
+            "vv": vv,
+        })
+
+    dishes = _dedupe_dishes(dishes)
+    if len(dishes) >= 3:
+        print(f"[net-html] {len(dishes)} Gerichte aus HTML extrahiert")
+        return dishes
+    return []
+
+
+def _network_fallback(page, capture, target_date):
+    capture.dump(f"{LOCATION_NAME}_responses")
+    candidates = capture.candidate_entries()
+
+    print(f"[net] Kandidatenanzahl: {len(candidates)}")
+    for entry in candidates[:15]:
+        print(f"[net] score={entry['score']:02d} type={entry['resource_type']!r} ct={entry['content_type']!r} url={entry['url'][:140]}")
+
+    for entry in candidates:
+        body = entry.get("body", "")
+        if not body:
+            continue
+
+        dishes = _extract_dishes_from_json_payload(body, target_date)
+        if dishes:
+            _save_text_dump(f"{LOCATION_NAME}_net_hit_url", entry["url"])
+            return dishes
+
+        dishes = _extract_dishes_from_html_text(body, target_date, strict=True)
+        if dishes:
+            _save_text_dump(f"{LOCATION_NAME}_net_hit_url", entry["url"])
+            return dishes
+
+    # lockerer zweiter Durchlauf
+    for entry in candidates[:10]:
+        body = entry.get("body", "")
+        if not body:
+            continue
+        dishes = _extract_dishes_from_html_text(body, target_date, strict=False)
+        if dishes:
+            print("[net] HTML-Fallback im lockeren Modus erfolgreich")
+            _save_text_dump(f"{LOCATION_NAME}_net_hit_url_relaxed", entry["url"])
+            return dishes
+
+    # Als letzte Netz-Hilfe aktuelle page.content() untersuchen
+    try:
+        html = page.content()
+        dishes = _extract_dishes_from_html_text(html, target_date, strict=True)
+        if dishes:
+            print("[net] page.content()-Extraktion erfolgreich")
+            return dishes
+    except Exception as e:
+        print(f"[net] page.content()-Extraktion Fehler: {e}")
+
+    return []
+
+
 # ── PDF-Fallback ───────────────────────────────────────────────────────────────
 def _http_get_bytes(url):
     req = Request(
@@ -1534,7 +1916,6 @@ def _extract_pdf_text_basic(pdf_bytes):
         return ""
 
     texts = []
-
     string_token_re = re.compile(r"\((?:\\.|[^\\()])*\)")
     bt_block_re = re.compile(r"BT(.*?)ET", re.S)
 
@@ -1892,41 +2273,461 @@ def scrape_day(page, date_obj):
     return []
 
 
-def _detect_vv(name, features):
-    low = name.lower()
-    feat_str = " ".join(features)
-    if "vegan" in low or "vegan" in feat_str:
-        return "VG"
-    if any(w in low for w in ["vegetarisch", "vegetarische", "vegetarischer"]):
-        return "V"
-    if "vegetarisch" in feat_str:
-        return "V"
-    return ""
+# ── Render-Helfer ──────────────────────────────────────────────────────────────
+def _split_chars(draw, word, font, max_w):
+    parts = []
+    while word:
+        lo, hi = 1, len(word)
+        while lo < hi:
+            mid = (lo + hi + 1) // 2
+            b = draw.textbbox((0, 0), word[:mid] + ("-" if mid < len(word) else ""), font=font)
+            if b[2] - b[0] <= max_w:
+                lo = mid
+            else:
+                hi = mid - 1
+        if lo <= 0:
+            lo = 1
+        chunk = word[:lo]
+        word = word[lo:]
+        parts.append(chunk + ("-" if word else ""))
+    return parts
 
 
-def parse_eurest_dom(raw_json):
-    try:
-        data = json.loads(raw_json)
-    except Exception as e:
-        print(f"[parse] JSON-Fehler: {e}")
-        return []
+def _split_long_word(draw, word, font, max_w):
+    if "-" in word:
+        parts = word.split("-")
+        chunks = []
+        cur = ""
+        for i, part in enumerate(parts):
+            candidate = (cur + "-" + part) if cur else part
+            test = candidate + ("-" if i < len(parts) - 1 else "")
+            b = draw.textbbox((0, 0), test, font=font)
+            if b[2] - b[0] <= max_w:
+                cur = candidate
+            else:
+                if cur:
+                    chunks.append(cur + "-")
+                cur = part
+        if cur:
+            chunks.append(cur)
 
-    dishes = []
-    for entry in data:
-        cat = entry.get("category", "").strip()
-        name = entry.get("name", "").strip().replace("\n", " ")
-        price = entry.get("price", "").strip()
-        features = entry.get("features", [])
-        vv = _detect_vv(name, features)
-        dishes.append({
-            "kategorie": cat,
-            "name": name,
-            "preis": price,
-            "vv": vv,
-        })
-        print(f"[parse] {cat:20s} | {vv!r:3s} | {name[:60]!r} | {price!r}")
+        result = []
+        for chunk in chunks:
+            b = draw.textbbox((0, 0), chunk.rstrip("-"), font=font)
+            if b[2] - b[0] > max_w:
+                result.extend(_split_chars(draw, chunk.rstrip("-"), font, max_w))
+                if chunk.endswith("-") and result:
+                    result[-1] = result[-1].rstrip("-") + "-"
+            else:
+                result.append(chunk)
+        return result
 
-    return dishes
+    return _split_chars(draw, word, font, max_w)
+
+
+def wrap_text(draw, text, f, max_w, max_lines=20):
+    tokens = []
+    for word in text.split():
+        b = draw.textbbox((0, 0), word, font=f)
+        if b[2] - b[0] > max_w:
+            tokens.extend(_split_long_word(draw, word, f, max_w))
+        else:
+            tokens.append(word)
+
+    out, cur = [], []
+    for tok in tokens:
+        t = " ".join(cur + [tok])
+        b = draw.textbbox((0, 0), t, font=f)
+        if b[2] - b[0] <= max_w:
+            cur.append(tok)
+        else:
+            if cur:
+                out.append(" ".join(cur))
+            cur = [tok]
+
+    if cur:
+        out.append(" ".join(cur))
+
+    return out[:max_lines]
+
+
+def _line_h(draw, font):
+    b = draw.textbbox((0, 0), "Ag", font=font)
+    return b[3] - b[1] + 4
+
+
+def _fit_font(draw, text, max_w, max_h, size_start=19, size_min=10, bold=False):
+    for size in range(size_start, size_min - 1, -1):
+        f = lf(size, bold)
+        lh = _line_h(draw, f)
+        lines = wrap_text(draw, text, f, max_w, max_lines=20)
+        if not lines:
+            return f, lh, lines
+        if lh * len(lines) <= max_h:
+            return f, lh, lines
+
+    f = lf(size_min, bold)
+    return f, _line_h(draw, f), wrap_text(draw, text, f, max_w, max_lines=20)
+
+
+def _find_uniform_font_size(draw, texts, max_w, max_h, size_start=19, size_min=10, bold=False):
+    for size in range(size_start, size_min - 1, -1):
+        f = lf(size, bold)
+        lh = _line_h(draw, f)
+        if all(lh * len(wrap_text(draw, t, f, max_w, max_lines=20)) <= max_h for t in texts if t):
+            return size
+    return size_min
+
+
+# ── Render Tagesansicht ────────────────────────────────────────────────────────
+def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
+    img = Image.new("RGB", (W, H), (245, 248, 252))
+    d = ImageDraw.Draw(img)
+
+    ftit = lf(20, True)
+    fdate = lf(13)
+    fftr = lf(10)
+    fbdg = lf(11, True)
+    fprc = lf(12, True)
+    fcat = lf(10, True)
+
+    HDR_H = 58
+    LEGEND_H = 22
+    GAP = 4
+    PAD = 7
+    NCOLS = 2
+
+    d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
+    day_str = f"{GERMAN_DAY_LONG[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}"
+    title_str = f"{LOCATION_LABEL}  |  KW {kw:02d}"
+
+    bt = d.textbbox((0, 0), title_str, font=ftit)
+    bd = d.textbbox((0, 0), day_str, font=fdate)
+    total_h = (bt[3] - bt[1]) + 3 + (bd[3] - bd[1])
+    ty = (HDR_H - total_h) // 2
+
+    d.text(((W - (bt[2] - bt[0])) // 2, ty), title_str, font=ftit, fill=WHITE)
+    d.text(((W - (bd[2] - bd[0])) // 2, ty + (bt[3] - bt[1]) + 3), day_str, font=fdate, fill=(180, 210, 240))
+
+    content_top = HDR_H + GAP
+    content_bot = H - FOOTER_H - LEGEND_H - 4
+    content_h = content_bot - content_top
+
+    if is_holiday:
+        d.rectangle([(0, content_top), (W, content_bot)], fill=C_HOL_BG)
+        msg = f"Feiertag: {is_holiday}"
+        fm = lf(28, True)
+        bm = d.textbbox((0, 0), msg, font=fm)
+        d.text(
+            ((W - (bm[2] - bm[0])) // 2, content_top + (content_h - (bm[3] - bm[1])) // 2),
+            msg,
+            font=fm,
+            fill=C_HOL_TXT,
+        )
+    elif not dishes:
+        d.rectangle([(0, content_top), (W, content_bot)], fill=(248, 248, 248))
+        msg = "Keine Speisedaten verfügbar"
+        fm = lf(22, True)
+        bm = d.textbbox((0, 0), msg, font=fm)
+        d.text(
+            ((W - (bm[2] - bm[0])) // 2, content_top + (content_h - (bm[3] - bm[1])) // 2),
+            msg,
+            font=fm,
+            fill=(160, 160, 160),
+        )
+    else:
+        cats_ordered = []
+        seen = set()
+        for dish in dishes:
+            cat = dish["kategorie"]
+            if cat not in seen:
+                cats_ordered.append(cat)
+                seen.add(cat)
+
+        n = len(cats_ordered)
+        nrows = math.ceil(n / NCOLS)
+
+        cell_w = (W - GAP * (NCOLS + 1)) // NCOLS
+        cell_h = (content_h - GAP * (nrows + 1)) // nrows
+
+        name_max_w = cell_w - 2 * PAD
+        cat_label_h = _line_h(d, fcat) + 2
+        badge_h_est = _line_h(d, fbdg) + 6
+        price_h_est = _line_h(d, fprc) + 2
+        name_max_h = cell_h - cat_label_h - badge_h_est - price_h_est - 3 * PAD
+
+        all_names = [it["name"] for it in dishes]
+        uni_size = _find_uniform_font_size(d, all_names, name_max_w, name_max_h, size_start=18, size_min=9)
+        fn = lf(uni_size)
+        lhn = _line_h(d, fn)
+
+        for idx, cat in enumerate(cats_ordered):
+            col = idx % NCOLS
+            row = idx // NCOLS
+
+            cx0 = GAP + col * (cell_w + GAP)
+            cy0 = content_top + GAP + row * (cell_h + GAP)
+            cx1 = cx0 + cell_w
+            cy1 = cy0 + cell_h
+
+            bg = R_ODD if idx % 2 == 0 else R_EVEN
+            d.rounded_rectangle([(cx0, cy0), (cx1, cy1)], radius=6, fill=bg)
+
+            d.rounded_rectangle([(cx0, cy0), (cx1, cy0 + cat_label_h + 2)], radius=6, fill=BLUE)
+            d.rectangle([(cx0, cy0 + cat_label_h - 2), (cx1, cy0 + cat_label_h + 2)], fill=BLUE)
+            d.text((cx0 + PAD, cy0 + 2), cat, font=fcat, fill=C_CAT_TXT)
+
+            it = next((x for x in dishes if x["kategorie"] == cat), None)
+            if not it:
+                continue
+
+            cy = cy0 + cat_label_h + PAD
+
+            if it["vv"]:
+                bl = "Vegan" if it["vv"] == "VG" else "Veg."
+                bc_col = C_VG if it["vv"] == "VG" else C_V
+                bb = d.textbbox((0, 0), bl, font=fbdg)
+                bw2 = bb[2] - bb[0] + 6
+                bh2 = bb[3] - bb[1] + 3
+                d.rounded_rectangle([(cx0 + PAD, cy), (cx0 + PAD + bw2, cy + bh2)], radius=3, fill=bc_col)
+                d.text((cx0 + PAD + 3, cy + 1), bl, font=fbdg, fill=WHITE)
+                cy += bh2 + 3
+
+            name_lines = wrap_text(d, it["name"], fn, name_max_w, max_lines=20)
+            for ln in name_lines:
+                if cy + lhn > cy1 - price_h_est - PAD:
+                    break
+                d.text((cx0 + PAD, cy), ln, font=fn, fill=(30, 30, 30))
+                cy += lhn
+
+            if it["preis"]:
+                pb = d.textbbox((0, 0), it["preis"], font=fprc)
+                d.text((cx1 - (pb[2] - pb[0]) - PAD, cy1 - (pb[3] - pb[1]) - PAD), it["preis"], font=fprc, fill=LIGHT)
+
+    leg_y = H - FOOTER_H - LEGEND_H - 2
+    d.line([(0, leg_y), (W, leg_y)], fill=GRID, width=1)
+    leg_y += 1
+    d.rectangle([(0, leg_y), (W, leg_y + LEGEND_H)], fill=(245, 249, 253))
+
+    fleg = lf(11)
+    lx = 6
+    for col, txt in [(C_VG, "Vegan"), (C_V, "Vegetarisch"), (C_HOL_HDR, "Feiertag"), (C_TODAY, "Heute")]:
+        d.rectangle([(lx, leg_y + 5), (lx + 12, leg_y + 15)], fill=col)
+        b = d.textbbox((0, 0), txt, font=fleg)
+        d.text((lx + 15, leg_y + 4), txt, font=fleg, fill=(30, 30, 30))
+        lx += 15 + (b[2] - b[0]) + 12
+
+    footer_txt = (
+        f"KW {kw:02d} / {label}  –  "
+        f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
+        f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}"
+    )
+    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
+    b = d.textbbox((0, 0), footer_txt, font=fftr)
+    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=WHITE)
+
+    return img
+
+
+# ── Render Wochenansicht ───────────────────────────────────────────────────────
+def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_date):
+    img = Image.new("RGB", (W, H), (255, 255, 255))
+    d = ImageDraw.Draw(img)
+
+    ftit = lf(18, True)
+    fdate = lf(12)
+    fday = lf(17, True)
+    fbdg = lf(12, True)
+    fprc = lf(13, True)
+    fftr = lf(10)
+
+    HDR_H = 52
+    DAY_H = 34
+    LEGEND_H = 22
+    STUB_W = 72
+    TODAY_BW = 3
+    PAD = 5
+
+    d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
+    friday_date = monday_date + timedelta(4)
+    date_range = f"{monday_date.strftime('%d.%m.%Y')} – {friday_date.strftime('%d.%m.%Y')}"
+    title_str = f"{LOCATION_LABEL}  |  KW {kw:02d}"
+
+    bt = d.textbbox((0, 0), title_str, font=ftit)
+    bd = d.textbbox((0, 0), date_range, font=fdate)
+    total_h = (bt[3] - bt[1]) + 3 + (bd[3] - bd[1])
+    ty = (HDR_H - total_h) // 2
+
+    d.text(((W - (bt[2] - bt[0])) // 2, ty), title_str, font=ftit, fill=WHITE)
+    d.text(((W - (bd[2] - bd[0])) // 2, ty + (bt[3] - bt[1]) + 3), date_range, font=fdate, fill=(180, 210, 240))
+    y = HDR_H
+
+    all_days = list(holiday_map.keys())
+    dw = (W - STUB_W) // len(all_days)
+
+    d.rectangle([(0, y), (STUB_W - 1, y + DAY_H - 1)], fill=BLUE)
+    for i, day in enumerate(all_days):
+        x = STUB_W + i * dw
+        is_hol = holiday_map[day] is not None
+        is_past = _is_past(day, today_date)
+        is_today = _is_today(day, today_date)
+        col = (220, 150, 0) if is_today else (C_HOL_HDR if is_hol else ((160, 160, 160) if is_past else LIGHT)))
+        d.rectangle([(x, y), (x + dw - 1, y + DAY_H - 1)], fill=col)
+        b = d.textbbox((0, 0), day, font=fday)
+        d.text((x + (dw - (b[2] - b[0])) // 2, y + (DAY_H - (b[3] - b[1])) // 2), day, font=fday, fill=WHITE)
+        d.line([(x, y), (x, y + DAY_H)], fill=BLUE, width=1)
+        if is_today:
+            d.line([(x, y), (x + dw, y)], fill=C_TODAY, width=TODAY_BW)
+    y += DAY_H
+
+    cats = []
+    seen_c = set()
+    for day in all_days:
+        for dish in week_data.get(day, []):
+            if dish["kategorie"] not in seen_c:
+                cats.append(dish["kategorie"])
+                seen_c.add(dish["kategorie"])
+    if not cats:
+        cats = CATEGORY_FALLBACK.get(LOCATION_ID, ["Suppe", "Salatbar", "Dessert"])
+
+    avail = H - y - FOOTER_H - LEGEND_H - 4
+    n_cats = len(cats)
+    row_h = max(avail // n_cats, 1) if n_cats else max(avail, 1)
+
+    for ri, cat in enumerate(cats):
+        rh = row_h if ri < n_cats - 1 else max(H - y - FOOTER_H - LEGEND_H - 4 - row_h * (n_cats - 1), 1)
+        d.line([(STUB_W, y), (W, y)], fill=GRID, width=1)
+        avw = dw - 2 * PAD
+
+        cands = [
+            items[0]["name"]
+            for day in all_days
+            if holiday_map[day] is None and not _is_past(day, today_date)
+            for items in [[it for it in week_data.get(day, []) if it["kategorie"] == cat]]
+            if items
+        ]
+
+        uni = 17
+        if cands:
+            uni = _find_uniform_font_size(d, cands, avw, rh - PAD * 2 - 22, size_start=17, size_min=9)
+
+        fn = lf(uni)
+        lhn = _line_h(d, fn)
+
+        for i, day in enumerate(all_days):
+            x = STUB_W + i * dw
+            is_hol = holiday_map[day] is not None
+            is_past = _is_past(day, today_date)
+            is_today = _is_today(day, today_date)
+
+            bg = (235, 235, 235) if is_past else (
+                C_HOL_BG if is_hol else ((255, 253, 230) if is_today else (R_ODD if ri % 2 == 0 else R_EVEN))
+            )
+
+            d.rectangle([(x, y), (x + dw - 1, y + rh - 1)], fill=bg)
+            d.line([(x, y), (x, y + rh)], fill=GRID, width=1)
+
+            if is_today:
+                d.line([(x, y), (x, y + rh)], fill=C_TODAY, width=TODAY_BW)
+                d.line([(x + dw - 1, y), (x + dw - 1, y + rh)], fill=C_TODAY, width=TODAY_BW)
+
+            if is_past:
+                if ri == 0:
+                    b = d.textbbox((0, 0), "vergangen", font=fprc)
+                    d.text((x + (dw - (b[2] - b[0])) // 2, y + rh // 2 - 10), "vergangen", font=fprc, fill=(160, 160, 160))
+                continue
+
+            if is_hol:
+                if ri == 0:
+                    hn = holiday_map[day]
+                    b = d.textbbox((0, 0), "Feiertag", font=fbdg)
+                    bw = b[2] - b[0] + 8
+                    bh2 = b[3] - b[1] + 5
+                    bx = x + (dw - bw) // 2
+                    by = y + 8
+                    d.rounded_rectangle([(bx, by), (bx + bw, by + bh2)], radius=4, fill=(160, 160, 160))
+                    d.text((bx + 4, by + 2), "Feiertag", font=fbdg, fill=WHITE)
+                    cy2 = by + bh2 + 5
+                    fh, lhh, hlines = _fit_font(d, hn, dw - 8, rh - cy2 + y - 4)
+                    for ln in hlines:
+                        b2 = d.textbbox((0, 0), ln, font=fh)
+                        d.text((x + (dw - (b2[2] - b2[0])) // 2, cy2), ln, font=fh, fill=C_HOL_TXT)
+                        cy2 += lhh
+                continue
+
+            items = [it for it in week_data.get(day, []) if it["kategorie"] == cat]
+            if not items:
+                b = d.textbbox((0, 0), "–", font=lf(17))
+                d.text((x + (dw - (b[2] - b[0])) // 2, y + rh // 2 - 11), "–", font=lf(17), fill=(180, 180, 180))
+                continue
+
+            it = items[0]
+            cy = y + PAD
+
+            if it["vv"]:
+                bl = "Vegan" if it["vv"] == "VG" else "Veg."
+                bc = C_VG if it["vv"] == "VG" else C_V
+                b = d.textbbox((0, 0), bl, font=fbdg)
+                bw2 = b[2] - b[0] + 8
+                bh2 = b[3] - b[1] + 4
+                d.rounded_rectangle([(x + PAD, cy), (x + PAD + bw2, cy + bh2)], radius=3, fill=bc)
+                d.text((x + PAD + 4, cy + 2), bl, font=fbdg, fill=WHITE)
+                cy += bh2 + 3
+
+            for ln in wrap_text(d, it["name"], fn, avw, max_lines=20):
+                d.text((x + PAD, cy), ln, font=fn, fill=(30, 30, 30))
+                cy += lhn
+
+            if it["preis"]:
+                b = d.textbbox((0, 0), it["preis"], font=fprc)
+                d.text((x + dw - (b[2] - b[0]) - PAD, y + rh - (b[3] - b[1]) - 3), it["preis"], font=fprc, fill=LIGHT)
+
+            if is_today:
+                d.line([(x, y + rh - 1), (x + dw, y + rh - 1)], fill=C_TODAY, width=TODAY_BW)
+
+        d.rectangle([(0, y), (STUB_W - 1, y + rh - 1)], fill=BLUE)
+        d.line([(STUB_W, y), (STUB_W, y + rh)], fill=GRID, width=1)
+        sl = cat[:9] if len(cat) > 9 else cat
+        for sz in range(11, 5, -1):
+            f2 = lf(sz, True)
+            b2 = d.textbbox((0, 0), sl, font=f2)
+            if b2[2] - b2[0] <= STUB_W - 4:
+                d.text((STUB_W // 2 - (b2[2] - b2[0]) // 2, y + rh // 2 - (b2[3] - b2[1]) // 2), sl, font=f2, fill=WHITE)
+                break
+        y += rh
+
+    for i, day in enumerate(all_days):
+        if _is_today(day, today_date):
+            d.line([(STUB_W + i * dw, y), (STUB_W + i * dw + dw, y)], fill=C_TODAY, width=TODAY_BW)
+
+    d.line([(0, y), (W, y)], fill=GRID, width=1)
+    y += 1
+    d.rectangle([(0, y), (W, y + LEGEND_H)], fill=(245, 249, 253))
+
+    fleg = lf(11)
+    lx = 6
+    for col, txt in [
+        (C_VG, "Vegan"),
+        (C_V, "Vegetarisch"),
+        (C_HOL_HDR, "Feiertag"),
+        ((235, 235, 235), "vergangen"),
+        (C_TODAY, "Heute"),
+    ]:
+        d.rectangle([(lx, y + 5), (lx + 12, y + 15)], fill=col)
+        b = d.textbbox((0, 0), txt, font=fleg)
+        d.text((lx + 15, y + 4), txt, font=fleg, fill=(30, 30, 30))
+        lx += 15 + (b[2] - b[0]) + 12
+
+    footer_txt = (
+        f"KW {kw:02d} / {label}  –  "
+        f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
+        f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}"
+    )
+    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
+    b = d.textbbox((0, 0), footer_txt, font=fftr)
+    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=WHITE)
+
+    return img
 
 
 # ── Persistenz / Manifest ──────────────────────────────────────────────────────
@@ -2027,6 +2828,9 @@ def main():
                     extra_http_headers={"Accept-Language": "de-DE,de;q=0.9,en;q=0.1"},
                 )
 
+                capture = ResponseCapture(target_date)
+                capture.attach(page)
+
                 setup_eurest(page)
                 ensure_target_week(page, target_date)
 
@@ -2045,14 +2849,19 @@ def main():
                 dishes = scrape_day(page, target_date)
 
                 if not dishes:
-                    print("[main] DOM-Scrape fehlgeschlagen -> PDF-Fallback")
+                    print("[main] DOM-Scrape fehlgeschlagen -> Netzwerk/JSON/HTML-Fallback")
+                    dishes = _network_fallback(page, capture, target_date)
+
+                if not dishes:
+                    print("[main] Netzwerk-Fallback fehlgeschlagen -> PDF-Fallback")
                     dishes = _pdf_fallback_day(page, target_date, pdf_cache)
 
                 if not dishes:
+                    capture.dump(f"{LOCATION_NAME}_responses_fail")
                     _dump_debug(page, "day-failed")
                     _save_debug_dump(page, "day-failed")
                     browser.close()
-                    print("FEHLER: Zieltag konnte weder per DOM noch per PDF-Fallback geladen werden.")
+                    print("FEHLER: Zieltag konnte weder per DOM noch per Netzwerk/JSON noch per PDF-Fallback geladen werden.")
                     print("FEHLER: Abbruch, damit latest-Bild NICHT ueberschrieben wird.")
                     sys.exit(1)
 
@@ -2116,6 +2925,9 @@ def main():
                 extra_http_headers={"Accept-Language": "de-DE,de;q=0.9,en;q=0.1"},
             )
 
+            capture = ResponseCapture(target_monday)
+            capture.attach(page)
+
             setup_eurest(page)
             ensure_target_week(page, target_monday)
 
@@ -2125,13 +2937,17 @@ def main():
 
                 d2 = scrape_day(page, date_obj)
                 if not d2:
-                    print(f"[week] DOM-Scrape leer fuer {dk} -> PDF-Fallback")
+                    print(f"[week] DOM-Scrape leer fuer {dk} -> Netzwerk-Fallback")
+                    d2 = _network_fallback(page, capture, date_obj)
+                if not d2:
+                    print(f"[week] Netzwerk-Fallback leer fuer {dk} -> PDF-Fallback")
                     d2 = _pdf_fallback_day(page, date_obj, pdf_cache)
 
                 if d2:
                     week_data[dk] = d2
 
             if not week_data:
+                capture.dump(f"{LOCATION_NAME}_responses_week_fail")
                 _dump_debug(page, "week-failed")
                 _save_debug_dump(page, "week-failed")
 
