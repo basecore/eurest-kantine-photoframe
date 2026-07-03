@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>Eurest Kantine SCHAEFFLER Regensburg – Speiseplan</title>
 		<link>http://basecore.bplaced.net/eurest</link>
 		<description></description>
-		<pubDate>Fri, 03 Jul 2026 07:26:59 +0000</pubDate>
-		<lastBuildDate>Fri, 03 Jul 2026 07:26:59 +0000</lastBuildDate>
+		<pubDate>Fri, 03 Jul 2026 07:47:22 +0000</pubDate>
+		<lastBuildDate>Fri, 03 Jul 2026 07:47:22 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net/eurest</generator>
 		<image>
 			<url>http://basecore.bplaced.net/eurest/images/icon.jpg</url>
@@ -21,9 +21,9 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<item>
 			<title>Speiseplan – SCHAEFFLER Regensburg</title>
 			<link>http://basecore.bplaced.net/eurest</link>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W27_thu_schaeffler.jpg?v=2026-07-03T07%3A26%3A59.973324Z&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan kantine_2026-W27_thu_schaeffler.jpg&quot;/&gt;</description>
-			<pubDate>Fri, 03 Jul 2026 07:26:59 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W27_thu_schaeffler.jpg?v=2026-07-03T07%3A26%3A59.973324Z" type="image/jpeg" height="600" width="800"/>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W27_thu_schaeffler.jpg?v=2026-07-03T07%3A47%3A22.930464Z&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan kantine_2026-W27_thu_schaeffler.jpg&quot;/&gt;</description>
+			<pubDate>Fri, 03 Jul 2026 07:47:22 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W27_thu_schaeffler.jpg?v=2026-07-03T07%3A47%3A22.930464Z" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>
