@@ -1,0 +1,18 @@
+{
+  "location_name": "aumovio",
+  "location_label": "AUMOVIO Regensburg",
+  "display_mode": "day",
+  "display_day": "friday",
+  "week_offset": 0,
+  "label": "2026-W27",
+  "kw": 27,
+  "image": "kantine_2026-W27_2026-07-03_aumovio.jpg",
+  "latest": "latest_aumovio.jpg",
+  "dish_count": 6,
+  "is_holiday": "",
+  "generated_at_utc": "2026-07-03T19:40:00.197120Z",
+  "generated_at_local": "2026-07-03T21:39:10.255639+02:00",
+  "target_date": "2026-07-03",
+  "target_day_label": "Fr 03.07",
+  "week_monday": "2026-06-29"
+}
