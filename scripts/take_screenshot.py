@@ -2,19 +2,20 @@
 """Eurest Kantine Regensburg – Schaeffler & Aumovio – 800x600 JPEG.
 
 Umgebungsvariablen:
-  EUREST_LOCATION_ID    8949 = Schaeffler, 8950 = Aumovio (default: 8949)
-  EUREST_LOCATION_NAME  schaeffler / aumovio (default: schaeffler)
-  WEEK_OFFSET           0 = aktuelle Woche, 1 = naechste Woche (default: 0, nur fuer week-Modus)
-  DISPLAY_MODE          day = Tagesansicht/Matrix (default), week = Wochenansicht
-  DISPLAY_DAY           Ziel-Tag manuell: monday|tuesday|wednesday|thursday|friday
-                        (leer = Automatik: vor 13:30 heute, ab 13:30 naechster Werktag)
+  EUREST_LOCATION_ID    8949 = Schaeffler, 8950 = Aumovio
+  EUREST_LOCATION_NAME  schaeffler / aumovio
+  WEEK_OFFSET           0 = aktuelle Woche, 1 = naechste Woche (nur week-Modus)
+  DISPLAY_MODE          day = Tagesansicht (default), week = Wochenansicht
+  DISPLAY_DAY           monday|tuesday|wednesday|thursday|friday
+                        leer = Automatik:
+                        vor 13:30 heute, ab 13:30 naechster Werktag
 
-v5:
-- DOM-Scraping ueber dayBtn/dayName/dayDate/Textkandidaten
-- Netzwerk-/JSON-Scraping als zusaetzlicher Haupt-Fallback
-- HTML-Extraktion aus Response-Bodies
+v5.1:
+- DOM-Scraping ueber sichtbare Tages-/Wochenkandidaten
+- Netzwerk-/JSON-Scraping als Haupt-Fallback
 - PDF-Fallback als letzter Rettungsanker
-- Debug-Dumps fuer HTML, PNG, Netzwerk und PDF-Text
+- Debug-Dumps fuer HTML, PNG, Response-Listen und wichtige Texte
+- latest_<location>.jpg wird nur ueberschrieben, wenn wirklich Daten vorliegen
 """
 
 import io
@@ -56,7 +57,6 @@ CATEGORY_FALLBACK = {
     "8949": ["Suppe", "Ostenviertel", "Kumpfmühl", "Stadtamhof", "Reinhausen", "Salatbar", "Dessert"],
     "8950": ["Suppe", "Ostenviertel", "Weichs", "Brandlberg", "Niederwinzer", "Oberwinzer", "Salatbar", "Dessert"],
 }
-
 EXTRA_CATEGORY_CANDIDATES = [
     "EssBar Lunch 11:00-13:30",
     "EssBar Lunch",
@@ -116,7 +116,7 @@ def lf(size, bold=False):
     return ImageFont.load_default()
 
 
-# ── Bayerische Feiertage ───────────────────────────────────────────────────────
+# ── Feiertage ──────────────────────────────────────────────────────────────────
 def _easter(y):
     a = y % 19
     b = y // 100
@@ -163,12 +163,12 @@ def week_holiday_map(monday_date):
         hols.update(bavaria_holidays(y + 1))
     short = ["Mo", "Di", "Mi", "Do", "Fr"]
     return {
-        f"{short[i]} {(monday_date + timedelta(i)).strftime('%d.%m')}": hols.get(monday_date + timedelta(i))
-        for i in range(5)
+        f"{short[i]} {(monday_date + timedelta(i)).strftime('%d.%m')}":
+        hols.get(monday_date + timedelta(i)) for i in range(5)
     }
 
 
-# ── Zeit-Helfer ────────────────────────────────────────────────────────────────
+# ── Zeit ───────────────────────────────────────────────────────────────────────
 def german_time(dt):
     try:
         from zoneinfo import ZoneInfo
@@ -216,7 +216,7 @@ def _is_today(day_key_str, today_date):
         return False
 
 
-# ── Ziel-Tag-Berechnung ────────────────────────────────────────────────────────
+# ── Zieltag ────────────────────────────────────────────────────────────────────
 def resolve_target_date(local_dt, holidays_all):
     today = local_dt.date()
 
@@ -224,18 +224,16 @@ def resolve_target_date(local_dt, holidays_all):
         target_weekday = DAY_NAME_MAP[DISPLAY_DAY]
         days_ahead = (target_weekday - today.weekday()) % 7
         candidate = today + timedelta(days=days_ahead)
-
         for _ in range(14):
             if candidate.weekday() < 5 and candidate not in holidays_all:
                 break
             candidate += timedelta(days=1)
-
         print(f"[target] DISPLAY_DAY={DISPLAY_DAY!r} -> {candidate}")
         return candidate
 
     after_switch = (
-        local_dt.hour > SWITCH_HOUR_LOCAL
-        or (local_dt.hour == SWITCH_HOUR_LOCAL and local_dt.minute >= SWITCH_MINUTE_LOCAL)
+        local_dt.hour > SWITCH_HOUR_LOCAL or
+        (local_dt.hour == SWITCH_HOUR_LOCAL and local_dt.minute >= SWITCH_MINUTE_LOCAL)
     )
     candidate = today + timedelta(days=1) if after_switch else today
 
@@ -275,6 +273,15 @@ def _save_text_dump(label, text):
         print(f"[debug-dump] TXT-Fehler: {e}")
 
 
+def _save_json_dump(label, data):
+    path = OUT_DIR / f"debug_{_sanitize_label(label)}.json"
+    try:
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"[debug-dump] JSON geschrieben: {path}")
+    except Exception as e:
+        print(f"[debug-dump] JSON-Fehler: {e}")
+
+
 def _save_debug_dump(page, label):
     safe = _sanitize_label(f"{LOCATION_NAME}_{label}")
     html_path = OUT_DIR / f"debug_{safe}.html"
@@ -290,15 +297,6 @@ def _save_debug_dump(page, label):
         print(f"[debug-dump] Screenshot geschrieben: {png_path}")
     except Exception as e:
         print(f"[debug-dump] PNG-Fehler: {e}")
-
-
-def _save_json_dump(label, data):
-    path = OUT_DIR / f"debug_{_sanitize_label(label)}.json"
-    try:
-        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"[debug-dump] JSON geschrieben: {path}")
-    except Exception as e:
-        print(f"[debug-dump] JSON-Fehler: {e}")
 
 
 def _unique_preserve(items):
@@ -325,6 +323,18 @@ def _strip_tags(html):
     return html.strip()
 
 
+def _detect_vv(name, features):
+    low = (name or "").lower()
+    feat_str = " ".join(str(x).lower() for x in (features or []))
+    if "vegan" in low or "vegan" in feat_str:
+        return "VG"
+    if any(w in low for w in ["vegetarisch", "vegetarische", "vegetarischer"]):
+        return "V"
+    if "vegetarisch" in feat_str:
+        return "V"
+    return ""
+
+
 # ── Netzwerk-Capture ───────────────────────────────────────────────────────────
 class ResponseCapture:
     def __init__(self, target_date):
@@ -338,7 +348,6 @@ class ResponseCapture:
                 self._handle_response(response)
             except Exception as e:
                 print(f"[net] response-capture Fehler: {e}")
-
         page.on("response", on_response)
 
     def _score_text(self, url, content_type, text):
@@ -349,8 +358,8 @@ class ResponseCapture:
         target_iso = self.target_date.strftime("%Y-%m-%d")
         target_dm = self.target_date.strftime("%d.%m.")
         target_dm2 = self.target_date.strftime("%d.%m")
-        day_short = GERMAN_DAY_SHORT[self.target_date.weekday()]
-        day_long = GERMAN_DAY_LONG[self.target_date.weekday()]
+        day_short = GERMAN_DAY_SHORT[self.target_date.weekday()].lower()
+        day_long = GERMAN_DAY_LONG[self.target_date.weekday()].lower()
 
         low = text.lower()
         low_url = url.lower()
@@ -360,20 +369,20 @@ class ResponseCapture:
             score += 20
         if target_dm in text or target_dm2 in text:
             score += 12
-        if day_short.lower() in low and (target_dm in text or target_dm2 in text):
+        if day_short in low and (target_dm in text or target_dm2 in text):
             score += 8
-        if day_long.lower() in low and (target_dm in text or target_dm2 in text):
+        if day_long in low and (target_dm in text or target_dm2 in text):
             score += 8
 
         for cat in _category_candidates():
             if cat.lower() in low:
                 score += 1
 
-        for token in ["meal-wrapper", "mealnamewrapper", "categoryname", "menuListWrapper".lower(), "menuDaySelect".lower()]:
+        for token in ["meal-wrapper", "mealnamewrapper", "categoryname", "menulistwrapper", "menudayselect"]:
             if token in low:
                 score += 3
 
-        for token in ["json", "api", "menu", "speise", "outlet", "week", "tag", "day"]:
+        for token in ["json", "api", "menu", "speise", "outlet", "week", "day", "meal"]:
             if token in low_url or token in low_ct:
                 score += 1
 
@@ -382,14 +391,14 @@ class ResponseCapture:
     def _handle_response(self, response):
         url = response.url
         status = response.status
-        req_type = getattr(response.request, "resource_type", "")
         headers = response.headers or {}
         content_type = headers.get("content-type", "")
+        req_type = getattr(response.request, "resource_type", "")
 
         capture_text = False
         if any(x in content_type.lower() for x in ["json", "javascript", "text", "html"]):
             capture_text = True
-        if any(x in url.lower() for x in ["menu", "speise", "outlet", "api", "json", "week", "day"]):
+        if any(x in url.lower() for x in ["menu", "speise", "outlet", "api", "json", "week", "day", "meal"]):
             capture_text = True
         if req_type in ["xhr", "fetch", "document"]:
             capture_text = True
@@ -402,10 +411,8 @@ class ResponseCapture:
                 body = response.text()
             except Exception:
                 body = ""
-
             if len(body) > 2_500_000:
                 body = body[:2_500_000]
-
             score = self._score_text(url, content_type, body)
 
         entry = {
@@ -437,12 +444,8 @@ class ResponseCapture:
         _save_json_dump(label, serializable)
 
     def candidate_entries(self):
-        sorted_entries = sorted(
-            self.entries,
-            key=lambda e: (e.get("score", 0), e.get("idx", 0)),
-            reverse=True,
-        )
-        return [e for e in sorted_entries if e.get("body")]
+        out = sorted(self.entries, key=lambda e: (e.get("score", 0), e.get("idx", 0)), reverse=True)
+        return [e for e in out if e.get("body")]
 
 
 # ── JS / DOM Helfer ────────────────────────────────────────────────────────────
@@ -1564,7 +1567,7 @@ def _node_mentions_target(node, target_date):
     if isinstance(node, dict):
         return any(check_val(v) for v in node.values())
     if isinstance(node, list):
-        return any(check_val(v) for v in node[:20])
+        return any(check_val(v) for v in node[:30])
     return check_val(node)
 
 
@@ -1664,14 +1667,13 @@ def _extract_dishes_from_json_payload(text, target_date):
                 dishes.append(meal)
             for v in node.values():
                 walk(v, current_target)
+
         elif isinstance(node, list):
             for item in node:
                 walk(item, current_target)
 
     walk(data, False)
     dishes = _dedupe_dishes(dishes)
-
-    # Wenn kaum Daten und Kategorien fehlen, unbrauchbar
     useful = [d for d in dishes if d.get("name")]
     if len(useful) >= 3:
         print(f"[net-json] {len(useful)} Gerichte aus JSON extrahiert")
@@ -1727,11 +1729,38 @@ def _extract_dishes_from_html_text(text, target_date, strict=True):
 
 def _network_fallback(page, capture, target_date):
     capture.dump(f"{LOCATION_NAME}_responses")
+
     candidates = capture.candidate_entries()
+
+    def _prio(entry):
+        url = entry.get("url", "")
+        score = entry.get("score", 0)
+        if "model=menu" in url:
+            return (3, score)
+        if "model=mealCategory" in url:
+            return (2, score)
+        if "model=textblock" in url:
+            return (1, score)
+        return (0, score)
+
+    candidates = sorted(candidates, key=_prio, reverse=True)
 
     print(f"[net] Kandidatenanzahl: {len(candidates)}")
     for entry in candidates[:15]:
         print(f"[net] score={entry['score']:02d} type={entry['resource_type']!r} ct={entry['content_type']!r} url={entry['url'][:140]}")
+
+    for i, entry in enumerate(candidates[:8]):
+        body = entry.get("body", "")
+        if not body:
+            continue
+        suffix = "json" if "json" in (entry.get("content_type", "").lower()) else "txt"
+        _save_text_dump(f"{LOCATION_NAME}_net_candidate_{i}_{suffix}", body[:200000])
+
+        url = entry.get("url", "")
+        if "model=menu" in url:
+            _save_text_dump(f"{LOCATION_NAME}_model_menu_primary", body[:300000])
+        if "model=mealCategory" in url:
+            _save_text_dump(f"{LOCATION_NAME}_model_mealCategory_primary", body[:100000])
 
     for entry in candidates:
         body = entry.get("body", "")
@@ -1748,7 +1777,6 @@ def _network_fallback(page, capture, target_date):
             _save_text_dump(f"{LOCATION_NAME}_net_hit_url", entry["url"])
             return dishes
 
-    # lockerer zweiter Durchlauf
     for entry in candidates[:10]:
         body = entry.get("body", "")
         if not body:
@@ -1759,7 +1787,6 @@ def _network_fallback(page, capture, target_date):
             _save_text_dump(f"{LOCATION_NAME}_net_hit_url_relaxed", entry["url"])
             return dishes
 
-    # Als letzte Netz-Hilfe aktuelle page.content() untersuchen
     try:
         html = page.content()
         dishes = _extract_dishes_from_html_text(html, target_date, strict=True)
@@ -2190,89 +2217,6 @@ def _pdf_fallback_day(page, target_date, pdf_cache=None):
     return dishes
 
 
-def scrape_day(page, date_obj):
-    date_label = date_obj.strftime("%d.%m.")
-    print(f"\n[scrape] {date_label}")
-
-    before = _get_menu_snapshot(page)
-    print(
-        f"[before] week={before.get('activeWeekValue')!r} "
-        f"day={before.get('activeDayName')!r} {before.get('activeDayDate')!r} "
-        f"select={before.get('selectValue')!r} "
-        f"first={before.get('firstMeals')}"
-    )
-
-    if _current_view_matches_target(page, date_obj):
-        print("[scrape] Zieltag scheint bereits aktiv zu sein -> parse aktuelle Ansicht")
-        for attempt in range(1, 3):
-            try:
-                raw_json = page.evaluate(JS_EXTRACT)
-                if raw_json and raw_json not in ("[]", "null", ""):
-                    dishes = parse_eurest_dom(raw_json)
-                    print(f"[dom-current] {len(dishes)} Gerichte")
-                    print(f"[dom-current] erste Gerichte: {[d['name'] for d in dishes[:3]]}")
-                    return dishes
-            except Exception as e:
-                print(f"[dom-current] Fehler (Versuch {attempt}/2): {e}")
-            page.wait_for_timeout(800)
-
-    clicked = False
-    used_method = None
-
-    clicked = click_day_candidate(page, date_obj)
-    if clicked:
-        used_method = "candidate"
-
-    if not clicked:
-        print("[scrape] Kandidaten-Klick nicht erfolgreich -> Fallback select.menuDaySelect")
-        clicked = click_day_select(page, date_obj)
-        if clicked:
-            used_method = "select"
-
-    if not clicked:
-        print(f"[scrape] Konnte Zieltag {date_obj} weder per Kandidatenklick noch per select waehlen")
-        return []
-
-    expected_day = _date_token_for_button(date_obj)
-    expected_select_prefix = date_obj.strftime("%Y-%m-%d") if used_method == "select" else None
-
-    _wait_for_stable_menu(
-        page,
-        expected_day_date=expected_day,
-        expected_select_prefix=expected_select_prefix,
-        before_snapshot=before,
-        require_change=False,
-        max_wait_ms=10000,
-        interval_ms=500,
-    )
-
-    for sel in [".menuListWrapper", ".meal-wrapper", ".mealNameWrapper"]:
-        try:
-            page.wait_for_selector(sel, timeout=8000)
-            break
-        except Exception:
-            pass
-
-    _dump_debug(page, f"scrape-{date_label}")
-
-    for attempt in range(1, 3):
-        try:
-            raw_json = page.evaluate(JS_EXTRACT)
-            if raw_json and raw_json not in ("[]", "null", ""):
-                dishes = parse_eurest_dom(raw_json)
-                print(f"[dom] {len(dishes)} Gerichte")
-                print(f"[dom] erste Gerichte: {[d['name'] for d in dishes[:3]]}")
-                return dishes
-
-            print(f"[dom] Leer (Versuch {attempt}/2)")
-        except Exception as e:
-            print(f"[dom] Fehler (Versuch {attempt}/2): {e}")
-
-        page.wait_for_timeout(1000)
-
-    return []
-
-
 # ── Render-Helfer ──────────────────────────────────────────────────────────────
 def _split_chars(draw, word, font, max_w):
     parts = []
@@ -2379,7 +2323,6 @@ def _find_uniform_font_size(draw, texts, max_w, max_h, size_start=19, size_min=1
     return size_min
 
 
-# ── Render Tagesansicht ────────────────────────────────────────────────────────
 def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     img = Image.new("RGB", (W, H), (245, 248, 252))
     d = ImageDraw.Draw(img)
@@ -2529,7 +2472,6 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     return img
 
 
-# ── Render Wochenansicht ───────────────────────────────────────────────────────
 def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_date):
     img = Image.new("RGB", (W, H), (255, 255, 255))
     d = ImageDraw.Draw(img)
