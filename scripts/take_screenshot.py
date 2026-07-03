@@ -9,17 +9,17 @@ Umgebungsvariablen:
   DISPLAY_DAY           Ziel-Tag manuell: monday|tuesday|wednesday|thursday|friday
                         (leer = Automatik: vor 13:30 heute, ab 13:30 naechster Werktag)
 
-v3:
-- Primaere Tagesnavigation ueber sichtbare Tageskandidaten:
-  * .dayBtn
-  * dayName/dayDate-Strukturen
-  * textbasierte Toolbar-Kandidaten
-- KW-Navigation ueber sichtbare Wochenbuttons
-- select.menuDaySelect nur noch als Fallback
-- Ancestor-Klick-Fallback fuer Tageskandidaten
-- Debug-Dumps (HTML + PNG) bei Fehler
-- Im day-Mode harter Abbruch bei fehlendem Zieltag / fehlenden Gerichten,
-  damit latest_<location>.jpg NICHT mit falschem/leerem Inhalt ueberschrieben wird.
+v4:
+- Primäre Tagesnavigation über DOM (dayBtn / dayName / dayDate / Textkandidaten).
+- KW-Navigation über sichtbare Wochenbuttons.
+- select.menuDaySelect nur noch als Fallback.
+- Neuer PDF-Fallback:
+  * PDF-Link der aktiven Woche aus DOM holen
+  * PDF laden
+  * Text via pypdf/PyPDF2 oder eingebautem Best-Effort-Extractor extrahieren
+  * Zieltag heuristisch aus Wochen-PDF parsen
+- Harte Fehler nur noch, wenn DOM UND PDF-Fallback scheitern.
+- latest_<location>.jpg wird dann NICHT mit falschem/leerem Inhalt überschrieben.
 """
 
 import os
@@ -27,9 +27,12 @@ import re
 import sys
 import json
 import math
+import zlib
 import shutil
+from html import unescape
 from pathlib import Path
 from datetime import date, datetime, timezone, timedelta
+from urllib.request import Request, urlopen
 
 from playwright.sync_api import sync_playwright
 from PIL import Image, ImageDraw, ImageFont
@@ -56,6 +59,13 @@ CATEGORY_FALLBACK = {
     "8950": ["Suppe", "Ostenviertel", "Weichs", "Brandlberg", "Niederwinzer", "Oberwinzer", "Salatbar", "Dessert"],
 }
 
+EXTRA_CATEGORY_CANDIDATES = [
+    "EssBar Lunch 11:00-13:30",
+    "EssBar Lunch",
+    "Dessert 2",
+    "Dessert",
+]
+
 DAY_NAME_MAP = {
     "monday": 0, "montag": 0, "mo": 0,
     "tuesday": 1, "dienstag": 1, "di": 1,
@@ -65,6 +75,7 @@ DAY_NAME_MAP = {
 }
 
 GERMAN_DAY_SHORT = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"]
+GERMAN_DAY_LONG = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
 
 OUT_DIR = Path("docs/images")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -239,7 +250,7 @@ def resolve_target_date(local_dt, holidays_all):
     return candidate
 
 
-# ── Format-/Datei-Helfer ───────────────────────────────────────────────────────
+# ── Allgemeine Helfer ──────────────────────────────────────────────────────────
 def _normalize_day_date(s):
     return (s or "").strip().rstrip(".")
 
@@ -257,6 +268,15 @@ def _sanitize_label(s):
     return s[:120]
 
 
+def _save_text_dump(label, text):
+    path = OUT_DIR / f"debug_{_sanitize_label(label)}.txt"
+    try:
+        path.write_text(text, encoding="utf-8")
+        print(f"[debug-dump] TXT geschrieben: {path}")
+    except Exception as e:
+        print(f"[debug-dump] TXT-Fehler: {e}")
+
+
 def _save_debug_dump(page, label):
     safe = _sanitize_label(f"{LOCATION_NAME}_{label}")
     html_path = OUT_DIR / f"debug_{safe}.html"
@@ -272,6 +292,20 @@ def _save_debug_dump(page, label):
         print(f"[debug-dump] Screenshot geschrieben: {png_path}")
     except Exception as e:
         print(f"[debug-dump] PNG-Fehler: {e}")
+
+
+def _unique_preserve(items):
+    out = []
+    seen = set()
+    for x in items:
+        if x not in seen:
+            seen.add(x)
+            out.append(x)
+    return out
+
+
+def _category_candidates():
+    return _unique_preserve(CATEGORY_FALLBACK.get(LOCATION_ID, []) + EXTRA_CATEGORY_CANDIDATES)
 
 
 # ── JS / DOM Helfer ────────────────────────────────────────────────────────────
@@ -310,9 +344,7 @@ JS_DEBUG_DOM = r"""
       for (var i = 0; i < nameNodes.length; i++) {
         var n = nameNodes[i];
         var p = n.closest('p,button,div,a,span') || n.parentElement;
-        if (p && p.querySelector && p.querySelector('.dayDate')) {
-          fallback.push(p);
-        }
+        if (p && p.querySelector && p.querySelector('.dayDate')) fallback.push(p);
       }
       roots = uniqueElements(fallback);
     }
@@ -341,15 +373,15 @@ JS_DEBUG_DOM = r"""
     var d = el.querySelector ? el.querySelector('.dayDate') : null;
     var txt = collapseText(el.textContent);
     var day = n ? collapseText(n.textContent) : '';
-    var date = d ? collapseText(d.textContent) : '';
+    var dat = d ? collapseText(d.textContent) : '';
 
     if (!day) {
       var m1 = txt.match(/\b(Mo|Di|Mi|Do|Fr)\b/);
       if (m1) day = m1[1];
     }
-    if (!date) {
+    if (!dat) {
       var m2 = txt.match(/\b(\d{2}\.\d{2}\.?)\b/);
-      if (m2) date = m2[1];
+      if (m2) dat = m2[1];
     }
 
     var cls = el.className || '';
@@ -362,7 +394,7 @@ JS_DEBUG_DOM = r"""
     return {
       tag: (el.tagName || '').toLowerCase(),
       day: day,
-      date: date,
+      date: dat,
       text: txt,
       className: cls,
       active: active
@@ -370,8 +402,8 @@ JS_DEBUG_DOM = r"""
   }
 
   var roots = collectDayRoots();
-
   var out = [];
+
   var sel = document.querySelector('select.menuDaySelect');
   if (sel) {
     var opts = Array.from(sel.options).map(function(o){ return o.value + '=' + o.text.trim(); });
@@ -395,6 +427,16 @@ JS_DEBUG_DOM = r"""
   var toolbar = document.querySelector('.menuToolBar, .menuToolBarWrapper');
   out.push('toolbar-text: ' + collapseText(toolbar ? toolbar.textContent : '').substring(0, 400));
 
+  var pdfLink = '';
+  var a = document.querySelector('.menuPdfLink a[href]');
+  if (a && a.href) pdfLink = a.href;
+  if (!pdfLink) {
+    var all = Array.from(document.querySelectorAll('a[href]')).map(function(x){ return x.href; });
+    var hit = all.find(function(h){ return /\/exportfiles\/.*\.pdf(\?|$)/i.test(h); });
+    if (hit) pdfLink = hit;
+  }
+  out.push('pdfLink: ' + pdfLink);
+
   out.push('html-has-dayBtn-token: ' + (document.body.innerHTML.indexOf('dayBtn') !== -1));
 
   var mlw = document.querySelector('.menuListWrapper');
@@ -406,17 +448,6 @@ JS_DEBUG_DOM = r"""
   var cns = document.querySelectorAll('.categoryName');
   out.push('categoryName: ' + Array.from(cns).map(function(e){ return e.textContent.trim(); }).join(', '));
 
-  var btns = Array.from(document.querySelectorAll('button')).map(function(b){
-    return (b.textContent.trim().substring(0,30) || b.className.substring(0,30));
-  });
-  out.push('buttons: ' + btns.join(' | '));
-
-  var selects = Array.from(document.querySelectorAll('select')).map(function(s){
-    return s.className + '[' + s.options.length + ']';
-  });
-  out.push('selects: ' + selects.join(', '));
-
-  out.push('body snippet: ' + document.body.innerHTML.substring(0, 300).replace(/\s+/g,' '));
   return out.join(' || ');
 })()
 """
@@ -446,9 +477,7 @@ JS_EXTRACT = r"""
       var featureImgs = Array.from(mel.querySelectorAll('.image-feature'));
       var features = featureImgs.map(function(img){ return (img.alt || img.src || '').toLowerCase(); });
 
-      if (mealName) {
-        result.push({category: cat, name: mealName, price: price, features: features});
-      }
+      if (mealName) result.push({category: cat, name: mealName, price: price, features: features});
     }
     if (result.length > 0) return JSON.stringify(result);
   }
@@ -475,9 +504,7 @@ JS_EXTRACT = r"""
       var featureImgs2 = Array.from(mel2.querySelectorAll('.image-feature'));
       var features2 = featureImgs2.map(function(img){ return (img.alt || img.src || '').toLowerCase(); });
 
-      if (mealName2) {
-        result.push({category: catName, name: mealName2, price: price2, features: features2});
-      }
+      if (mealName2) result.push({category: catName, name: mealName2, price: price2, features: features2});
     }
   }
 
@@ -520,9 +547,7 @@ JS_DAY_CANDIDATES = r"""
       for (var i = 0; i < nameNodes.length; i++) {
         var n = nameNodes[i];
         var p = n.closest('p,button,div,a,span') || n.parentElement;
-        if (p && p.querySelector && p.querySelector('.dayDate')) {
-          fallback.push(p);
-        }
+        if (p && p.querySelector && p.querySelector('.dayDate')) fallback.push(p);
       }
       roots = uniqueElements(fallback);
     }
@@ -551,15 +576,15 @@ JS_DAY_CANDIDATES = r"""
     var d = el.querySelector ? el.querySelector('.dayDate') : null;
     var txt = collapseText(el.textContent);
     var day = n ? collapseText(n.textContent) : '';
-    var date = d ? collapseText(d.textContent) : '';
+    var dat = d ? collapseText(d.textContent) : '';
 
     if (!day) {
       var m1 = txt.match(/\b(Mo|Di|Mi|Do|Fr)\b/);
       if (m1) day = m1[1];
     }
-    if (!date) {
+    if (!dat) {
       var m2 = txt.match(/\b(\d{2}\.\d{2}\.?)\b/);
-      if (m2) date = m2[1];
+      if (m2) dat = m2[1];
     }
 
     var cls = el.className || '';
@@ -572,7 +597,7 @@ JS_DAY_CANDIDATES = r"""
     return {
       tag: (el.tagName || '').toLowerCase(),
       day: day,
-      date: date,
+      date: dat,
       text: txt,
       className: cls,
       active: active
@@ -634,9 +659,7 @@ JS_MENU_SNAPSHOT = r"""
       for (var i = 0; i < nameNodes.length; i++) {
         var n = nameNodes[i];
         var p = n.closest('p,button,div,a,span') || n.parentElement;
-        if (p && p.querySelector && p.querySelector('.dayDate')) {
-          fallback.push(p);
-        }
+        if (p && p.querySelector && p.querySelector('.dayDate')) fallback.push(p);
       }
       roots = uniqueElements(fallback);
     }
@@ -665,15 +688,15 @@ JS_MENU_SNAPSHOT = r"""
     var d = el.querySelector ? el.querySelector('.dayDate') : null;
     var txt = collapseText(el.textContent);
     var day = n ? collapseText(n.textContent) : '';
-    var date = d ? collapseText(d.textContent) : '';
+    var dat = d ? collapseText(d.textContent) : '';
 
     if (!day) {
       var m1 = txt.match(/\b(Mo|Di|Mi|Do|Fr)\b/);
       if (m1) day = m1[1];
     }
-    if (!date) {
+    if (!dat) {
       var m2 = txt.match(/\b(\d{2}\.\d{2}\.?)\b/);
-      if (m2) date = m2[1];
+      if (m2) dat = m2[1];
     }
 
     var cls = el.className || '';
@@ -685,7 +708,7 @@ JS_MENU_SNAPSHOT = r"""
 
     return {
       day: day,
-      date: date,
+      date: dat,
       text: txt,
       className: cls,
       active: active
@@ -695,13 +718,7 @@ JS_MENU_SNAPSHOT = r"""
   function activeDayInfo(){
     var nodes = collectDayRoots().map(parseCandidate);
     for (var i = 0; i < nodes.length; i++) {
-      var el = nodes[i];
-      if (el.active) {
-        return {
-          name: el.day || '',
-          date: el.date || ''
-        };
-      }
+      if (nodes[i].active) return {name: nodes[i].day || '', date: nodes[i].date || ''};
     }
     return {name:'', date:''};
   }
@@ -711,13 +728,9 @@ JS_MENU_SNAPSHOT = r"""
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
       var cls = el.className || '';
-      var active = cls.indexOf('background-ci') !== -1;
-      if (active) {
+      if (cls.indexOf('background-ci') !== -1) {
         var wn = el.querySelector('.weekDate');
-        return {
-          value: el.value || '',
-          week: wn ? wn.textContent.trim() : ''
-        };
+        return {value: el.value || '', week: wn ? wn.textContent.trim() : ''};
       }
     }
     return {value:'', week:''};
@@ -763,6 +776,17 @@ JS_MENU_SNAPSHOT = r"""
     activeWeekValue: aw.value,
     activeWeekNumber: aw.week
   });
+})()
+"""
+
+JS_PDF_LINK = r"""
+(function(){
+  var a = document.querySelector('.menuPdfLink a[href]');
+  if (a && a.href) return a.href;
+
+  var all = Array.from(document.querySelectorAll('a[href]')).map(function(x){ return x.href; });
+  var hit = all.find(function(h){ return /\/exportfiles\/.*\.pdf(\?|$)/i.test(h); });
+  return hit || '';
 })()
 """
 
@@ -832,6 +856,18 @@ def _get_menu_snapshot(page):
             "activeWeekValue": "",
             "activeWeekNumber": "",
         }
+
+
+def _extract_pdf_link(page):
+    try:
+        url = page.evaluate(JS_PDF_LINK)
+        if isinstance(url, str) and url.strip():
+            print(f"[pdf] Link gefunden: {url}")
+            return url.strip()
+    except Exception as e:
+        print(f"[pdf] DOM-Link-Fehler: {e}")
+    print("[pdf] Kein PDF-Link im DOM gefunden")
+    return ""
 
 
 def _current_view_matches_target(page, date_obj):
@@ -1015,7 +1051,7 @@ def setup_eurest(page):
 def _current_week_value_candidates(expected_date):
     iso_year, iso_week, _ = expected_date.isocalendar()
     vals = [f"{iso_year}-{iso_week}", f"{iso_year}-{iso_week:02d}"]
-    return list(dict.fromkeys(vals))
+    return _unique_preserve(vals)
 
 
 def _target_day_present_in_candidates(page, date_obj):
@@ -1039,7 +1075,7 @@ def _target_day_present_in_candidates(page, date_obj):
 
 def click_week_button(page, expected_date):
     candidates = _current_week_value_candidates(expected_date)
-    iso_year, iso_week, _ = expected_date.isocalendar()
+    _, iso_week, _ = expected_date.isocalendar()
     target_week_str = str(iso_week)
 
     print(f"[kw] click target values={candidates} week={target_week_str}")
@@ -1049,22 +1085,21 @@ def click_week_button(page, expected_date):
             """
             (params) => {
               function fire(el){
-                try { el.scrollIntoView({block:'center', inline:'center'}); } catch(e) {}
-                var nodes = [el, el.parentElement];
-                for (var n = 0; n < nodes.length; n++) {
-                  var node = nodes[n];
-                  if (!node) continue;
+                var cur = el;
+                for (var depth = 0; depth < 4 && cur; depth++) {
+                  try { cur.scrollIntoView({block:'center', inline:'center'}); } catch(e) {}
                   var types = ['pointerdown','mousedown','mouseup','click'];
                   for (var i = 0; i < types.length; i++) {
                     try {
-                      node.dispatchEvent(new MouseEvent(types[i], {
+                      cur.dispatchEvent(new MouseEvent(types[i], {
                         bubbles: true,
                         cancelable: true,
                         view: window
                       }));
                     } catch(e) {}
                   }
-                  try { node.click(); } catch(e) {}
+                  try { cur.click(); } catch(e) {}
+                  cur = cur.parentElement;
                 }
               }
 
@@ -1099,7 +1134,7 @@ def click_day_candidate(page, date_obj):
 
     try:
         result = page.evaluate(
-            """
+            r"""
             (params) => {
               function uniqueElements(arr){
                 var out = [];
@@ -1138,9 +1173,7 @@ def click_day_candidate(page, date_obj):
                   for (var i = 0; i < nameNodes.length; i++) {
                     var n = nameNodes[i];
                     var p = n.closest('p,button,div,a,span') || n.parentElement;
-                    if (p && p.querySelector && p.querySelector('.dayDate')) {
-                      fallback.push(p);
-                    }
+                    if (p && p.querySelector && p.querySelector('.dayDate')) fallback.push(p);
                   }
                   roots = uniqueElements(fallback);
                 }
@@ -1165,21 +1198,21 @@ def click_day_candidate(page, date_obj):
               }
 
               function fire(el){
-                var current = el;
-                for (var depth = 0; depth < 5 && current; depth++) {
-                  try { current.scrollIntoView({block:'center', inline:'center'}); } catch(e) {}
+                var cur = el;
+                for (var depth = 0; depth < 6 && cur; depth++) {
+                  try { cur.scrollIntoView({block:'center', inline:'center'}); } catch(e) {}
                   var types = ['pointerdown','mousedown','mouseup','click'];
                   for (var i = 0; i < types.length; i++) {
                     try {
-                      current.dispatchEvent(new MouseEvent(types[i], {
+                      cur.dispatchEvent(new MouseEvent(types[i], {
                         bubbles: true,
                         cancelable: true,
                         view: window
                       }));
                     } catch(e) {}
                   }
-                  try { current.click(); } catch(e) {}
-                  current = current.parentElement;
+                  try { cur.click(); } catch(e) {}
+                  cur = cur.parentElement;
                 }
               }
 
@@ -1356,39 +1389,378 @@ def ensure_target_week(page, expected_date):
     return True
 
 
-def _detect_vv(name, features):
-    low = name.lower()
-    feat_str = " ".join(features)
-    if "vegan" in low or "vegan" in feat_str:
-        return "VG"
-    if any(w in low for w in ["vegetarisch", "vegetarische", "vegetarischer"]):
-        return "V"
-    if "vegetarisch" in feat_str:
-        return "V"
+# ── PDF-Fallback ───────────────────────────────────────────────────────────────
+def _http_get_bytes(url):
+    req = Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0",
+            "Accept": "application/pdf,application/octet-stream;q=0.9,*/*;q=0.8",
+        },
+    )
+    with urlopen(req, timeout=30) as resp:
+        return resp.read()
+
+
+def _decode_pdf_literal_string(s):
+    out = []
+    i = 0
+    while i < len(s):
+        ch = s[i]
+        if ch != "\\":
+            out.append(ch)
+            i += 1
+            continue
+
+        i += 1
+        if i >= len(s):
+            break
+        esc = s[i]
+
+        if esc == "n":
+            out.append("\n")
+        elif esc == "r":
+            out.append("\r")
+        elif esc == "t":
+            out.append("\t")
+        elif esc == "b":
+            out.append("\b")
+        elif esc == "f":
+            out.append("\f")
+        elif esc in ["\\", "(", ")"]:
+            out.append(esc)
+        elif esc in "\n\r":
+            pass
+        elif esc.isdigit():
+            oct_digits = esc
+            for _ in range(2):
+                if i + 1 < len(s) and s[i + 1].isdigit():
+                    i += 1
+                    oct_digits += s[i]
+                else:
+                    break
+            try:
+                out.append(chr(int(oct_digits, 8)))
+            except Exception:
+                out.append(oct_digits)
+        else:
+            out.append(esc)
+        i += 1
+    return "".join(out)
+
+
+def _extract_pdf_text_with_library(pdf_bytes):
+    # 1) pypdf
+    try:
+        from pypdf import PdfReader  # type: ignore
+        import io
+        reader = PdfReader(io.BytesIO(pdf_bytes))
+        text = "\n".join(page.extract_text() or "" for page in reader.pages)
+        if text.strip():
+            print("[pdf] Text via pypdf extrahiert")
+            return text
+    except Exception as e:
+        print(f"[pdf] pypdf nicht nutzbar: {e}")
+
+    # 2) PyPDF2
+    try:
+        from PyPDF2 import PdfReader  # type: ignore
+        import io
+        reader = PdfReader(io.BytesIO(pdf_bytes))
+        text = "\n".join(page.extract_text() or "" for page in reader.pages)
+        if text.strip():
+            print("[pdf] Text via PyPDF2 extrahiert")
+            return text
+    except Exception as e:
+        print(f"[pdf] PyPDF2 nicht nutzbar: {e}")
+
     return ""
 
 
-def parse_eurest_dom(raw_json):
-    try:
-        data = json.loads(raw_json)
-    except Exception as e:
-        print(f"[parse] JSON-Fehler: {e}")
-        return []
+def _iter_pdf_stream_texts(pdf_bytes):
+    streams = re.findall(rb"stream\r?\n(.*?)\r?\nendstream", pdf_bytes, flags=re.S)
+    for raw in streams:
+        tried = []
+
+        for wbits in [zlib.MAX_WBITS, -zlib.MAX_WBITS, zlib.MAX_WBITS | 32]:
+            try:
+                data = zlib.decompress(raw, wbits)
+                tried.append(data)
+            except Exception:
+                pass
+
+        if not tried:
+            continue
+
+        for data in tried:
+            for enc in ["utf-8", "latin1"]:
+                try:
+                    yield data.decode(enc, errors="ignore")
+                    break
+                except Exception:
+                    continue
+
+
+def _extract_pdf_text_basic(pdf_bytes):
+    chunks = list(_iter_pdf_stream_texts(pdf_bytes))
+    if not chunks:
+        return ""
+
+    texts = []
+
+    string_token_re = re.compile(r"\((?:\\.|[^\\()])*\)")
+    bt_block_re = re.compile(r"BT(.*?)ET", re.S)
+
+    for chunk in chunks:
+        blocks = bt_block_re.findall(chunk) or [chunk]
+        for block in blocks:
+            parts = []
+            for token in string_token_re.findall(block):
+                literal = token[1:-1]
+                decoded = _decode_pdf_literal_string(literal)
+                if decoded and decoded.strip():
+                    parts.append(decoded)
+            if parts:
+                texts.append("\n".join(parts))
+
+    if texts:
+        print("[pdf] Text via eingebautem Stream-Extractor extrahiert")
+        return "\n".join(texts)
+
+    printable = []
+    for chunk in chunks:
+        cleaned = re.sub(r"[^ -~\n\r\täöüÄÖÜß€]", " ", chunk)
+        cleaned = re.sub(r"[ \t]+", " ", cleaned)
+        if cleaned.strip():
+            printable.append(cleaned)
+
+    if printable:
+        print("[pdf] Text via eingebautem Printable-Fallback extrahiert")
+        return "\n".join(printable)
+
+    return ""
+
+
+def _normalize_pdf_text(text):
+    text = text.replace("\x00", " ")
+    text = unescape(text)
+    text = text.replace("\r", "\n")
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"\n{2,}", "\n", text)
+
+    # Trennhilfen für Tage
+    for token in GERMAN_DAY_LONG + GERMAN_DAY_SHORT[:5]:
+        text = re.sub(
+            rf"(?<!\n)\b({re.escape(token)}\s+\d{{2}}\.\d{{2}}\.?)",
+            r"\n\1",
+            text,
+            flags=re.I,
+        )
+
+    # Etwas Struktur vor Kategorien
+    for cat in sorted(_category_candidates(), key=len, reverse=True):
+        text = re.sub(
+            rf"(?<!\n)({re.escape(cat)})",
+            r"\n\1",
+            text,
+            flags=re.I,
+        )
+
+    text = re.sub(r"\n{2,}", "\n", text)
+    return text.strip()
+
+
+def _pdf_day_section(pdf_text, target_date):
+    text = _normalize_pdf_text(pdf_text)
+    target_day_short = _weekday_token_for_button(target_date)
+    target_day_long = GERMAN_DAY_LONG[target_date.weekday()]
+    target_date_token = _normalize_day_date(_date_token_for_button(target_date))
+
+    marker_re = re.compile(
+        r"\b(Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Mo|Di|Mi|Do|Fr)\s+(\d{2}\.\d{2}\.?)",
+        re.I,
+    )
+    matches = list(marker_re.finditer(text))
+    if not matches:
+        print("[pdf] Keine Tagesmarker im PDF-Text gefunden")
+        return text
+
+    target_idx = None
+    for i, m in enumerate(matches):
+        day = m.group(1)
+        dat = _normalize_day_date(m.group(2))
+        if dat == target_date_token and day.lower() in [target_day_short.lower(), target_day_long.lower()]:
+            target_idx = i
+            break
+
+    if target_idx is None:
+        for i, m in enumerate(matches):
+            dat = _normalize_day_date(m.group(2))
+            if dat == target_date_token:
+                target_idx = i
+                break
+
+    if target_idx is None:
+        print("[pdf] Zieltag im PDF-Text nicht explizit gefunden, nutze Gesamttext")
+        return text
+
+    start = matches[target_idx].start()
+    end = matches[target_idx + 1].start() if target_idx + 1 < len(matches) else len(text)
+    section = text[start:end].strip()
+    print(f"[pdf] Tagessektion gefunden: {section[:300]!r}")
+    return section
+
+
+def _extract_name_price_from_segment(seg):
+    seg = unescape(seg)
+    seg = seg.replace("\n", " ")
+    seg = re.sub(r"[ \t]+", " ", seg).strip(" -|:")
+
+    explicit_price = re.findall(r"Preis\s*[: ]*\s*(\d{1,2},\d{2}\s*€)", seg, flags=re.I)
+    if explicit_price:
+        price = explicit_price[-1]
+        idx = seg.rfind(price)
+    else:
+        all_prices = re.findall(r"(\d{1,2},\d{2}\s*€)", seg)
+        price = all_prices[-1] if all_prices else ""
+        idx = seg.rfind(price) if price else -1
+
+    if price and idx >= 0:
+        name = seg[:idx].strip(" -|:")
+    else:
+        name = seg
+
+    name = re.sub(r"\bPreis\b.*$", "", name, flags=re.I).strip(" -|:")
+    name = re.sub(r"\bExtern\b.*$", "", name, flags=re.I).strip(" -|:")
+    name = re.sub(r"[ \t]+", " ", name).strip()
+    return name, price
+
+
+def _parse_pdf_day_section_by_categories(section_text):
+    text = _normalize_pdf_text(section_text)
+    cats = _category_candidates()
+    pattern = re.compile("|".join(re.escape(c) for c in sorted(cats, key=len, reverse=True)))
+    matches = list(pattern.finditer(text))
 
     dishes = []
-    for entry in data:
-        cat = entry.get("category", "").strip()
-        name = entry.get("name", "").strip().replace("\n", " ")
-        price = entry.get("price", "").strip()
-        features = entry.get("features", [])
-        vv = _detect_vv(name, features)
+    if not matches:
+        return dishes
+
+    for i, m in enumerate(matches):
+        cat = m.group(0)
+        seg_start = m.end()
+        seg_end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
+        seg = text[seg_start:seg_end].strip()
+
+        if not seg:
+            continue
+
+        name, price = _extract_name_price_from_segment(seg)
+        if not name:
+            continue
+
+        vv = _detect_vv(name, [])
         dishes.append({
             "kategorie": cat,
             "name": name,
             "preis": price,
             "vv": vv,
         })
-        print(f"[parse] {cat:20s} | {vv!r:3s} | {name[:60]!r} | {price!r}")
+
+    return dishes
+
+
+def _parse_pdf_day_section_linewise(section_text):
+    text = _normalize_pdf_text(section_text)
+    lines = [re.sub(r"[ \t]+", " ", x).strip() for x in text.splitlines()]
+    lines = [x for x in lines if x]
+
+    categories = sorted(_category_candidates(), key=len, reverse=True)
+    dishes = []
+    current_cat = None
+    current_parts = []
+
+    def flush():
+        nonlocal current_cat, current_parts, dishes
+        if current_cat and current_parts:
+            seg = " ".join(current_parts).strip()
+            name, price = _extract_name_price_from_segment(seg)
+            if name:
+                vv = _detect_vv(name, [])
+                dishes.append({
+                    "kategorie": current_cat,
+                    "name": name,
+                    "preis": price,
+                    "vv": vv,
+                })
+        current_cat = None
+        current_parts = []
+
+    day_marker_re = re.compile(r"\b(Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Mo|Di|Mi|Do|Fr)\s+\d{2}\.\d{2}\.?", re.I)
+
+    for line in lines:
+        if day_marker_re.search(line):
+            continue
+        if re.search(r"\b(KW\s*\d+|Woche|Filter)\b", line, flags=re.I):
+            continue
+
+        cat_match = next((c for c in categories if line.startswith(c)), None)
+        if cat_match:
+            flush()
+            current_cat = cat_match
+            rest = line[len(cat_match):].strip(" -|:")
+            if rest:
+                current_parts.append(rest)
+            continue
+
+        if current_cat is not None:
+            current_parts.append(line)
+            if re.search(r"\d{1,2},\d{2}\s*€", line):
+                flush()
+
+    flush()
+    return dishes
+
+
+def _pdf_fallback_day(page, target_date, pdf_cache=None):
+    pdf_cache = pdf_cache if pdf_cache is not None else {}
+
+    pdf_url = _extract_pdf_link(page)
+    if not pdf_url:
+        print("[pdf] Kein PDF-Link vorhanden -> Fallback nicht moeglich")
+        return []
+
+    if pdf_url in pdf_cache:
+        pdf_text = pdf_cache[pdf_url]
+    else:
+        try:
+            pdf_bytes = _http_get_bytes(pdf_url)
+            print(f"[pdf] Download OK: {pdf_url} ({len(pdf_bytes)} bytes)")
+        except Exception as e:
+            print(f"[pdf] Download-Fehler: {e}")
+            return []
+
+        pdf_text = _extract_pdf_text_with_library(pdf_bytes)
+        if not pdf_text.strip():
+            pdf_text = _extract_pdf_text_basic(pdf_bytes)
+
+        if not pdf_text.strip():
+            print("[pdf] Konnte keinen Text aus PDF extrahieren")
+            return []
+
+        pdf_cache[pdf_url] = pdf_text
+        _save_text_dump(f"{LOCATION_NAME}_pdf_raw", pdf_text[:20000])
+
+    section = _pdf_day_section(pdf_text, target_date)
+    _save_text_dump(f"{LOCATION_NAME}_{target_date.isoformat()}_pdf_section", section[:12000])
+
+    dishes = _parse_pdf_day_section_by_categories(section)
+    if not dishes:
+        dishes = _parse_pdf_day_section_linewise(section)
+
+    print(f"[pdf] Parsed dishes: {len(dishes)}")
+    for d in dishes[:8]:
+        print(f"[pdf] {d['kategorie']}: {d['name']} | {d['preis']}")
 
     return dishes
 
@@ -1422,12 +1794,10 @@ def scrape_day(page, date_obj):
     clicked = False
     used_method = None
 
-    # 1) Text-/Toolbar-/dayBtn-basierter Klick
     clicked = click_day_candidate(page, date_obj)
     if clicked:
         used_method = "candidate"
 
-    # 2) select-Fallback
     if not clicked:
         print("[scrape] Kandidaten-Klick nicht erfolgreich -> Fallback select.menuDaySelect")
         clicked = click_day_select(page, date_obj)
@@ -1476,6 +1846,43 @@ def scrape_day(page, date_obj):
         page.wait_for_timeout(1000)
 
     return []
+
+
+def _detect_vv(name, features):
+    low = name.lower()
+    feat_str = " ".join(features)
+    if "vegan" in low or "vegan" in feat_str:
+        return "VG"
+    if any(w in low for w in ["vegetarisch", "vegetarische", "vegetarischer"]):
+        return "V"
+    if "vegetarisch" in feat_str:
+        return "V"
+    return ""
+
+
+def parse_eurest_dom(raw_json):
+    try:
+        data = json.loads(raw_json)
+    except Exception as e:
+        print(f"[parse] JSON-Fehler: {e}")
+        return []
+
+    dishes = []
+    for entry in data:
+        cat = entry.get("category", "").strip()
+        name = entry.get("name", "").strip().replace("\n", " ")
+        price = entry.get("price", "").strip()
+        features = entry.get("features", [])
+        vv = _detect_vv(name, features)
+        dishes.append({
+            "kategorie": cat,
+            "name": name,
+            "preis": price,
+            "vv": vv,
+        })
+        print(f"[parse] {cat:20s} | {vv!r:3s} | {name[:60]!r} | {price!r}")
+
+    return dishes
 
 
 # ── Render-Helfer ──────────────────────────────────────────────────────────────
@@ -1584,7 +1991,7 @@ def _find_uniform_font_size(draw, texts, max_w, max_h, size_start=19, size_min=1
     return size_min
 
 
-# ── Render Tagesansicht: 2×N Matrix ───────────────────────────────────────────
+# ── Render Tagesansicht ────────────────────────────────────────────────────────
 def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     img = Image.new("RGB", (W, H), (245, 248, 252))
     d = ImageDraw.Draw(img)
@@ -1603,8 +2010,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     NCOLS = 2
 
     d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
-    weekday_names = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
-    day_str = f"{weekday_names[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}"
+    day_str = f"{GERMAN_DAY_LONG[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}"
     title_str = f"{LOCATION_LABEL}  |  KW {kw:02d}"
 
     bt = d.textbbox((0, 0), title_str, font=ftit)
@@ -1663,14 +2069,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
         name_max_h = cell_h - cat_label_h - badge_h_est - price_h_est - 3 * PAD
 
         all_names = [it["name"] for it in dishes]
-        uni_size = _find_uniform_font_size(
-            d,
-            all_names,
-            name_max_w,
-            name_max_h,
-            size_start=18,
-            size_min=9
-        )
+        uni_size = _find_uniform_font_size(d, all_names, name_max_w, name_max_h, size_start=18, size_min=9)
         fn = lf(uni_size)
         lhn = _line_h(d, fn)
 
@@ -1715,12 +2114,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
 
             if it["preis"]:
                 pb = d.textbbox((0, 0), it["preis"], font=fprc)
-                d.text(
-                    (cx1 - (pb[2] - pb[0]) - PAD, cy1 - (pb[3] - pb[1]) - PAD),
-                    it["preis"],
-                    font=fprc,
-                    fill=LIGHT,
-                )
+                d.text((cx1 - (pb[2] - pb[0]) - PAD, cy1 - (pb[3] - pb[1]) - PAD), it["preis"], font=fprc, fill=LIGHT)
 
     leg_y = H - FOOTER_H - LEGEND_H - 2
     d.line([(0, leg_y), (W, leg_y)], fill=GRID, width=1)
@@ -1742,12 +2136,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     )
     d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
     b = d.textbbox((0, 0), footer_txt, font=fftr)
-    d.text(
-        ((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2),
-        footer_txt,
-        font=fftr,
-        fill=WHITE,
-    )
+    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=WHITE)
 
     return img
 
@@ -1794,14 +2183,13 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
         is_hol = holiday_map[day] is not None
         is_past = _is_past(day, today_date)
         is_today = _is_today(day, today_date)
-        col = ((220, 150, 0) if is_today else (C_HOL_HDR if is_hol else ((160, 160, 160) if is_past else LIGHT)))
+        col = (220, 150, 0) if is_today else (C_HOL_HDR if is_hol else ((160, 160, 160) if is_past else LIGHT))
         d.rectangle([(x, y), (x + dw - 1, y + DAY_H - 1)], fill=col)
         b = d.textbbox((0, 0), day, font=fday)
         d.text((x + (dw - (b[2] - b[0])) // 2, y + (DAY_H - (b[3] - b[1])) // 2), day, font=fday, fill=WHITE)
         d.line([(x, y), (x, y + DAY_H)], fill=BLUE, width=1)
         if is_today:
             d.line([(x, y), (x + dw, y)], fill=C_TODAY, width=TODAY_BW)
-
     y += DAY_H
 
     cats = []
@@ -1811,7 +2199,6 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
             if dish["kategorie"] not in seen_c:
                 cats.append(dish["kategorie"])
                 seen_c.add(dish["kategorie"])
-
     if not cats:
         cats = CATEGORY_FALLBACK.get(LOCATION_ID, ["Suppe", "Salatbar", "Dessert"])
 
@@ -1845,9 +2232,8 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
             is_past = _is_past(day, today_date)
             is_today = _is_today(day, today_date)
 
-            bg = (
-                (235, 235, 235) if is_past else
-                (C_HOL_BG if is_hol else ((255, 253, 230) if is_today else (R_ODD if ri % 2 == 0 else R_EVEN)))
+            bg = (235, 235, 235) if is_past else (
+                C_HOL_BG if is_hol else ((255, 253, 230) if is_today else (R_ODD if ri % 2 == 0 else R_EVEN))
             )
 
             d.rectangle([(x, y), (x + dw - 1, y + rh - 1)], fill=bg)
@@ -1914,14 +2300,12 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
         d.rectangle([(0, y), (STUB_W - 1, y + rh - 1)], fill=BLUE)
         d.line([(STUB_W, y), (STUB_W, y + rh)], fill=GRID, width=1)
         sl = cat[:9] if len(cat) > 9 else cat
-
         for sz in range(11, 5, -1):
             f2 = lf(sz, True)
             b2 = d.textbbox((0, 0), sl, font=f2)
             if b2[2] - b2[0] <= STUB_W - 4:
                 d.text((STUB_W // 2 - (b2[2] - b2[0]) // 2, y + rh // 2 - (b2[3] - b2[1]) // 2), sl, font=f2, fill=WHITE)
                 break
-
         y += rh
 
     for i, day in enumerate(all_days):
@@ -1953,12 +2337,7 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
     )
     d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
     b = d.textbbox((0, 0), footer_txt, font=fftr)
-    d.text(
-        ((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2),
-        footer_txt,
-        font=fftr,
-        fill=WHITE,
-    )
+    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=WHITE)
 
     return img
 
@@ -2035,6 +2414,8 @@ def main():
     for yr in [today_date.year, today_date.year + 1]:
         all_holidays.update(bavaria_holidays(yr))
 
+    pdf_cache = {}
+
     if DISPLAY_MODE == "day":
         target_date = resolve_target_date(local, all_holidays)
         target_monday = target_date - timedelta(days=target_date.weekday())
@@ -2077,10 +2458,14 @@ def main():
                 dishes = scrape_day(page, target_date)
 
                 if not dishes:
+                    print("[main] DOM-Scrape fehlgeschlagen -> PDF-Fallback")
+                    dishes = _pdf_fallback_day(page, target_date, pdf_cache)
+
+                if not dishes:
                     _dump_debug(page, "day-failed")
                     _save_debug_dump(page, "day-failed")
                     browser.close()
-                    print("FEHLER: Zieltag konnte nicht robust geladen oder geparst werden.")
+                    print("FEHLER: Zieltag konnte weder per DOM noch per PDF-Fallback geladen werden.")
                     print("FEHLER: Abbruch, damit latest-Bild NICHT ueberschrieben wird.")
                     sys.exit(1)
 
@@ -2150,7 +2535,12 @@ def main():
             for date_obj in scrape_dates:
                 dk = day_key(date_obj)
                 print(f"[week] scrape {dk}")
+
                 d2 = scrape_day(page, date_obj)
+                if not d2:
+                    print(f"[week] DOM-Scrape leer fuer {dk} -> PDF-Fallback")
+                    d2 = _pdf_fallback_day(page, date_obj, pdf_cache)
+
                 if d2:
                     week_data[dk] = d2
 
