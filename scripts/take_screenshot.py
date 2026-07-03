@@ -9,12 +9,13 @@ Umgebungsvariablen:
   DISPLAY_DAY           Ziel-Tag manuell: monday|tuesday|wednesday|thursday|friday
                         (leer = Automatik: vor 13:30 heute, ab 13:30 naechster Werktag)
 
-Wichtige Aenderungen:
-- Primäre Navigation jetzt über sichtbare KW-Buttons und .dayBtn-Elemente
-- select.menuDaySelect nur noch als Fallback
-- day-Mode bricht mit Exit 1 ab, wenn der Zieltag nicht wirklich geladen werden kann
-- latest_<location>.jpg wird dann NICHT mit falschem/leeren Inhalt überschrieben
-- Manifest current_<location>.json wird geschrieben für RSS/Workflow
+v2:
+- Primaere Tagesnavigation jetzt ueber sichtbare dayBtn-/dayName-/dayDate-Elemente.
+- KW-Navigation ueber sichtbare Wochenbuttons.
+- select.menuDaySelect nur noch Fallback.
+- Im day-Mode wird bei fehlendem Zieltag / fehlenden Gerichten mit Exit 1 abgebrochen,
+  damit latest_<location>.jpg NICHT mit falschem oder leerem Inhalt ueberschrieben wird.
+- Manifest current_<location>.json wird fuer Feed/Workflow geschrieben.
 """
 
 import os
@@ -68,7 +69,6 @@ FOOTER_H = 20
 
 # ── Colours ────────────────────────────────────────────────────────────────────
 BLUE = (0, 57, 107)
-BLUE_LIGHT = (0, 80, 140)
 LIGHT = (0, 119, 193)
 R_ODD = (240, 246, 252)
 R_EVEN = (255, 255, 255)
@@ -237,6 +237,36 @@ def resolve_target_date(local_dt, holidays_all):
 # ── JS / DOM Helfer ────────────────────────────────────────────────────────────
 JS_DEBUG_DOM = r"""
 (function(){
+  function uniqueElements(arr){
+    var out = [];
+    var seen = new Set();
+    for (var i = 0; i < arr.length; i++) {
+      var el = arr[i];
+      if (!el) continue;
+      if (seen.has(el)) continue;
+      seen.add(el);
+      out.push(el);
+    }
+    return out;
+  }
+
+  function collectDayRoots(){
+    var roots = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
+    if (roots.length === 0) {
+      var nameNodes = Array.from(document.querySelectorAll('.dayName'));
+      var fallback = [];
+      for (var i = 0; i < nameNodes.length; i++) {
+        var n = nameNodes[i];
+        var p = n.closest('p,button,div,a,span') || n.parentElement;
+        if (p && p.querySelector && p.querySelector('.dayDate')) {
+          fallback.push(p);
+        }
+      }
+      roots = uniqueElements(fallback);
+    }
+    return roots;
+  }
+
   var out = [];
 
   var sel = document.querySelector('select.menuDaySelect');
@@ -248,7 +278,7 @@ JS_DEBUG_DOM = r"""
     out.push('NO select.menuDaySelect');
   }
 
-  var dayBtns = Array.from(document.querySelectorAll('.menuDaySelection .dayBtn')).map(function(el){
+  var dayBtns = collectDayRoots().map(function(el){
     var n = el.querySelector('.dayName');
     var d = el.querySelector('.dayDate');
     return ((n ? n.textContent.trim() : '?') + ' ' + (d ? d.textContent.trim() : '?') + ' [' + el.className + ']');
@@ -260,6 +290,8 @@ JS_DEBUG_DOM = r"""
     return ((wn ? wn.textContent.trim() : '?') + ' value=' + (el.value || '') + ' [' + el.className + ']');
   });
   out.push('weekBtns: ' + weekBtns.join(' | '));
+
+  out.push('html-has-dayBtn-token: ' + (document.body.innerHTML.indexOf('dayBtn') !== -1));
 
   var mlw = document.querySelector('.menuListWrapper');
   out.push('menuListWrapper: ' + (mlw ? 'FOUND' : 'NOT FOUND'));
@@ -351,17 +383,46 @@ JS_EXTRACT = r"""
 
 JS_DAY_BUTTONS = r"""
 (function(){
-  var out = Array.from(document.querySelectorAll('.menuDaySelection .dayBtn')).map(function(el){
+  function uniqueElements(arr){
+    var out = [];
+    var seen = new Set();
+    for (var i = 0; i < arr.length; i++) {
+      var el = arr[i];
+      if (!el) continue;
+      if (seen.has(el)) continue;
+      seen.add(el);
+      out.push(el);
+    }
+    return out;
+  }
+
+  var nodes = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
+  if (nodes.length === 0) {
+    var nameNodes = Array.from(document.querySelectorAll('.dayName'));
+    var fallback = [];
+    for (var i = 0; i < nameNodes.length; i++) {
+      var n = nameNodes[i];
+      var p = n.closest('p,button,div,a,span') || n.parentElement;
+      if (p && p.querySelector && p.querySelector('.dayDate')) {
+        fallback.push(p);
+      }
+    }
+    nodes = uniqueElements(fallback);
+  }
+
+  var out = nodes.map(function(el){
     var n = el.querySelector('.dayName');
     var d = el.querySelector('.dayDate');
     var cls = el.className || '';
     return {
       day: n ? n.textContent.trim() : '',
       date: d ? d.textContent.trim() : '',
+      text: (el.textContent || '').replace(/\s+/g, ' ').trim(),
       className: cls,
       active: cls.indexOf('background-lightGrey') !== -1 || cls.indexOf('text-ci') !== -1
     };
   });
+
   return JSON.stringify(out);
 })()
 """
@@ -384,8 +445,38 @@ JS_WEEK_BUTTONS = r"""
 
 JS_MENU_SNAPSHOT = r"""
 (function(){
+  function uniqueElements(arr){
+    var out = [];
+    var seen = new Set();
+    for (var i = 0; i < arr.length; i++) {
+      var el = arr[i];
+      if (!el) continue;
+      if (seen.has(el)) continue;
+      seen.add(el);
+      out.push(el);
+    }
+    return out;
+  }
+
+  function collectDayRoots(){
+    var roots = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
+    if (roots.length === 0) {
+      var nameNodes = Array.from(document.querySelectorAll('.dayName'));
+      var fallback = [];
+      for (var i = 0; i < nameNodes.length; i++) {
+        var n = nameNodes[i];
+        var p = n.closest('p,button,div,a,span') || n.parentElement;
+        if (p && p.querySelector && p.querySelector('.dayDate')) {
+          fallback.push(p);
+        }
+      }
+      roots = uniqueElements(fallback);
+    }
+    return roots;
+  }
+
   function activeDayInfo(){
-    var nodes = Array.from(document.querySelectorAll('.menuDaySelection .dayBtn'));
+    var nodes = collectDayRoots();
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
       var cls = el.className || '';
@@ -464,6 +555,18 @@ JS_MENU_SNAPSHOT = r"""
 
 
 # ── DOM- / Klick-Helfer ────────────────────────────────────────────────────────
+def _normalize_day_date(s):
+    return (s or "").strip().rstrip(".")
+
+
+def _date_token_for_button(date_obj):
+    return date_obj.strftime("%d.%m.")
+
+
+def _weekday_token_for_button(date_obj):
+    return GERMAN_DAY_SHORT[date_obj.weekday()]
+
+
 def _dump_debug(page, label):
     try:
         dbg = page.evaluate(JS_DEBUG_DOM)
@@ -589,14 +692,6 @@ def _click_weiter(page):
     return False
 
 
-def _dispatch_mouse_click(page, selector):
-    try:
-        page.locator(selector).first.click(timeout=2000)
-        return True
-    except Exception:
-        return False
-
-
 def setup_eurest(page):
     print(f"[setup] {EUREST_URL}")
     page.goto(EUREST_URL, wait_until="networkidle", timeout=60000)
@@ -678,7 +773,8 @@ def setup_eurest(page):
 
     loaded = False
     for sel in [
-        ".menuDaySelection .dayBtn",
+        ".dayBtn",
+        ".dayName",
         ".menuWeekSelection button",
         ".menuListWrapper",
         "select.menuDaySelect",
@@ -700,30 +796,28 @@ def setup_eurest(page):
     print("[setup] Abgeschlossen")
 
 
-def _normalize_day_date(s):
-    return (s or "").strip().rstrip(".")
-
-
-def _date_token_for_button(date_obj):
-    return date_obj.strftime("%d.%m.")
-
-
-def _weekday_token_for_button(date_obj):
-    return GERMAN_DAY_SHORT[date_obj.weekday()]
+def _current_week_value_candidates(expected_date):
+    iso_year, iso_week, _ = expected_date.isocalendar()
+    vals = [f"{iso_year}-{iso_week}", f"{iso_year}-{iso_week:02d}"]
+    return list(dict.fromkeys(vals))
 
 
 def _target_day_present_in_buttons(page, date_obj):
     target_date = _normalize_day_date(_date_token_for_button(date_obj))
     target_day = _weekday_token_for_button(date_obj)
+
     for btn in _get_day_buttons(page):
-        if _normalize_day_date(btn.get("date", "")) == target_date and btn.get("day", "").strip() == target_day:
+        day_name = (btn.get("day") or "").strip()
+        day_date = _normalize_day_date(btn.get("date") or "")
+        full_text = btn.get("text") or ""
+
+        if day_name == target_day and day_date == target_date:
             return True
+
+        if target_day in full_text and target_date in _normalize_day_date(full_text):
+            return True
+
     return False
-
-
-def _current_week_value_candidates(expected_date):
-    iso_year, iso_week, _ = expected_date.isocalendar()
-    return [f"{iso_year}-{iso_week}", f"{iso_year}-{iso_week:02d}"]
 
 
 def click_week_button(page, expected_date):
@@ -785,13 +879,46 @@ def click_day_button(page, date_obj):
         result = page.evaluate(
             """
             (params) => {
+              function uniqueElements(arr){
+                var out = [];
+                var seen = new Set();
+                for (var i = 0; i < arr.length; i++) {
+                  var el = arr[i];
+                  if (!el) continue;
+                  if (seen.has(el)) continue;
+                  seen.add(el);
+                  out.push(el);
+                }
+                return out;
+              }
+
               function norm(s){ return (s || '').trim().replace(/\\.$/, ''); }
+
+              function collectDayRoots(){
+                var roots = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
+                if (roots.length === 0) {
+                  var nameNodes = Array.from(document.querySelectorAll('.dayName'));
+                  var fallback = [];
+                  for (var i = 0; i < nameNodes.length; i++) {
+                    var n = nameNodes[i];
+                    var p = n.closest('p,button,div,a,span') || n.parentElement;
+                    if (p && p.querySelector && p.querySelector('.dayDate')) {
+                      fallback.push(p);
+                    }
+                  }
+                  roots = uniqueElements(fallback);
+                }
+                return roots;
+              }
+
               function fire(el){
                 try { el.scrollIntoView({block:'center', inline:'center'}); } catch(e) {}
-                var targets = [el, el.parentElement];
-                for (var t = 0; t < targets.length; t++) {
-                  var node = targets[t];
+
+                var nodes = [el, el.parentElement];
+                for (var n = 0; n < nodes.length; n++) {
+                  var node = nodes[n];
                   if (!node) continue;
+
                   var types = ['pointerdown','mousedown','mouseup','click'];
                   for (var i = 0; i < types.length; i++) {
                     try {
@@ -802,23 +929,35 @@ def click_day_button(page, date_obj):
                       }));
                     } catch(e) {}
                   }
+
                   try { node.click(); } catch(e) {}
                 }
               }
 
-              var nodes = Array.from(document.querySelectorAll('.menuDaySelection .dayBtn'));
+              var nodes = collectDayRoots();
               for (var i = 0; i < nodes.length; i++) {
                 var el = nodes[i];
                 var n = el.querySelector('.dayName');
                 var d = el.querySelector('.dayDate');
+
                 var dayName = n ? n.textContent.trim() : '';
                 var dayDate = d ? d.textContent.trim() : '';
+                var txt = (el.textContent || '').replace(/\\s+/g, ' ').trim();
 
-                if (norm(dayDate) === norm(params.date) && dayName === params.day) {
+                var matchByParts =
+                  dayName === params.day &&
+                  norm(dayDate) === norm(params.date);
+
+                var matchByText =
+                  txt.indexOf(params.day) !== -1 &&
+                  txt.indexOf(norm(params.date)) !== -1;
+
+                if (matchByParts || matchByText) {
                   fire(el);
                   return 'clicked:' + dayName + ' ' + dayDate;
                 }
               }
+
               return 'no-match';
             }
             """,
@@ -854,6 +993,7 @@ def _wait_for_stable_menu(
     *,
     expected_week_values=None,
     expected_day_date=None,
+    expected_select_prefix=None,
     require_change=False,
     before_snapshot=None,
     max_wait_ms=10000,
@@ -878,11 +1018,12 @@ def _wait_for_stable_menu(
         meal_count = snap.get("mealCount", 0)
         active_day = snap.get("activeDayDate", "")
         active_week = snap.get("activeWeekValue", "")
+        current_select = snap.get("selectValue", "")
 
         print(
             f"[stable] poll={idx+1}/{polls} "
-            f"week={active_week!r} day={active_day!r} meals={meal_count} siglen={len(sig)} "
-            f"first={snap.get('firstMeals', [])}"
+            f"week={active_week!r} day={active_day!r} select={current_select!r} "
+            f"meals={meal_count} siglen={len(sig)} first={snap.get('firstMeals', [])}"
         )
 
         if exp_week_values and active_week and active_week not in exp_week_values:
@@ -890,7 +1031,12 @@ def _wait_for_stable_menu(
             last_sig = sig
             continue
 
-        if exp_day_norm and _normalize_day_date(active_day) != exp_day_norm:
+        if exp_day_norm and active_day and _normalize_day_date(active_day) != exp_day_norm:
+            stable = 0
+            last_sig = sig
+            continue
+
+        if expected_select_prefix and current_select and not current_select.startswith(expected_select_prefix):
             stable = 0
             last_sig = sig
             continue
@@ -997,28 +1143,34 @@ def scrape_day(page, date_obj):
     print(
         f"[before] week={before.get('activeWeekValue')!r} "
         f"day={before.get('activeDayName')!r} {before.get('activeDayDate')!r} "
+        f"select={before.get('selectValue')!r} "
         f"first={before.get('firstMeals')}"
     )
 
-    used_method = None
     clicked = False
+    used_method = None
 
-    if _target_day_present_in_buttons(page, date_obj):
-        clicked = click_day_button(page, date_obj)
+    # Erst globaler DayBtn-Pfad
+    clicked = click_day_button(page, date_obj)
+    if clicked:
         used_method = "dayBtn"
     else:
-        print("[scrape] Zieltag nicht in sichtbaren dayBtn gefunden -> Fallback select.menuDaySelect")
+        print("[scrape] dayBtn-Klick nicht erfolgreich -> Fallback select.menuDaySelect")
         clicked = click_day_select(page, date_obj)
-        used_method = "select"
+        if clicked:
+            used_method = "select"
 
     if not clicked:
-        print(f"[scrape] Konnte Zieltag {date_obj} weder per {used_method} noch per Fallback waehlen")
+        print(f"[scrape] Konnte Zieltag {date_obj} weder per dayBtn noch per select waehlen")
         return []
 
-    expected_day = _date_token_for_button(date_obj) if _get_day_buttons(page) else None
+    expected_day = _date_token_for_button(date_obj)
+    expected_select_prefix = date_obj.strftime("%Y-%m-%d") if used_method == "select" else None
+
     _wait_for_stable_menu(
         page,
         expected_day_date=expected_day,
+        expected_select_prefix=expected_select_prefix,
         before_snapshot=before,
         require_change=False,
         max_wait_ms=10000,
@@ -1637,20 +1789,21 @@ def main():
                 ensure_target_week(page, target_date)
 
                 day_buttons = _get_day_buttons(page)
-                if day_buttons:
-                    if not _target_day_present_in_buttons(page, target_date):
-                        _dump_debug(page, "day-target-missing-buttons")
-                        browser.close()
-                        print(f"FEHLER: Ziel-Datum {target_date} ist nicht in den sichtbaren dayBtn vorhanden.")
-                        sys.exit(1)
-                else:
-                    available_values = _get_available_dates(page)
-                    target_str = target_date.strftime("%Y-%m-%d")
-                    if not any(v.startswith(target_str) for v in available_values):
-                        _dump_debug(page, "day-target-missing-select")
-                        browser.close()
-                        print(f"FEHLER: Ziel-Datum {target_str} ist weder als dayBtn noch im menuDaySelect vorhanden.")
-                        sys.exit(1)
+                print(f"[main] gefundene dayBtns: {len(day_buttons)}")
+
+                target_visible_in_buttons = _target_day_present_in_buttons(page, target_date)
+                available_values = _get_available_dates(page)
+                target_str = target_date.strftime("%Y-%m-%d")
+                target_visible_in_select = any(v.startswith(target_str) for v in available_values)
+
+                print(f"[main] target_visible_in_buttons={target_visible_in_buttons}")
+                print(f"[main] target_visible_in_select={target_visible_in_select}")
+
+                if not target_visible_in_buttons and not target_visible_in_select:
+                    _dump_debug(page, "day-target-missing-all")
+                    browser.close()
+                    print(f"FEHLER: Ziel-Datum {target_str} ist weder global als .dayBtn noch im menuDaySelect vorhanden.")
+                    sys.exit(1)
 
                 dishes = scrape_day(page, target_date)
                 browser.close()
@@ -1725,11 +1878,14 @@ def main():
                 dk = day_key(date_obj)
                 print(f"[week] scrape {dk}")
 
-                has_day_btn = _target_day_present_in_buttons(page, date_obj)
-                has_select = any(v.startswith(date_obj.strftime("%Y-%m-%d")) for v in _get_available_dates(page))
+                target_visible_in_buttons = _target_day_present_in_buttons(page, date_obj)
+                target_visible_in_select = any(
+                    v.startswith(date_obj.strftime("%Y-%m-%d"))
+                    for v in _get_available_dates(page)
+                )
 
-                if not has_day_btn and not has_select:
-                    print(f"[week] WARNUNG: {date_obj} weder als dayBtn noch im menuDaySelect vorhanden -> skip")
+                if not target_visible_in_buttons and not target_visible_in_select:
+                    print(f"[week] WARNUNG: {date_obj} weder global als dayBtn noch im menuDaySelect vorhanden -> skip")
                     continue
 
                 d2 = scrape_day(page, date_obj)
