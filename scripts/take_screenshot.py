@@ -9,26 +9,32 @@ Umgebungsvariablen:
   DISPLAY_DAY           Ziel-Tag manuell: monday|tuesday|wednesday|thursday|friday
                         (leer = Automatik: vor 13:30 heute, ab 13:30 naechster Werktag)
 
-v4:
-- Primäre Tagesnavigation über DOM (dayBtn / dayName / dayDate / Textkandidaten).
-- KW-Navigation über sichtbare Wochenbuttons.
-- select.menuDaySelect nur noch als Fallback.
-- Neuer PDF-Fallback:
+v4.1:
+- Primaere Tagesnavigation ueber sichtbare Tageskandidaten:
+  * .dayBtn
+  * dayName/dayDate-Strukturen
+  * textbasierte Toolbar-Kandidaten
+- KW-Navigation ueber sichtbare Wochenbuttons
+- select.menuDaySelect nur noch als Fallback
+- PDF-Fallback:
   * PDF-Link der aktiven Woche aus DOM holen
   * PDF laden
-  * Text via pypdf/PyPDF2 oder eingebautem Best-Effort-Extractor extrahieren
+  * Text via pypdf / PyPDF2 / pdftotext / eingebautem Fallback extrahieren
   * Zieltag heuristisch aus Wochen-PDF parsen
 - Harte Fehler nur noch, wenn DOM UND PDF-Fallback scheitern.
-- latest_<location>.jpg wird dann NICHT mit falschem/leerem Inhalt überschrieben.
+- latest_<location>.jpg wird dann NICHT mit falschem/leerem Inhalt ueberschrieben.
 """
 
+import io
 import os
 import re
 import sys
+import zlib
 import json
 import math
-import zlib
 import shutil
+import tempfile
+import subprocess
 from html import unescape
 from pathlib import Path
 from datetime import date, datetime, timezone, timedelta
@@ -42,8 +48,8 @@ EUREST_URL = "https://eurest.webspeiseplan.de/39799C127F748D639984F4CDBEB44846"
 LOCATION_ID = os.environ.get("EUREST_LOCATION_ID", "8949").strip()
 LOCATION_NAME = os.environ.get("EUREST_LOCATION_NAME", "schaeffler").strip().lower()
 WEEK_OFFSET = int(os.environ.get("WEEK_OFFSET", "0"))
-DISPLAY_MODE = os.environ.get("DISPLAY_MODE", "day").strip().lower()
-DISPLAY_DAY = os.environ.get("DISPLAY_DAY", "").strip().lower()
+DISPLAY_MODE = os.environ.get("DISPLAY_MODE", "day").strip().lower()   # day | week
+DISPLAY_DAY = os.environ.get("DISPLAY_DAY", "").strip().lower()        # monday..friday | ""
 
 SWITCH_HOUR_LOCAL = 13
 SWITCH_MINUTE_LOCAL = 30
@@ -887,7 +893,7 @@ def _current_view_matches_target(page, date_obj):
 
 def _click_weiter(page):
     try:
-        btn_info = page.evaluate("""
+        btn_info = page.evaluate(r"""
         Array.from(document.querySelectorAll('button')).map(function(b){
           return JSON.stringify({
             text:b.textContent.trim().substring(0,40),
@@ -895,13 +901,13 @@ def _click_weiter(page):
             disabled:b.disabled,
             visible:b.offsetParent!==null
           });
-        }).join('\\n')
+        }).join('\n')
         """)
         print(f"[weiter] Buttons:\n{btn_info}")
     except Exception as e:
         print(f"[weiter] Dump-Fehler: {e}")
 
-    clicked = page.evaluate("""
+    clicked = page.evaluate(r"""
     (function(){
       var btns = Array.from(document.querySelectorAll('button'));
       var kws = ['weiter','next','submit','ok','bestätigen','bestatigen','los'];
@@ -1067,7 +1073,8 @@ def _target_day_present_in_candidates(page, date_obj):
         if c_day == target_day and c_date == target_date:
             return True
 
-        if target_day in c_text and target_date in _normalize_day_date(c_text):
+        norm_text = _normalize_day_date(c_text)
+        if target_day in c_text and target_date in norm_text:
             return True
 
     return False
@@ -1081,8 +1088,7 @@ def click_week_button(page, expected_date):
     print(f"[kw] click target values={candidates} week={target_week_str}")
 
     try:
-        result = page.evaluate(
-            """
+        result = page.evaluate(r"""
             (params) => {
               function fire(el){
                 var cur = el;
@@ -1116,9 +1122,7 @@ def click_week_button(page, expected_date):
               }
               return 'no-match';
             }
-            """,
-            {"values": candidates, "week": target_week_str}
-        )
+        """, {"values": candidates, "week": target_week_str})
         print(f"[kw] Ergebnis: {result!r}")
         return "clicked:" in str(result)
     except Exception as e:
@@ -1133,8 +1137,7 @@ def click_day_candidate(page, date_obj):
     print(f"[day] Ziel: {target_day} {target_date}")
 
     try:
-        result = page.evaluate(
-            r"""
+        result = page.evaluate(r"""
             (params) => {
               function uniqueElements(arr){
                 var out = [];
@@ -1251,9 +1254,7 @@ def click_day_candidate(page, date_obj):
 
               return 'no-match';
             }
-            """,
-            {"day": target_day, "date": target_date}
-        )
+        """, {"day": target_day, "date": target_date})
         print(f"[day] Ergebnis: {result!r}")
         return "clicked:" in str(result)
     except Exception as e:
@@ -1450,10 +1451,8 @@ def _decode_pdf_literal_string(s):
 
 
 def _extract_pdf_text_with_library(pdf_bytes):
-    # 1) pypdf
     try:
         from pypdf import PdfReader  # type: ignore
-        import io
         reader = PdfReader(io.BytesIO(pdf_bytes))
         text = "\n".join(page.extract_text() or "" for page in reader.pages)
         if text.strip():
@@ -1462,10 +1461,8 @@ def _extract_pdf_text_with_library(pdf_bytes):
     except Exception as e:
         print(f"[pdf] pypdf nicht nutzbar: {e}")
 
-    # 2) PyPDF2
     try:
         from PyPDF2 import PdfReader  # type: ignore
-        import io
         reader = PdfReader(io.BytesIO(pdf_bytes))
         text = "\n".join(page.extract_text() or "" for page in reader.pages)
         if text.strip():
@@ -1473,6 +1470,36 @@ def _extract_pdf_text_with_library(pdf_bytes):
             return text
     except Exception as e:
         print(f"[pdf] PyPDF2 nicht nutzbar: {e}")
+
+    return ""
+
+
+def _extract_pdf_text_with_pdftotext(pdf_bytes):
+    exe = shutil.which("pdftotext")
+    if not exe:
+        print("[pdf] pdftotext nicht installiert")
+        return ""
+
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            pdf_path = Path(td) / "week.pdf"
+            txt_path = Path(td) / "week.txt"
+            pdf_path.write_bytes(pdf_bytes)
+
+            cmd = [exe, "-layout", str(pdf_path), str(txt_path)]
+            res = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+
+            if res.returncode != 0:
+                print(f"[pdf] pdftotext Fehler rc={res.returncode}: {res.stderr[:400]}")
+                return ""
+
+            if txt_path.exists():
+                text = txt_path.read_text(encoding="utf-8", errors="ignore")
+                if text.strip():
+                    print("[pdf] Text via pdftotext extrahiert")
+                    return text
+    except Exception as e:
+        print(f"[pdf] pdftotext Ausnahme: {e}")
 
     return ""
 
@@ -1548,7 +1575,6 @@ def _normalize_pdf_text(text):
     text = re.sub(r"[ \t]+", " ", text)
     text = re.sub(r"\n{2,}", "\n", text)
 
-    # Trennhilfen für Tage
     for token in GERMAN_DAY_LONG + GERMAN_DAY_SHORT[:5]:
         text = re.sub(
             rf"(?<!\n)\b({re.escape(token)}\s+\d{{2}}\.\d{{2}}\.?)",
@@ -1557,7 +1583,6 @@ def _normalize_pdf_text(text):
             flags=re.I,
         )
 
-    # Etwas Struktur vor Kategorien
     for cat in sorted(_category_candidates(), key=len, reverse=True):
         text = re.sub(
             rf"(?<!\n)({re.escape(cat)})",
@@ -1575,40 +1600,58 @@ def _pdf_day_section(pdf_text, target_date):
     target_day_short = _weekday_token_for_button(target_date)
     target_day_long = GERMAN_DAY_LONG[target_date.weekday()]
     target_date_token = _normalize_day_date(_date_token_for_button(target_date))
+    monday = target_date - timedelta(days=target_date.weekday())
+    week_dates = [_normalize_day_date((monday + timedelta(i)).strftime("%d.%m.")) for i in range(5)]
 
     marker_re = re.compile(
         r"\b(Montag|Dienstag|Mittwoch|Donnerstag|Freitag|Mo|Di|Mi|Do|Fr)\s+(\d{2}\.\d{2}\.?)",
         re.I,
     )
     matches = list(marker_re.finditer(text))
-    if not matches:
-        print("[pdf] Keine Tagesmarker im PDF-Text gefunden")
-        return text
-
-    target_idx = None
-    for i, m in enumerate(matches):
-        day = m.group(1)
-        dat = _normalize_day_date(m.group(2))
-        if dat == target_date_token and day.lower() in [target_day_short.lower(), target_day_long.lower()]:
-            target_idx = i
-            break
-
-    if target_idx is None:
+    if matches:
+        target_idx = None
         for i, m in enumerate(matches):
+            day = m.group(1)
             dat = _normalize_day_date(m.group(2))
-            if dat == target_date_token:
+            if dat == target_date_token and day.lower() in [target_day_short.lower(), target_day_long.lower()]:
                 target_idx = i
                 break
+        if target_idx is None:
+            for i, m in enumerate(matches):
+                dat = _normalize_day_date(m.group(2))
+                if dat == target_date_token:
+                    target_idx = i
+                    break
+        if target_idx is not None:
+            start = matches[target_idx].start()
+            end = matches[target_idx + 1].start() if target_idx + 1 < len(matches) else len(text)
+            section = text[start:end].strip()
+            print(f"[pdf] Tagessektion via Marker gefunden: {section[:300]!r}")
+            return section
 
-    if target_idx is None:
-        print("[pdf] Zieltag im PDF-Text nicht explizit gefunden, nutze Gesamttext")
-        return text
+    date_only_re = re.compile(r"\b(\d{2}\.\d{2}\.?)\b")
+    date_matches = list(date_only_re.finditer(text))
+    target_pos = None
+    next_pos = None
 
-    start = matches[target_idx].start()
-    end = matches[target_idx + 1].start() if target_idx + 1 < len(matches) else len(text)
-    section = text[start:end].strip()
-    print(f"[pdf] Tagessektion gefunden: {section[:300]!r}")
-    return section
+    for i, m in enumerate(date_matches):
+        dat = _normalize_day_date(m.group(1))
+        if dat == target_date_token:
+            target_pos = m.start()
+            for j in range(i + 1, len(date_matches)):
+                nxt = _normalize_day_date(date_matches[j].group(1))
+                if nxt in week_dates:
+                    next_pos = date_matches[j].start()
+                    break
+            break
+
+    if target_pos is not None:
+        section = text[target_pos:next_pos].strip() if next_pos else text[target_pos:].strip()
+        print(f"[pdf] Tagessektion via Datumsmarker gefunden: {section[:300]!r}")
+        return section
+
+    print("[pdf] Keine Tagesmarker im PDF-Text gefunden")
+    return text
 
 
 def _extract_name_price_from_segment(seg):
@@ -1651,7 +1694,6 @@ def _parse_pdf_day_section_by_categories(section_text):
         seg_start = m.end()
         seg_end = matches[i + 1].start() if i + 1 < len(matches) else len(text)
         seg = text[seg_start:seg_end].strip()
-
         if not seg:
             continue
 
@@ -1742,6 +1784,8 @@ def _pdf_fallback_day(page, target_date, pdf_cache=None):
 
         pdf_text = _extract_pdf_text_with_library(pdf_bytes)
         if not pdf_text.strip():
+            pdf_text = _extract_pdf_text_with_pdftotext(pdf_bytes)
+        if not pdf_text.strip():
             pdf_text = _extract_pdf_text_basic(pdf_bytes)
 
         if not pdf_text.strip():
@@ -1749,17 +1793,17 @@ def _pdf_fallback_day(page, target_date, pdf_cache=None):
             return []
 
         pdf_cache[pdf_url] = pdf_text
-        _save_text_dump(f"{LOCATION_NAME}_pdf_raw", pdf_text[:20000])
+        _save_text_dump(f"{LOCATION_NAME}_pdf_raw", pdf_text[:30000])
 
     section = _pdf_day_section(pdf_text, target_date)
-    _save_text_dump(f"{LOCATION_NAME}_{target_date.isoformat()}_pdf_section", section[:12000])
+    _save_text_dump(f"{LOCATION_NAME}_{target_date.isoformat()}_pdf_section", section[:20000])
 
     dishes = _parse_pdf_day_section_by_categories(section)
     if not dishes:
         dishes = _parse_pdf_day_section_linewise(section)
 
     print(f"[pdf] Parsed dishes: {len(dishes)}")
-    for d in dishes[:8]:
+    for d in dishes[:10]:
         print(f"[pdf] {d['kategorie']}: {d['name']} | {d['preis']}")
 
     return dishes
@@ -1883,463 +1927,6 @@ def parse_eurest_dom(raw_json):
         print(f"[parse] {cat:20s} | {vv!r:3s} | {name[:60]!r} | {price!r}")
 
     return dishes
-
-
-# ── Render-Helfer ──────────────────────────────────────────────────────────────
-def _split_chars(draw, word, font, max_w):
-    parts = []
-    while word:
-        lo, hi = 1, len(word)
-        while lo < hi:
-            mid = (lo + hi + 1) // 2
-            b = draw.textbbox((0, 0), word[:mid] + ("-" if mid < len(word) else ""), font=font)
-            if b[2] - b[0] <= max_w:
-                lo = mid
-            else:
-                hi = mid - 1
-        if lo <= 0:
-            lo = 1
-        chunk = word[:lo]
-        word = word[lo:]
-        parts.append(chunk + ("-" if word else ""))
-    return parts
-
-
-def _split_long_word(draw, word, font, max_w):
-    if "-" in word:
-        parts = word.split("-")
-        chunks = []
-        cur = ""
-        for i, part in enumerate(parts):
-            candidate = (cur + "-" + part) if cur else part
-            test = candidate + ("-" if i < len(parts) - 1 else "")
-            b = draw.textbbox((0, 0), test, font=font)
-            if b[2] - b[0] <= max_w:
-                cur = candidate
-            else:
-                if cur:
-                    chunks.append(cur + "-")
-                cur = part
-        if cur:
-            chunks.append(cur)
-
-        result = []
-        for chunk in chunks:
-            b = draw.textbbox((0, 0), chunk.rstrip("-"), font=font)
-            if b[2] - b[0] > max_w:
-                result.extend(_split_chars(draw, chunk.rstrip("-"), font, max_w))
-                if chunk.endswith("-") and result:
-                    result[-1] = result[-1].rstrip("-") + "-"
-            else:
-                result.append(chunk)
-        return result
-
-    return _split_chars(draw, word, font, max_w)
-
-
-def wrap_text(draw, text, f, max_w, max_lines=20):
-    tokens = []
-    for word in text.split():
-        b = draw.textbbox((0, 0), word, font=f)
-        if b[2] - b[0] > max_w:
-            tokens.extend(_split_long_word(draw, word, f, max_w))
-        else:
-            tokens.append(word)
-
-    out, cur = [], []
-    for tok in tokens:
-        t = " ".join(cur + [tok])
-        b = draw.textbbox((0, 0), t, font=f)
-        if b[2] - b[0] <= max_w:
-            cur.append(tok)
-        else:
-            if cur:
-                out.append(" ".join(cur))
-            cur = [tok]
-
-    if cur:
-        out.append(" ".join(cur))
-
-    return out[:max_lines]
-
-
-def _line_h(draw, font):
-    b = draw.textbbox((0, 0), "Ag", font=font)
-    return b[3] - b[1] + 4
-
-
-def _fit_font(draw, text, max_w, max_h, size_start=19, size_min=10, bold=False):
-    for size in range(size_start, size_min - 1, -1):
-        f = lf(size, bold)
-        lh = _line_h(draw, f)
-        lines = wrap_text(draw, text, f, max_w, max_lines=20)
-        if not lines:
-            return f, lh, lines
-        if lh * len(lines) <= max_h:
-            return f, lh, lines
-
-    f = lf(size_min, bold)
-    return f, _line_h(draw, f), wrap_text(draw, text, f, max_w, max_lines=20)
-
-
-def _find_uniform_font_size(draw, texts, max_w, max_h, size_start=19, size_min=10, bold=False):
-    for size in range(size_start, size_min - 1, -1):
-        f = lf(size, bold)
-        lh = _line_h(draw, f)
-        if all(lh * len(wrap_text(draw, t, f, max_w, max_lines=20)) <= max_h for t in texts if t):
-            return size
-    return size_min
-
-
-# ── Render Tagesansicht ────────────────────────────────────────────────────────
-def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
-    img = Image.new("RGB", (W, H), (245, 248, 252))
-    d = ImageDraw.Draw(img)
-
-    ftit = lf(20, True)
-    fdate = lf(13)
-    fftr = lf(10)
-    fbdg = lf(11, True)
-    fprc = lf(12, True)
-    fcat = lf(10, True)
-
-    HDR_H = 58
-    LEGEND_H = 22
-    GAP = 4
-    PAD = 7
-    NCOLS = 2
-
-    d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
-    day_str = f"{GERMAN_DAY_LONG[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}"
-    title_str = f"{LOCATION_LABEL}  |  KW {kw:02d}"
-
-    bt = d.textbbox((0, 0), title_str, font=ftit)
-    bd = d.textbbox((0, 0), day_str, font=fdate)
-    total_h = (bt[3] - bt[1]) + 3 + (bd[3] - bd[1])
-    ty = (HDR_H - total_h) // 2
-
-    d.text(((W - (bt[2] - bt[0])) // 2, ty), title_str, font=ftit, fill=WHITE)
-    d.text(((W - (bd[2] - bd[0])) // 2, ty + (bt[3] - bt[1]) + 3), day_str, font=fdate, fill=(180, 210, 240))
-
-    content_top = HDR_H + GAP
-    content_bot = H - FOOTER_H - LEGEND_H - 4
-    content_h = content_bot - content_top
-
-    if is_holiday:
-        d.rectangle([(0, content_top), (W, content_bot)], fill=C_HOL_BG)
-        msg = f"Feiertag: {is_holiday}"
-        fm = lf(28, True)
-        bm = d.textbbox((0, 0), msg, font=fm)
-        d.text(
-            ((W - (bm[2] - bm[0])) // 2, content_top + (content_h - (bm[3] - bm[1])) // 2),
-            msg,
-            font=fm,
-            fill=C_HOL_TXT,
-        )
-    elif not dishes:
-        d.rectangle([(0, content_top), (W, content_bot)], fill=(248, 248, 248))
-        msg = "Keine Speisedaten verfügbar"
-        fm = lf(22, True)
-        bm = d.textbbox((0, 0), msg, font=fm)
-        d.text(
-            ((W - (bm[2] - bm[0])) // 2, content_top + (content_h - (bm[3] - bm[1])) // 2),
-            msg,
-            font=fm,
-            fill=(160, 160, 160),
-        )
-    else:
-        cats_ordered = []
-        seen = set()
-        for dish in dishes:
-            cat = dish["kategorie"]
-            if cat not in seen:
-                cats_ordered.append(cat)
-                seen.add(cat)
-
-        n = len(cats_ordered)
-        nrows = math.ceil(n / NCOLS)
-
-        cell_w = (W - GAP * (NCOLS + 1)) // NCOLS
-        cell_h = (content_h - GAP * (nrows + 1)) // nrows
-
-        name_max_w = cell_w - 2 * PAD
-        cat_label_h = _line_h(d, fcat) + 2
-        badge_h_est = _line_h(d, fbdg) + 6
-        price_h_est = _line_h(d, fprc) + 2
-        name_max_h = cell_h - cat_label_h - badge_h_est - price_h_est - 3 * PAD
-
-        all_names = [it["name"] for it in dishes]
-        uni_size = _find_uniform_font_size(d, all_names, name_max_w, name_max_h, size_start=18, size_min=9)
-        fn = lf(uni_size)
-        lhn = _line_h(d, fn)
-
-        for idx, cat in enumerate(cats_ordered):
-            col = idx % NCOLS
-            row = idx // NCOLS
-
-            cx0 = GAP + col * (cell_w + GAP)
-            cy0 = content_top + GAP + row * (cell_h + GAP)
-            cx1 = cx0 + cell_w
-            cy1 = cy0 + cell_h
-
-            bg = R_ODD if idx % 2 == 0 else R_EVEN
-            d.rounded_rectangle([(cx0, cy0), (cx1, cy1)], radius=6, fill=bg)
-
-            d.rounded_rectangle([(cx0, cy0), (cx1, cy0 + cat_label_h + 2)], radius=6, fill=BLUE)
-            d.rectangle([(cx0, cy0 + cat_label_h - 2), (cx1, cy0 + cat_label_h + 2)], fill=BLUE)
-            d.text((cx0 + PAD, cy0 + 2), cat, font=fcat, fill=C_CAT_TXT)
-
-            it = next((x for x in dishes if x["kategorie"] == cat), None)
-            if not it:
-                continue
-
-            cy = cy0 + cat_label_h + PAD
-
-            if it["vv"]:
-                bl = "Vegan" if it["vv"] == "VG" else "Veg."
-                bc_col = C_VG if it["vv"] == "VG" else C_V
-                bb = d.textbbox((0, 0), bl, font=fbdg)
-                bw2 = bb[2] - bb[0] + 6
-                bh2 = bb[3] - bb[1] + 3
-                d.rounded_rectangle([(cx0 + PAD, cy), (cx0 + PAD + bw2, cy + bh2)], radius=3, fill=bc_col)
-                d.text((cx0 + PAD + 3, cy + 1), bl, font=fbdg, fill=WHITE)
-                cy += bh2 + 3
-
-            name_lines = wrap_text(d, it["name"], fn, name_max_w, max_lines=20)
-            for ln in name_lines:
-                if cy + lhn > cy1 - price_h_est - PAD:
-                    break
-                d.text((cx0 + PAD, cy), ln, font=fn, fill=(30, 30, 30))
-                cy += lhn
-
-            if it["preis"]:
-                pb = d.textbbox((0, 0), it["preis"], font=fprc)
-                d.text((cx1 - (pb[2] - pb[0]) - PAD, cy1 - (pb[3] - pb[1]) - PAD), it["preis"], font=fprc, fill=LIGHT)
-
-    leg_y = H - FOOTER_H - LEGEND_H - 2
-    d.line([(0, leg_y), (W, leg_y)], fill=GRID, width=1)
-    leg_y += 1
-    d.rectangle([(0, leg_y), (W, leg_y + LEGEND_H)], fill=(245, 249, 253))
-
-    fleg = lf(11)
-    lx = 6
-    for col, txt in [(C_VG, "Vegan"), (C_V, "Vegetarisch"), (C_HOL_HDR, "Feiertag"), (C_TODAY, "Heute")]:
-        d.rectangle([(lx, leg_y + 5), (lx + 12, leg_y + 15)], fill=col)
-        b = d.textbbox((0, 0), txt, font=fleg)
-        d.text((lx + 15, leg_y + 4), txt, font=fleg, fill=(30, 30, 30))
-        lx += 15 + (b[2] - b[0]) + 12
-
-    footer_txt = (
-        f"KW {kw:02d} / {label}  –  "
-        f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
-        f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}"
-    )
-    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
-    b = d.textbbox((0, 0), footer_txt, font=fftr)
-    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=WHITE)
-
-    return img
-
-
-# ── Render Wochenansicht ───────────────────────────────────────────────────────
-def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_date):
-    img = Image.new("RGB", (W, H), (255, 255, 255))
-    d = ImageDraw.Draw(img)
-
-    ftit = lf(18, True)
-    fdate = lf(12)
-    fday = lf(17, True)
-    fbdg = lf(12, True)
-    fprc = lf(13, True)
-    fftr = lf(10)
-
-    HDR_H = 52
-    DAY_H = 34
-    LEGEND_H = 22
-    STUB_W = 72
-    TODAY_BW = 3
-    PAD = 5
-
-    d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
-    friday_date = monday_date + timedelta(4)
-    date_range = f"{monday_date.strftime('%d.%m.%Y')} – {friday_date.strftime('%d.%m.%Y')}"
-    title_str = f"{LOCATION_LABEL}  |  KW {kw:02d}"
-
-    bt = d.textbbox((0, 0), title_str, font=ftit)
-    bd = d.textbbox((0, 0), date_range, font=fdate)
-    total_h = (bt[3] - bt[1]) + 3 + (bd[3] - bd[1])
-    ty = (HDR_H - total_h) // 2
-
-    d.text(((W - (bt[2] - bt[0])) // 2, ty), title_str, font=ftit, fill=WHITE)
-    d.text(((W - (bd[2] - bd[0])) // 2, ty + (bt[3] - bt[1]) + 3), date_range, font=fdate, fill=(180, 210, 240))
-    y = HDR_H
-
-    all_days = list(holiday_map.keys())
-    dw = (W - STUB_W) // len(all_days)
-
-    d.rectangle([(0, y), (STUB_W - 1, y + DAY_H - 1)], fill=BLUE)
-    for i, day in enumerate(all_days):
-        x = STUB_W + i * dw
-        is_hol = holiday_map[day] is not None
-        is_past = _is_past(day, today_date)
-        is_today = _is_today(day, today_date)
-        col = (220, 150, 0) if is_today else (C_HOL_HDR if is_hol else ((160, 160, 160) if is_past else LIGHT))
-        d.rectangle([(x, y), (x + dw - 1, y + DAY_H - 1)], fill=col)
-        b = d.textbbox((0, 0), day, font=fday)
-        d.text((x + (dw - (b[2] - b[0])) // 2, y + (DAY_H - (b[3] - b[1])) // 2), day, font=fday, fill=WHITE)
-        d.line([(x, y), (x, y + DAY_H)], fill=BLUE, width=1)
-        if is_today:
-            d.line([(x, y), (x + dw, y)], fill=C_TODAY, width=TODAY_BW)
-    y += DAY_H
-
-    cats = []
-    seen_c = set()
-    for day in all_days:
-        for dish in week_data.get(day, []):
-            if dish["kategorie"] not in seen_c:
-                cats.append(dish["kategorie"])
-                seen_c.add(dish["kategorie"])
-    if not cats:
-        cats = CATEGORY_FALLBACK.get(LOCATION_ID, ["Suppe", "Salatbar", "Dessert"])
-
-    avail = H - y - FOOTER_H - LEGEND_H - 4
-    n_cats = len(cats)
-    row_h = max(avail // n_cats, 1) if n_cats else max(avail, 1)
-
-    for ri, cat in enumerate(cats):
-        rh = row_h if ri < n_cats - 1 else max(H - y - FOOTER_H - LEGEND_H - 4 - row_h * (n_cats - 1), 1)
-        d.line([(STUB_W, y), (W, y)], fill=GRID, width=1)
-        avw = dw - 2 * PAD
-
-        cands = [
-            items[0]["name"]
-            for day in all_days
-            if holiday_map[day] is None and not _is_past(day, today_date)
-            for items in [[it for it in week_data.get(day, []) if it["kategorie"] == cat]]
-            if items
-        ]
-
-        uni = 17
-        if cands:
-            uni = _find_uniform_font_size(d, cands, avw, rh - PAD * 2 - 22, size_start=17, size_min=9)
-
-        fn = lf(uni)
-        lhn = _line_h(d, fn)
-
-        for i, day in enumerate(all_days):
-            x = STUB_W + i * dw
-            is_hol = holiday_map[day] is not None
-            is_past = _is_past(day, today_date)
-            is_today = _is_today(day, today_date)
-
-            bg = (235, 235, 235) if is_past else (
-                C_HOL_BG if is_hol else ((255, 253, 230) if is_today else (R_ODD if ri % 2 == 0 else R_EVEN))
-            )
-
-            d.rectangle([(x, y), (x + dw - 1, y + rh - 1)], fill=bg)
-            d.line([(x, y), (x, y + rh)], fill=GRID, width=1)
-
-            if is_today:
-                d.line([(x, y), (x, y + rh)], fill=C_TODAY, width=TODAY_BW)
-                d.line([(x + dw - 1, y), (x + dw - 1, y + rh)], fill=C_TODAY, width=TODAY_BW)
-
-            if is_past:
-                if ri == 0:
-                    b = d.textbbox((0, 0), "vergangen", font=fprc)
-                    d.text((x + (dw - (b[2] - b[0])) // 2, y + rh // 2 - 10), "vergangen", font=fprc, fill=(160, 160, 160))
-                continue
-
-            if is_hol:
-                if ri == 0:
-                    hn = holiday_map[day]
-                    b = d.textbbox((0, 0), "Feiertag", font=fbdg)
-                    bw = b[2] - b[0] + 8
-                    bh2 = b[3] - b[1] + 5
-                    bx = x + (dw - bw) // 2
-                    by = y + 8
-                    d.rounded_rectangle([(bx, by), (bx + bw, by + bh2)], radius=4, fill=(160, 160, 160))
-                    d.text((bx + 4, by + 2), "Feiertag", font=fbdg, fill=WHITE)
-                    cy2 = by + bh2 + 5
-                    fh, lhh, hlines = _fit_font(d, hn, dw - 8, rh - cy2 + y - 4)
-                    for ln in hlines:
-                        b2 = d.textbbox((0, 0), ln, font=fh)
-                        d.text((x + (dw - (b2[2] - b2[0])) // 2, cy2), ln, font=fh, fill=C_HOL_TXT)
-                        cy2 += lhh
-                continue
-
-            items = [it for it in week_data.get(day, []) if it["kategorie"] == cat]
-            if not items:
-                b = d.textbbox((0, 0), "–", font=lf(17))
-                d.text((x + (dw - (b[2] - b[0])) // 2, y + rh // 2 - 11), "–", font=lf(17), fill=(180, 180, 180))
-                continue
-
-            it = items[0]
-            cy = y + PAD
-
-            if it["vv"]:
-                bl = "Vegan" if it["vv"] == "VG" else "Veg."
-                bc = C_VG if it["vv"] == "VG" else C_V
-                b = d.textbbox((0, 0), bl, font=fbdg)
-                bw2 = b[2] - b[0] + 8
-                bh2 = b[3] - b[1] + 4
-                d.rounded_rectangle([(x + PAD, cy), (x + PAD + bw2, cy + bh2)], radius=3, fill=bc)
-                d.text((x + PAD + 4, cy + 2), bl, font=fbdg, fill=WHITE)
-                cy += bh2 + 3
-
-            for ln in wrap_text(d, it["name"], fn, avw, max_lines=20):
-                d.text((x + PAD, cy), ln, font=fn, fill=(30, 30, 30))
-                cy += lhn
-
-            if it["preis"]:
-                b = d.textbbox((0, 0), it["preis"], font=fprc)
-                d.text((x + dw - (b[2] - b[0]) - PAD, y + rh - (b[3] - b[1]) - 3), it["preis"], font=fprc, fill=LIGHT)
-
-            if is_today:
-                d.line([(x, y + rh - 1), (x + dw, y + rh - 1)], fill=C_TODAY, width=TODAY_BW)
-
-        d.rectangle([(0, y), (STUB_W - 1, y + rh - 1)], fill=BLUE)
-        d.line([(STUB_W, y), (STUB_W, y + rh)], fill=GRID, width=1)
-        sl = cat[:9] if len(cat) > 9 else cat
-        for sz in range(11, 5, -1):
-            f2 = lf(sz, True)
-            b2 = d.textbbox((0, 0), sl, font=f2)
-            if b2[2] - b2[0] <= STUB_W - 4:
-                d.text((STUB_W // 2 - (b2[2] - b2[0]) // 2, y + rh // 2 - (b2[3] - b2[1]) // 2), sl, font=f2, fill=WHITE)
-                break
-        y += rh
-
-    for i, day in enumerate(all_days):
-        if _is_today(day, today_date):
-            d.line([(STUB_W + i * dw, y), (STUB_W + i * dw + dw, y)], fill=C_TODAY, width=TODAY_BW)
-
-    d.line([(0, y), (W, y)], fill=GRID, width=1)
-    y += 1
-    d.rectangle([(0, y), (W, y + LEGEND_H)], fill=(245, 249, 253))
-
-    fleg = lf(11)
-    lx = 6
-    for col, txt in [
-        (C_VG, "Vegan"),
-        (C_V, "Vegetarisch"),
-        (C_HOL_HDR, "Feiertag"),
-        ((235, 235, 235), "vergangen"),
-        (C_TODAY, "Heute"),
-    ]:
-        d.rectangle([(lx, y + 5), (lx + 12, y + 15)], fill=col)
-        b = d.textbbox((0, 0), txt, font=fleg)
-        d.text((lx + 15, y + 4), txt, font=fleg, fill=(30, 30, 30))
-        lx += 15 + (b[2] - b[0]) + 12
-
-    footer_txt = (
-        f"KW {kw:02d} / {label}  –  "
-        f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
-        f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}"
-    )
-    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
-    b = d.textbbox((0, 0), footer_txt, font=fftr)
-    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=WHITE)
-
-    return img
 
 
 # ── Persistenz / Manifest ──────────────────────────────────────────────────────
