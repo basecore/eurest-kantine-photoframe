@@ -2216,6 +2216,115 @@ def _pdf_fallback_day(page, target_date, pdf_cache=None):
 
     return dishes
 
+def parse_eurest_dom(raw_json):
+    try:
+        data = json.loads(raw_json)
+    except Exception as e:
+        print(f"[parse] JSON-Fehler: {e}")
+        return []
+
+    dishes = []
+    for entry in data:
+        cat = entry.get("category", "").strip()
+        name = entry.get("name", "").strip().replace("\n", " ")
+        price = entry.get("price", "").strip()
+        features = entry.get("features", [])
+        vv = _detect_vv(name, features)
+        dishes.append({
+            "kategorie": cat,
+            "name": name,
+            "preis": price,
+            "vv": vv,
+        })
+        print(f"[parse] {cat:20s} | {vv!r:3s} | {name[:60]!r} | {price!r}")
+
+    return dishes
+
+
+def scrape_day(page, date_obj):
+    date_label = date_obj.strftime("%d.%m.")
+    print(f"\n[scrape] {date_label}")
+
+    before = _get_menu_snapshot(page)
+    print(
+        f"[before] week={before.get('activeWeekValue')!r} "
+        f"day={before.get('activeDayName')!r} {before.get('activeDayDate')!r} "
+        f"select={before.get('selectValue')!r} "
+        f"first={before.get('firstMeals')}"
+    )
+
+    # Falls die aktuelle View bereits passt, direkt parsen
+    if _current_view_matches_target(page, date_obj):
+        print("[scrape] Zieltag scheint bereits aktiv zu sein -> parse aktuelle Ansicht")
+        for attempt in range(1, 3):
+            try:
+                raw_json = page.evaluate(JS_EXTRACT)
+                if raw_json and raw_json not in ("[]", "null", ""):
+                    dishes = parse_eurest_dom(raw_json)
+                    print(f"[dom-current] {len(dishes)} Gerichte")
+                    print(f"[dom-current] erste Gerichte: {[d['name'] for d in dishes[:3]]}")
+                    return dishes
+            except Exception as e:
+                print(f"[dom-current] Fehler (Versuch {attempt}/2): {e}")
+            page.wait_for_timeout(800)
+
+    clicked = False
+    used_method = None
+
+    # 1) Primär: sichtbare Tageskandidaten
+    clicked = click_day_candidate(page, date_obj)
+    if clicked:
+        used_method = "candidate"
+
+    # 2) Fallback: versteckter select
+    if not clicked:
+        print("[scrape] Kandidaten-Klick nicht erfolgreich -> Fallback select.menuDaySelect")
+        clicked = click_day_select(page, date_obj)
+        if clicked:
+            used_method = "select"
+
+    if not clicked:
+        print(f"[scrape] Konnte Zieltag {date_obj} weder per Kandidatenklick noch per select waehlen")
+        return []
+
+    expected_day = _date_token_for_button(date_obj)
+    expected_select_prefix = date_obj.strftime("%Y-%m-%d") if used_method == "select" else None
+
+    _wait_for_stable_menu(
+        page,
+        expected_day_date=expected_day,
+        expected_select_prefix=expected_select_prefix,
+        before_snapshot=before,
+        require_change=False,
+        max_wait_ms=10000,
+        interval_ms=500,
+    )
+
+    for sel in [".menuListWrapper", ".meal-wrapper", ".mealNameWrapper"]:
+        try:
+            page.wait_for_selector(sel, timeout=8000)
+            break
+        except Exception:
+            pass
+
+    _dump_debug(page, f"scrape-{date_label}")
+
+    for attempt in range(1, 3):
+        try:
+            raw_json = page.evaluate(JS_EXTRACT)
+            if raw_json and raw_json not in ("[]", "null", ""):
+                dishes = parse_eurest_dom(raw_json)
+                print(f"[dom] {len(dishes)} Gerichte")
+                print(f"[dom] erste Gerichte: {[d['name'] for d in dishes[:3]]}")
+                return dishes
+
+            print(f"[dom] Leer (Versuch {attempt}/2)")
+        except Exception as e:
+            print(f"[dom] Fehler (Versuch {attempt}/2): {e}")
+
+        page.wait_for_timeout(1000)
+
+    return []
 
 # ── Render-Helfer ──────────────────────────────────────────────────────────────
 def _split_chars(draw, word, font, max_w):
