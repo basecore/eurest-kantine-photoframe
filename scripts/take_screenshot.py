@@ -382,6 +382,10 @@ class ResponseCapture:
             if token in low:
                 score += 3
 
+        for token in ["speiseplanadvanced", "speiseplangerichtdata", "speiseplanadvancedgericht", "gerichtkategorieid", "mitarbeiterpreisdecimal2"]:
+            if token in low:
+                score += 8
+
         for token in ["json", "api", "menu", "speise", "outlet", "week", "day", "meal"]:
             if token in low_url or token in low_ct:
                 score += 1
@@ -1727,11 +1731,38 @@ def _extract_dishes_from_html_text(text, target_date, strict=True):
     return []
 
 
+
+
 def _network_fallback(page, capture, target_date):
     capture.dump(f"{LOCATION_NAME}_responses")
-
+    json_payloads = []
+    for entry in capture.entries:
+        body = entry.get("body", "")
+        if not body:
+            continue
+        data = _json_load_safe(body)
+        if data is None:
+            continue
+        if _is_eurest_week_menu_payload(data):
+            json_payloads.append({"kind": "menu", "entry": entry, "payload": data})
+        elif _is_eurest_meal_category_payload(data):
+            json_payloads.append({"kind": "mealCategory", "entry": entry, "payload": data})
+    menu_payloads = [x for x in json_payloads if x["kind"] == "menu"]
+    meal_category_payloads = [x for x in json_payloads if x["kind"] == "mealCategory"]
+    print(f"[net-eurest] menu payloads={len(menu_payloads)} mealCategory payloads={len(meal_category_payloads)}")
+    best_menu = _select_best_menu_payload(menu_payloads, target_date)
+    best_meal_category = _select_best_meal_category_payload(meal_category_payloads)
+    if best_menu:
+        _save_text_dump(f"{LOCATION_NAME}_model_menu_primary", best_menu["entry"].get("body", "")[:300000])
+    if best_meal_category:
+        _save_text_dump(f"{LOCATION_NAME}_model_mealCategory_primary", best_meal_category["entry"].get("body", "")[:120000])
+    if best_menu:
+        meal_payload = best_meal_category["payload"] if best_meal_category else {"content": []}
+        dishes = _extract_dishes_from_eurest_menu_payload(best_menu["payload"], meal_payload, target_date)
+        if dishes:
+            _save_text_dump(f"{LOCATION_NAME}_net_hit_url", best_menu["entry"].get("url", ""))
+            return dishes
     candidates = capture.candidate_entries()
-
     def _prio(entry):
         url = entry.get("url", "")
         score = entry.get("score", 0)
@@ -1742,41 +1773,28 @@ def _network_fallback(page, capture, target_date):
         if "model=textblock" in url:
             return (1, score)
         return (0, score)
-
     candidates = sorted(candidates, key=_prio, reverse=True)
-
     print(f"[net] Kandidatenanzahl: {len(candidates)}")
     for entry in candidates[:15]:
         print(f"[net] score={entry['score']:02d} type={entry['resource_type']!r} ct={entry['content_type']!r} url={entry['url'][:140]}")
-
     for i, entry in enumerate(candidates[:8]):
         body = entry.get("body", "")
         if not body:
             continue
         suffix = "json" if "json" in (entry.get("content_type", "").lower()) else "txt"
         _save_text_dump(f"{LOCATION_NAME}_net_candidate_{i}_{suffix}", body[:200000])
-
-        url = entry.get("url", "")
-        if "model=menu" in url:
-            _save_text_dump(f"{LOCATION_NAME}_model_menu_primary", body[:300000])
-        if "model=mealCategory" in url:
-            _save_text_dump(f"{LOCATION_NAME}_model_mealCategory_primary", body[:100000])
-
     for entry in candidates:
         body = entry.get("body", "")
         if not body:
             continue
-
         dishes = _extract_dishes_from_json_payload(body, target_date)
         if dishes:
             _save_text_dump(f"{LOCATION_NAME}_net_hit_url", entry["url"])
             return dishes
-
         dishes = _extract_dishes_from_html_text(body, target_date, strict=True)
         if dishes:
             _save_text_dump(f"{LOCATION_NAME}_net_hit_url", entry["url"])
             return dishes
-
     for entry in candidates[:10]:
         body = entry.get("body", "")
         if not body:
@@ -1786,7 +1804,6 @@ def _network_fallback(page, capture, target_date):
             print("[net] HTML-Fallback im lockeren Modus erfolgreich")
             _save_text_dump(f"{LOCATION_NAME}_net_hit_url_relaxed", entry["url"])
             return dishes
-
     try:
         html = page.content()
         dishes = _extract_dishes_from_html_text(html, target_date, strict=True)
@@ -1795,9 +1812,7 @@ def _network_fallback(page, capture, target_date):
             return dishes
     except Exception as e:
         print(f"[net] page.content()-Extraktion Fehler: {e}")
-
     return []
-
 
 # ── PDF-Fallback ───────────────────────────────────────────────────────────────
 def _http_get_bytes(url):
@@ -2215,6 +2230,204 @@ def _pdf_fallback_day(page, target_date, pdf_cache=None):
         print(f"[pdf] {d['kategorie']}: {d['name']} | {d['preis']}")
 
     return dishes
+
+EUREST_VEGAN_GERICHTMERKMAL_IDS = {"2"}
+EUREST_VEGETARIAN_GERICHTMERKMAL_IDS = {"1"}
+
+def _json_load_safe(text):
+    try:
+        return json.loads(text)
+    except Exception:
+        return None
+
+def _date_only_from_iso(value):
+    return (value or "")[:10]
+
+def _parse_id_set(raw):
+    if raw is None:
+        return set()
+    return {x.strip() for x in str(raw).split(",") if x and x.strip()}
+
+def _detect_vv_from_gerichtmerkmale(raw):
+    ids = _parse_id_set(raw)
+    if ids & EUREST_VEGAN_GERICHTMERKMAL_IDS:
+        return "VG"
+    if ids & EUREST_VEGETARIAN_GERICHTMERKMAL_IDS:
+        return "V"
+    return ""
+
+def _is_eurest_week_menu_payload(data):
+    if not isinstance(data, dict) or data.get("success") is not True:
+        return False
+    content = data.get("content")
+    if not isinstance(content, list) or not content:
+        return False
+    for block in content:
+        if not isinstance(block, dict):
+            continue
+        if isinstance(block.get("speiseplanAdvanced"), dict) and isinstance(block.get("speiseplanGerichtData"), list):
+            return True
+    return False
+
+def _is_eurest_meal_category_payload(data):
+    if not isinstance(data, dict) or data.get("success") is not True:
+        return False
+    content = data.get("content")
+    if not isinstance(content, list) or not content:
+        return False
+    return any(
+        isinstance(row, dict) and row.get("gerichtkategorieID") is not None and row.get("name")
+        for row in content
+    )
+
+def _format_eurest_price(value):
+    if value in [None, ""]:
+        return ""
+    try:
+        return f"{float(value):.2f}".replace(".", ",") + " €"
+    except Exception:
+        return _stringify_price(value)
+
+def _normalize_eurest_meal_name(name):
+    return re.sub(r"\s+", " ", str(name or "").replace("_", " ")).strip()
+
+def _build_eurest_category_map(meal_category_payload):
+    category_map = {}
+    payload = meal_category_payload or {"content": []}
+    for row in payload.get("content", []):
+        if not isinstance(row, dict):
+            continue
+        cat_id = row.get("gerichtkategorieID")
+        name = (row.get("name") or "").strip()
+        if cat_id is None or not name:
+            continue
+        candidate = {
+            "name": name,
+            "order": row.get("reihenfolgeInApp", 999),
+            "outletID": row.get("outletID"),
+            "bildschirmeID": row.get("bildschirmeID"),
+        }
+        existing = category_map.get(cat_id)
+        if existing is None:
+            category_map[cat_id] = candidate
+            continue
+        existing_score = int(existing.get("outletID") is not None) + int(existing.get("bildschirmeID") is not None)
+        candidate_score = int(candidate.get("outletID") is not None) + int(candidate.get("bildschirmeID") is not None)
+        if candidate_score >= existing_score:
+            category_map[cat_id] = candidate
+    return category_map
+
+def _pick_newer_menu_row(existing, candidate):
+    existing_g = existing.get("speiseplanAdvancedGericht", {}) if isinstance(existing, dict) else {}
+    candidate_g = candidate.get("speiseplanAdvancedGericht", {}) if isinstance(candidate, dict) else {}
+    existing_ts = existing_g.get("timestampLog") or ""
+    candidate_ts = candidate_g.get("timestampLog") or ""
+    if candidate_ts > existing_ts:
+        return candidate
+    if existing_ts > candidate_ts:
+        return existing
+    existing_id = existing_g.get("id") or 0
+    candidate_id = candidate_g.get("id") or 0
+    return candidate if candidate_id >= existing_id else existing
+
+def _menu_payload_target_score(menu_payload, target_date):
+    target_iso = target_date.isoformat()
+    week_hits = 0
+    row_hits = 0
+    for block in menu_payload.get("content", []):
+        if not isinstance(block, dict):
+            continue
+        plan_meta = block.get("speiseplanAdvanced", {}) or {}
+        start_date = _date_only_from_iso(plan_meta.get("gueltigVon"))
+        end_date = _date_only_from_iso(plan_meta.get("gueltigBis"))
+        if start_date and end_date and start_date <= target_iso <= end_date:
+            week_hits += 1
+        for row in block.get("speiseplanGerichtData", []):
+            if not isinstance(row, dict):
+                continue
+            g = row.get("speiseplanAdvancedGericht", {}) or {}
+            if _date_only_from_iso(g.get("datum")) == target_iso:
+                row_hits += 1
+    return (row_hits, week_hits, len(menu_payload.get("content", [])))
+
+def _extract_dishes_from_eurest_menu_payload(menu_payload, meal_category_payload, target_date):
+    if not _is_eurest_week_menu_payload(menu_payload):
+        return []
+    target_iso = target_date.isoformat()
+    category_map = _build_eurest_category_map(meal_category_payload)
+    chosen = {}
+    raw_hits = 0
+    for block in menu_payload.get("content", []):
+        if not isinstance(block, dict):
+            continue
+        for row in block.get("speiseplanGerichtData", []):
+            if not isinstance(row, dict):
+                continue
+            g = row.get("speiseplanAdvancedGericht", {}) or {}
+            z = row.get("zusatzinformationen", {}) or {}
+            row_date = _date_only_from_iso(g.get("datum"))
+            if row_date != target_iso:
+                continue
+            raw_hits += 1
+            cat_id = g.get("gerichtkategorieID")
+            seq = g.get("reihenfolgeInGerichtkategorie", 999)
+            dedupe_key = (row_date, cat_id, seq)
+            if dedupe_key not in chosen:
+                chosen[dedupe_key] = row
+            else:
+                chosen[dedupe_key] = _pick_newer_menu_row(chosen[dedupe_key], row)
+    meals = []
+    for (_, cat_id, seq), row in chosen.items():
+        g = row.get("speiseplanAdvancedGericht", {}) or {}
+        z = row.get("zusatzinformationen", {}) or {}
+        cat_meta = category_map.get(cat_id, {"name": str(cat_id or ""), "order": 999})
+        price = z.get("mitarbeiterpreisDecimal2")
+        if price in [None, ""]:
+            price = z.get("gaestepreisDecimal2")
+        meal = {
+            "kategorie": cat_meta.get("name", str(cat_id or "")).strip(),
+            "name": _normalize_eurest_meal_name(g.get("gerichtname")),
+            "preis": _format_eurest_price(price),
+            "vv": _detect_vv_from_gerichtmerkmale(row.get("gerichtmerkmaleIds")),
+            "_sort": (cat_meta.get("order", 999), seq, g.get("id") or 0),
+        }
+        if meal["name"]:
+            meals.append(meal)
+    meals.sort(key=lambda x: x["_sort"])
+    for meal in meals:
+        meal.pop("_sort", None)
+    print(f"[net-eurest] target={target_iso} raw_hits={raw_hits} unique_meals={len(meals)}")
+    for meal in meals[:8]:
+        print(f"[net-eurest] {meal['kategorie']}: {meal['name']} | {meal['preis']} | {meal['vv']}")
+    return meals
+
+def _select_best_meal_category_payload(payload_candidates):
+    if not payload_candidates:
+        return None
+    def score(item):
+        entry = item["entry"]
+        payload = item["payload"]
+        url = (entry.get("url") or "").lower()
+        content = payload.get("content", [])
+        exact_model = 1 if "model=mealcategory" in url else 0
+        return (exact_model, len(content), len(entry.get("body", "")))
+    return sorted(payload_candidates, key=score, reverse=True)[0]
+
+def _select_best_menu_payload(payload_candidates, target_date):
+    if not payload_candidates:
+        return None
+    def score(item):
+        entry = item["entry"]
+        payload = item["payload"]
+        url = (entry.get("url") or "").lower()
+        exact_model = 1 if "model=menu" in url else 0
+        row_hits, week_hits, week_count = _menu_payload_target_score(payload, target_date)
+        return (row_hits, week_hits, exact_model, week_count, len(entry.get("body", "")))
+    best = sorted(payload_candidates, key=score, reverse=True)[0]
+    rs = score(best)
+    print(f"[net-eurest] best menu payload score={rs} url={best['entry'].get('url','')[:180]}")
+    return best
+
 
 def parse_eurest_dom(raw_json):
     try:
@@ -2897,14 +3110,18 @@ def main():
                 print(f"[main] target_visible_in_select={target_visible_in_select}")
                 print(f"[main] current_view_matches_target={_current_view_matches_target(page, target_date)}")
 
-                dishes = scrape_day(page, target_date)
+                dishes = _network_fallback(page, capture, target_date)
 
                 if not dishes:
-                    print("[main] DOM-Scrape fehlgeschlagen -> Netzwerk/JSON/HTML-Fallback")
+                    print("[main] Direkter Netzwerk-/JSON-Parser noch leer -> DOM-Scrape")
+                    dishes = scrape_day(page, target_date)
+
+                if not dishes:
+                    print("[main] Nach DOM erneut Netzwerk/JSON pruefen")
                     dishes = _network_fallback(page, capture, target_date)
 
                 if not dishes:
-                    print("[main] Netzwerk-Fallback fehlgeschlagen -> PDF-Fallback")
+                    print("[main] Netzwerk/DOM-Fallback fehlgeschlagen -> PDF-Fallback")
                     dishes = _pdf_fallback_day(page, target_date, pdf_cache)
 
                 if not dishes:
@@ -2986,12 +3203,15 @@ def main():
                 dk = day_key(date_obj)
                 print(f"[week] scrape {dk}")
 
-                d2 = scrape_day(page, date_obj)
+                d2 = _network_fallback(page, capture, date_obj)
                 if not d2:
-                    print(f"[week] DOM-Scrape leer fuer {dk} -> Netzwerk-Fallback")
+                    print(f"[week] Direkter Netzwerk-/JSON-Parser leer fuer {dk} -> DOM-Scrape")
+                    d2 = scrape_day(page, date_obj)
+                if not d2:
+                    print(f"[week] Nach DOM erneut Netzwerk/JSON pruefen fuer {dk}")
                     d2 = _network_fallback(page, capture, date_obj)
                 if not d2:
-                    print(f"[week] Netzwerk-Fallback leer fuer {dk} -> PDF-Fallback")
+                    print(f"[week] Netzwerk/DOM-Fallback leer fuer {dk} -> PDF-Fallback")
                     d2 = _pdf_fallback_day(page, date_obj, pdf_cache)
 
                 if d2:
