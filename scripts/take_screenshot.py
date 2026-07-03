@@ -9,16 +9,21 @@ Umgebungsvariablen:
   DISPLAY_DAY           Ziel-Tag manuell: monday|tuesday|wednesday|thursday|friday
                         (leer = Automatik: vor 13:30 heute, ab 13:30 naechster Werktag)
 
-v2:
-- Primaere Tagesnavigation jetzt ueber sichtbare dayBtn-/dayName-/dayDate-Elemente.
-- KW-Navigation ueber sichtbare Wochenbuttons.
-- select.menuDaySelect nur noch Fallback.
-- Im day-Mode wird bei fehlendem Zieltag / fehlenden Gerichten mit Exit 1 abgebrochen,
-  damit latest_<location>.jpg NICHT mit falschem oder leerem Inhalt ueberschrieben wird.
-- Manifest current_<location>.json wird fuer Feed/Workflow geschrieben.
+v3:
+- Primaere Tagesnavigation ueber sichtbare Tageskandidaten:
+  * .dayBtn
+  * dayName/dayDate-Strukturen
+  * textbasierte Toolbar-Kandidaten
+- KW-Navigation ueber sichtbare Wochenbuttons
+- select.menuDaySelect nur noch als Fallback
+- Ancestor-Klick-Fallback fuer Tageskandidaten
+- Debug-Dumps (HTML + PNG) bei Fehler
+- Im day-Mode harter Abbruch bei fehlendem Zieltag / fehlenden Gerichten,
+  damit latest_<location>.jpg NICHT mit falschem/leerem Inhalt ueberschrieben wird.
 """
 
 import os
+import re
 import sys
 import json
 import math
@@ -34,8 +39,8 @@ EUREST_URL = "https://eurest.webspeiseplan.de/39799C127F748D639984F4CDBEB44846"
 LOCATION_ID = os.environ.get("EUREST_LOCATION_ID", "8949").strip()
 LOCATION_NAME = os.environ.get("EUREST_LOCATION_NAME", "schaeffler").strip().lower()
 WEEK_OFFSET = int(os.environ.get("WEEK_OFFSET", "0"))
-DISPLAY_MODE = os.environ.get("DISPLAY_MODE", "day").strip().lower()   # day | week
-DISPLAY_DAY = os.environ.get("DISPLAY_DAY", "").strip().lower()        # monday..friday | ""
+DISPLAY_MODE = os.environ.get("DISPLAY_MODE", "day").strip().lower()
+DISPLAY_DAY = os.environ.get("DISPLAY_DAY", "").strip().lower()
 
 SWITCH_HOUR_LOCAL = 13
 SWITCH_MINUTE_LOCAL = 30
@@ -234,6 +239,41 @@ def resolve_target_date(local_dt, holidays_all):
     return candidate
 
 
+# ── Format-/Datei-Helfer ───────────────────────────────────────────────────────
+def _normalize_day_date(s):
+    return (s or "").strip().rstrip(".")
+
+
+def _date_token_for_button(date_obj):
+    return date_obj.strftime("%d.%m.")
+
+
+def _weekday_token_for_button(date_obj):
+    return GERMAN_DAY_SHORT[date_obj.weekday()]
+
+
+def _sanitize_label(s):
+    s = re.sub(r"[^A-Za-z0-9_.-]+", "_", s)
+    return s[:120]
+
+
+def _save_debug_dump(page, label):
+    safe = _sanitize_label(f"{LOCATION_NAME}_{label}")
+    html_path = OUT_DIR / f"debug_{safe}.html"
+    png_path = OUT_DIR / f"debug_{safe}.png"
+    try:
+        html = page.content()
+        html_path.write_text(html, encoding="utf-8")
+        print(f"[debug-dump] HTML geschrieben: {html_path}")
+    except Exception as e:
+        print(f"[debug-dump] HTML-Fehler: {e}")
+    try:
+        page.screenshot(path=str(png_path), full_page=True)
+        print(f"[debug-dump] Screenshot geschrieben: {png_path}")
+    except Exception as e:
+        print(f"[debug-dump] PNG-Fehler: {e}")
+
+
 # ── JS / DOM Helfer ────────────────────────────────────────────────────────────
 JS_DEBUG_DOM = r"""
 (function(){
@@ -250,8 +290,20 @@ JS_DEBUG_DOM = r"""
     return out;
   }
 
+  function isVisible(el){
+    if (!el) return false;
+    if (el.offsetParent !== null) return true;
+    var st = window.getComputedStyle(el);
+    return st && st.display !== 'none' && st.visibility !== 'hidden' && st.opacity !== '0';
+  }
+
+  function collapseText(s){
+    return (s || '').replace(/\s+/g, ' ').trim();
+  }
+
   function collectDayRoots(){
     var roots = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
+
     if (roots.length === 0) {
       var nameNodes = Array.from(document.querySelectorAll('.dayName'));
       var fallback = [];
@@ -264,11 +316,62 @@ JS_DEBUG_DOM = r"""
       }
       roots = uniqueElements(fallback);
     }
+
+    if (roots.length === 0) {
+      var toolbar = document.querySelector('.menuToolBar, .menuToolBarWrapper, .menuSplitContent') || document.body;
+      var nodes = Array.from(toolbar.querySelectorAll('p,button,div,a,span'));
+      var textFallback = [];
+      for (var j = 0; j < nodes.length; j++) {
+        var el = nodes[j];
+        if (!isVisible(el)) continue;
+        var txt = collapseText(el.textContent);
+        if (!txt || txt.length > 40) continue;
+        var hasDay = /\b(Mo|Di|Mi|Do|Fr)\b/.test(txt);
+        var hasDate = /\b\d{2}\.\d{2}\.?\b/.test(txt);
+        if (hasDay && hasDate) textFallback.push(el);
+      }
+      roots = uniqueElements(textFallback);
+    }
+
     return roots;
   }
 
-  var out = [];
+  function parseCandidate(el){
+    var n = el.querySelector ? el.querySelector('.dayName') : null;
+    var d = el.querySelector ? el.querySelector('.dayDate') : null;
+    var txt = collapseText(el.textContent);
+    var day = n ? collapseText(n.textContent) : '';
+    var date = d ? collapseText(d.textContent) : '';
 
+    if (!day) {
+      var m1 = txt.match(/\b(Mo|Di|Mi|Do|Fr)\b/);
+      if (m1) day = m1[1];
+    }
+    if (!date) {
+      var m2 = txt.match(/\b(\d{2}\.\d{2}\.?)\b/);
+      if (m2) date = m2[1];
+    }
+
+    var cls = el.className || '';
+    var active = cls.indexOf('background-lightGrey') !== -1 ||
+                 cls.indexOf('text-ci') !== -1 ||
+                 cls.indexOf('active') !== -1 ||
+                 cls.indexOf('selected') !== -1 ||
+                 el.getAttribute('aria-selected') === 'true';
+
+    return {
+      tag: (el.tagName || '').toLowerCase(),
+      day: day,
+      date: date,
+      text: txt,
+      className: cls,
+      active: active
+    };
+  }
+
+  var roots = collectDayRoots();
+
+  var out = [];
   var sel = document.querySelector('select.menuDaySelect');
   if (sel) {
     var opts = Array.from(sel.options).map(function(o){ return o.value + '=' + o.text.trim(); });
@@ -278,18 +381,19 @@ JS_DEBUG_DOM = r"""
     out.push('NO select.menuDaySelect');
   }
 
-  var dayBtns = collectDayRoots().map(function(el){
-    var n = el.querySelector('.dayName');
-    var d = el.querySelector('.dayDate');
-    return ((n ? n.textContent.trim() : '?') + ' ' + (d ? d.textContent.trim() : '?') + ' [' + el.className + ']');
-  });
-  out.push('dayBtns: ' + dayBtns.join(' | '));
+  out.push('dayBtns: ' + roots.map(function(el){
+    var c = parseCandidate(el);
+    return (c.day + ' ' + c.date + ' {' + c.tag + '} [' + c.className + ']');
+  }).join(' | '));
 
   var weekBtns = Array.from(document.querySelectorAll('.menuWeekSelection button')).map(function(el){
     var wn = el.querySelector('.weekDate');
     return ((wn ? wn.textContent.trim() : '?') + ' value=' + (el.value || '') + ' [' + el.className + ']');
   });
   out.push('weekBtns: ' + weekBtns.join(' | '));
+
+  var toolbar = document.querySelector('.menuToolBar, .menuToolBarWrapper');
+  out.push('toolbar-text: ' + collapseText(toolbar ? toolbar.textContent : '').substring(0, 400));
 
   out.push('html-has-dayBtn-token: ' + (document.body.innerHTML.indexOf('dayBtn') !== -1));
 
@@ -381,7 +485,7 @@ JS_EXTRACT = r"""
 })()
 """
 
-JS_DAY_BUTTONS = r"""
+JS_DAY_CANDIDATES = r"""
 (function(){
   function uniqueElements(arr){
     var out = [];
@@ -396,34 +500,86 @@ JS_DAY_BUTTONS = r"""
     return out;
   }
 
-  var nodes = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
-  if (nodes.length === 0) {
-    var nameNodes = Array.from(document.querySelectorAll('.dayName'));
-    var fallback = [];
-    for (var i = 0; i < nameNodes.length; i++) {
-      var n = nameNodes[i];
-      var p = n.closest('p,button,div,a,span') || n.parentElement;
-      if (p && p.querySelector && p.querySelector('.dayDate')) {
-        fallback.push(p);
-      }
-    }
-    nodes = uniqueElements(fallback);
+  function isVisible(el){
+    if (!el) return false;
+    if (el.offsetParent !== null) return true;
+    var st = window.getComputedStyle(el);
+    return st && st.display !== 'none' && st.visibility !== 'hidden' && st.opacity !== '0';
   }
 
-  var out = nodes.map(function(el){
-    var n = el.querySelector('.dayName');
-    var d = el.querySelector('.dayDate');
-    var cls = el.className || '';
-    return {
-      day: n ? n.textContent.trim() : '',
-      date: d ? d.textContent.trim() : '',
-      text: (el.textContent || '').replace(/\s+/g, ' ').trim(),
-      className: cls,
-      active: cls.indexOf('background-lightGrey') !== -1 || cls.indexOf('text-ci') !== -1
-    };
-  });
+  function collapseText(s){
+    return (s || '').replace(/\s+/g, ' ').trim();
+  }
 
-  return JSON.stringify(out);
+  function collectDayRoots(){
+    var roots = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
+
+    if (roots.length === 0) {
+      var nameNodes = Array.from(document.querySelectorAll('.dayName'));
+      var fallback = [];
+      for (var i = 0; i < nameNodes.length; i++) {
+        var n = nameNodes[i];
+        var p = n.closest('p,button,div,a,span') || n.parentElement;
+        if (p && p.querySelector && p.querySelector('.dayDate')) {
+          fallback.push(p);
+        }
+      }
+      roots = uniqueElements(fallback);
+    }
+
+    if (roots.length === 0) {
+      var toolbar = document.querySelector('.menuToolBar, .menuToolBarWrapper, .menuSplitContent') || document.body;
+      var nodes = Array.from(toolbar.querySelectorAll('p,button,div,a,span'));
+      var textFallback = [];
+      for (var j = 0; j < nodes.length; j++) {
+        var el = nodes[j];
+        if (!isVisible(el)) continue;
+        var txt = collapseText(el.textContent);
+        if (!txt || txt.length > 40) continue;
+        var hasDay = /\b(Mo|Di|Mi|Do|Fr)\b/.test(txt);
+        var hasDate = /\b\d{2}\.\d{2}\.?\b/.test(txt);
+        if (hasDay && hasDate) textFallback.push(el);
+      }
+      roots = uniqueElements(textFallback);
+    }
+
+    return roots;
+  }
+
+  function parseCandidate(el){
+    var n = el.querySelector ? el.querySelector('.dayName') : null;
+    var d = el.querySelector ? el.querySelector('.dayDate') : null;
+    var txt = collapseText(el.textContent);
+    var day = n ? collapseText(n.textContent) : '';
+    var date = d ? collapseText(d.textContent) : '';
+
+    if (!day) {
+      var m1 = txt.match(/\b(Mo|Di|Mi|Do|Fr)\b/);
+      if (m1) day = m1[1];
+    }
+    if (!date) {
+      var m2 = txt.match(/\b(\d{2}\.\d{2}\.?)\b/);
+      if (m2) date = m2[1];
+    }
+
+    var cls = el.className || '';
+    var active = cls.indexOf('background-lightGrey') !== -1 ||
+                 cls.indexOf('text-ci') !== -1 ||
+                 cls.indexOf('active') !== -1 ||
+                 cls.indexOf('selected') !== -1 ||
+                 el.getAttribute('aria-selected') === 'true';
+
+    return {
+      tag: (el.tagName || '').toLowerCase(),
+      day: day,
+      date: date,
+      text: txt,
+      className: cls,
+      active: active
+    };
+  }
+
+  return JSON.stringify(collectDayRoots().map(parseCandidate));
 })()
 """
 
@@ -458,8 +614,20 @@ JS_MENU_SNAPSHOT = r"""
     return out;
   }
 
+  function isVisible(el){
+    if (!el) return false;
+    if (el.offsetParent !== null) return true;
+    var st = window.getComputedStyle(el);
+    return st && st.display !== 'none' && st.visibility !== 'hidden' && st.opacity !== '0';
+  }
+
+  function collapseText(s){
+    return (s || '').replace(/\s+/g, ' ').trim();
+  }
+
   function collectDayRoots(){
     var roots = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
+
     if (roots.length === 0) {
       var nameNodes = Array.from(document.querySelectorAll('.dayName'));
       var fallback = [];
@@ -472,21 +640,66 @@ JS_MENU_SNAPSHOT = r"""
       }
       roots = uniqueElements(fallback);
     }
+
+    if (roots.length === 0) {
+      var toolbar = document.querySelector('.menuToolBar, .menuToolBarWrapper, .menuSplitContent') || document.body;
+      var nodes = Array.from(toolbar.querySelectorAll('p,button,div,a,span'));
+      var textFallback = [];
+      for (var j = 0; j < nodes.length; j++) {
+        var el = nodes[j];
+        if (!isVisible(el)) continue;
+        var txt = collapseText(el.textContent);
+        if (!txt || txt.length > 40) continue;
+        var hasDay = /\b(Mo|Di|Mi|Do|Fr)\b/.test(txt);
+        var hasDate = /\b\d{2}\.\d{2}\.?\b/.test(txt);
+        if (hasDay && hasDate) textFallback.push(el);
+      }
+      roots = uniqueElements(textFallback);
+    }
+
     return roots;
   }
 
+  function parseCandidate(el){
+    var n = el.querySelector ? el.querySelector('.dayName') : null;
+    var d = el.querySelector ? el.querySelector('.dayDate') : null;
+    var txt = collapseText(el.textContent);
+    var day = n ? collapseText(n.textContent) : '';
+    var date = d ? collapseText(d.textContent) : '';
+
+    if (!day) {
+      var m1 = txt.match(/\b(Mo|Di|Mi|Do|Fr)\b/);
+      if (m1) day = m1[1];
+    }
+    if (!date) {
+      var m2 = txt.match(/\b(\d{2}\.\d{2}\.?)\b/);
+      if (m2) date = m2[1];
+    }
+
+    var cls = el.className || '';
+    var active = cls.indexOf('background-lightGrey') !== -1 ||
+                 cls.indexOf('text-ci') !== -1 ||
+                 cls.indexOf('active') !== -1 ||
+                 cls.indexOf('selected') !== -1 ||
+                 el.getAttribute('aria-selected') === 'true';
+
+    return {
+      day: day,
+      date: date,
+      text: txt,
+      className: cls,
+      active: active
+    };
+  }
+
   function activeDayInfo(){
-    var nodes = collectDayRoots();
+    var nodes = collectDayRoots().map(parseCandidate);
     for (var i = 0; i < nodes.length; i++) {
       var el = nodes[i];
-      var cls = el.className || '';
-      var active = cls.indexOf('background-lightGrey') !== -1 || cls.indexOf('text-ci') !== -1;
-      if (active) {
-        var n = el.querySelector('.dayName');
-        var d = el.querySelector('.dayDate');
+      if (el.active) {
         return {
-          name: n ? n.textContent.trim() : '',
-          date: d ? d.textContent.trim() : ''
+          name: el.day || '',
+          date: el.date || ''
         };
       }
     }
@@ -554,19 +767,7 @@ JS_MENU_SNAPSHOT = r"""
 """
 
 
-# ── DOM- / Klick-Helfer ────────────────────────────────────────────────────────
-def _normalize_day_date(s):
-    return (s or "").strip().rstrip(".")
-
-
-def _date_token_for_button(date_obj):
-    return date_obj.strftime("%d.%m.")
-
-
-def _weekday_token_for_button(date_obj):
-    return GERMAN_DAY_SHORT[date_obj.weekday()]
-
-
+# ── DOM / Klick-Helfer ─────────────────────────────────────────────────────────
 def _dump_debug(page, label):
     try:
         dbg = page.evaluate(JS_DEBUG_DOM)
@@ -575,14 +776,14 @@ def _dump_debug(page, label):
         print(f"[debug:{label}] Fehler: {e}")
 
 
-def _get_day_buttons(page):
+def _get_day_candidates(page):
     try:
-        vals = json.loads(page.evaluate(JS_DAY_BUTTONS))
+        vals = json.loads(page.evaluate(JS_DAY_CANDIDATES))
         if isinstance(vals, list):
-            print(f"[day-buttons] {vals}")
+            print(f"[day-candidates] {vals}")
             return vals
     except Exception as e:
-        print(f"[day-buttons] Fehler: {e}")
+        print(f"[day-candidates] Fehler: {e}")
     return []
 
 
@@ -631,6 +832,21 @@ def _get_menu_snapshot(page):
             "activeWeekValue": "",
             "activeWeekNumber": "",
         }
+
+
+def _current_view_matches_target(page, date_obj):
+    snap = _get_menu_snapshot(page)
+    target_day = _weekday_token_for_button(date_obj)
+    target_date = _normalize_day_date(_date_token_for_button(date_obj))
+    target_prefix = date_obj.strftime("%Y-%m-%d")
+
+    if snap.get("activeDayName") == target_day and _normalize_day_date(snap.get("activeDayDate")) == target_date:
+        return True
+
+    if (snap.get("selectValue") or "").startswith(target_prefix):
+        return True
+
+    return False
 
 
 def _click_weiter(page):
@@ -790,7 +1006,7 @@ def setup_eurest(page):
             pass
 
     if not loaded:
-        print("[setup] WARNUNG: Weder dayBtn noch menuListWrapper rechtzeitig gefunden")
+        print("[setup] WARNUNG: Weder Tagesnavigation noch menuListWrapper rechtzeitig gefunden")
 
     _dump_debug(page, "final")
     print("[setup] Abgeschlossen")
@@ -802,19 +1018,20 @@ def _current_week_value_candidates(expected_date):
     return list(dict.fromkeys(vals))
 
 
-def _target_day_present_in_buttons(page, date_obj):
-    target_date = _normalize_day_date(_date_token_for_button(date_obj))
+def _target_day_present_in_candidates(page, date_obj):
     target_day = _weekday_token_for_button(date_obj)
+    target_date = _normalize_day_date(_date_token_for_button(date_obj))
+    candidates = _get_day_candidates(page)
 
-    for btn in _get_day_buttons(page):
-        day_name = (btn.get("day") or "").strip()
-        day_date = _normalize_day_date(btn.get("date") or "")
-        full_text = btn.get("text") or ""
+    for c in candidates:
+        c_day = (c.get("day") or "").strip()
+        c_date = _normalize_day_date(c.get("date") or "")
+        c_text = c.get("text") or ""
 
-        if day_name == target_day and day_date == target_date:
+        if c_day == target_day and c_date == target_date:
             return True
 
-        if target_day in full_text and target_date in _normalize_day_date(full_text):
+        if target_day in c_text and target_date in _normalize_day_date(c_text):
             return True
 
     return False
@@ -833,17 +1050,22 @@ def click_week_button(page, expected_date):
             (params) => {
               function fire(el){
                 try { el.scrollIntoView({block:'center', inline:'center'}); } catch(e) {}
-                var types = ['pointerdown','mousedown','mouseup','click'];
-                for (var i = 0; i < types.length; i++) {
-                  try {
-                    el.dispatchEvent(new MouseEvent(types[i], {
-                      bubbles: true,
-                      cancelable: true,
-                      view: window
-                    }));
-                  } catch(e) {}
+                var nodes = [el, el.parentElement];
+                for (var n = 0; n < nodes.length; n++) {
+                  var node = nodes[n];
+                  if (!node) continue;
+                  var types = ['pointerdown','mousedown','mouseup','click'];
+                  for (var i = 0; i < types.length; i++) {
+                    try {
+                      node.dispatchEvent(new MouseEvent(types[i], {
+                        bubbles: true,
+                        cancelable: true,
+                        view: window
+                      }));
+                    } catch(e) {}
+                  }
+                  try { node.click(); } catch(e) {}
                 }
-                try { el.click(); } catch(e) {}
               }
 
               var buttons = Array.from(document.querySelectorAll('.menuWeekSelection button'));
@@ -869,11 +1091,11 @@ def click_week_button(page, expected_date):
         return False
 
 
-def click_day_button(page, date_obj):
+def click_day_candidate(page, date_obj):
     target_day = _weekday_token_for_button(date_obj)
     target_date = _date_token_for_button(date_obj)
 
-    print(f"[dayBtn] Ziel: {target_day} {target_date}")
+    print(f"[day] Ziel: {target_day} {target_date}")
 
     try:
         result = page.evaluate(
@@ -892,10 +1114,24 @@ def click_day_button(page, date_obj):
                 return out;
               }
 
-              function norm(s){ return (s || '').trim().replace(/\\.$/, ''); }
+              function isVisible(el){
+                if (!el) return false;
+                if (el.offsetParent !== null) return true;
+                var st = window.getComputedStyle(el);
+                return st && st.display !== 'none' && st.visibility !== 'hidden' && st.opacity !== '0';
+              }
+
+              function collapseText(s){
+                return (s || '').replace(/\s+/g, ' ').trim();
+              }
+
+              function normDate(s){
+                return (s || '').trim().replace(/\.$/, '');
+              }
 
               function collectDayRoots(){
                 var roots = Array.from(document.querySelectorAll('.dayBtn, p.dayBtn, [class*="dayBtn"]'));
+
                 if (roots.length === 0) {
                   var nameNodes = Array.from(document.querySelectorAll('.dayName'));
                   var fallback = [];
@@ -908,53 +1144,75 @@ def click_day_button(page, date_obj):
                   }
                   roots = uniqueElements(fallback);
                 }
+
+                if (roots.length === 0) {
+                  var toolbar = document.querySelector('.menuToolBar, .menuToolBarWrapper, .menuSplitContent') || document.body;
+                  var nodes = Array.from(toolbar.querySelectorAll('p,button,div,a,span'));
+                  var textFallback = [];
+                  for (var j = 0; j < nodes.length; j++) {
+                    var el = nodes[j];
+                    if (!isVisible(el)) continue;
+                    var txt = collapseText(el.textContent);
+                    if (!txt || txt.length > 40) continue;
+                    var hasDay = /\b(Mo|Di|Mi|Do|Fr)\b/.test(txt);
+                    var hasDate = /\b\d{2}\.\d{2}\.?\b/.test(txt);
+                    if (hasDay && hasDate) textFallback.push(el);
+                  }
+                  roots = uniqueElements(textFallback);
+                }
+
                 return roots;
               }
 
               function fire(el){
-                try { el.scrollIntoView({block:'center', inline:'center'}); } catch(e) {}
-
-                var nodes = [el, el.parentElement];
-                for (var n = 0; n < nodes.length; n++) {
-                  var node = nodes[n];
-                  if (!node) continue;
-
+                var current = el;
+                for (var depth = 0; depth < 5 && current; depth++) {
+                  try { current.scrollIntoView({block:'center', inline:'center'}); } catch(e) {}
                   var types = ['pointerdown','mousedown','mouseup','click'];
                   for (var i = 0; i < types.length; i++) {
                     try {
-                      node.dispatchEvent(new MouseEvent(types[i], {
+                      current.dispatchEvent(new MouseEvent(types[i], {
                         bubbles: true,
                         cancelable: true,
                         view: window
                       }));
                     } catch(e) {}
                   }
-
-                  try { node.click(); } catch(e) {}
+                  try { current.click(); } catch(e) {}
+                  current = current.parentElement;
                 }
               }
 
               var nodes = collectDayRoots();
               for (var i = 0; i < nodes.length; i++) {
                 var el = nodes[i];
-                var n = el.querySelector('.dayName');
-                var d = el.querySelector('.dayDate');
+                var n = el.querySelector ? el.querySelector('.dayName') : null;
+                var d = el.querySelector ? el.querySelector('.dayDate') : null;
 
-                var dayName = n ? n.textContent.trim() : '';
-                var dayDate = d ? d.textContent.trim() : '';
-                var txt = (el.textContent || '').replace(/\\s+/g, ' ').trim();
+                var dayName = n ? collapseText(n.textContent) : '';
+                var dayDate = d ? collapseText(d.textContent) : '';
+                var txt = collapseText(el.textContent);
+
+                if (!dayName) {
+                  var m1 = txt.match(/\b(Mo|Di|Mi|Do|Fr)\b/);
+                  if (m1) dayName = m1[1];
+                }
+                if (!dayDate) {
+                  var m2 = txt.match(/\b(\d{2}\.\d{2}\.?)\b/);
+                  if (m2) dayDate = m2[1];
+                }
 
                 var matchByParts =
                   dayName === params.day &&
-                  norm(dayDate) === norm(params.date);
+                  normDate(dayDate) === normDate(params.date);
 
                 var matchByText =
                   txt.indexOf(params.day) !== -1 &&
-                  txt.indexOf(norm(params.date)) !== -1;
+                  txt.indexOf(normDate(params.date)) !== -1;
 
                 if (matchByParts || matchByText) {
                   fire(el);
-                  return 'clicked:' + dayName + ' ' + dayDate;
+                  return 'clicked:' + dayName + ' ' + dayDate + ' text=' + txt;
                 }
               }
 
@@ -963,10 +1221,10 @@ def click_day_button(page, date_obj):
             """,
             {"day": target_day, "date": target_date}
         )
-        print(f"[dayBtn] Ergebnis: {result!r}")
+        print(f"[day] Ergebnis: {result!r}")
         return "clicked:" in str(result)
     except Exception as e:
-        print(f"[dayBtn] Klick-Fehler: {e}")
+        print(f"[day] Klick-Fehler: {e}")
         return False
 
 
@@ -1147,21 +1405,37 @@ def scrape_day(page, date_obj):
         f"first={before.get('firstMeals')}"
     )
 
+    if _current_view_matches_target(page, date_obj):
+        print("[scrape] Zieltag scheint bereits aktiv zu sein -> parse aktuelle Ansicht")
+        for attempt in range(1, 3):
+            try:
+                raw_json = page.evaluate(JS_EXTRACT)
+                if raw_json and raw_json not in ("[]", "null", ""):
+                    dishes = parse_eurest_dom(raw_json)
+                    print(f"[dom-current] {len(dishes)} Gerichte")
+                    print(f"[dom-current] erste Gerichte: {[d['name'] for d in dishes[:3]]}")
+                    return dishes
+            except Exception as e:
+                print(f"[dom-current] Fehler (Versuch {attempt}/2): {e}")
+            page.wait_for_timeout(800)
+
     clicked = False
     used_method = None
 
-    # Erst globaler DayBtn-Pfad
-    clicked = click_day_button(page, date_obj)
+    # 1) Text-/Toolbar-/dayBtn-basierter Klick
+    clicked = click_day_candidate(page, date_obj)
     if clicked:
-        used_method = "dayBtn"
-    else:
-        print("[scrape] dayBtn-Klick nicht erfolgreich -> Fallback select.menuDaySelect")
+        used_method = "candidate"
+
+    # 2) select-Fallback
+    if not clicked:
+        print("[scrape] Kandidaten-Klick nicht erfolgreich -> Fallback select.menuDaySelect")
         clicked = click_day_select(page, date_obj)
         if clicked:
             used_method = "select"
 
     if not clicked:
-        print(f"[scrape] Konnte Zieltag {date_obj} weder per dayBtn noch per select waehlen")
+        print(f"[scrape] Konnte Zieltag {date_obj} weder per Kandidatenklick noch per select waehlen")
         return []
 
     expected_day = _date_token_for_button(date_obj)
@@ -1788,30 +2062,29 @@ def main():
                 setup_eurest(page)
                 ensure_target_week(page, target_date)
 
-                day_buttons = _get_day_buttons(page)
-                print(f"[main] gefundene dayBtns: {len(day_buttons)}")
+                day_candidates = _get_day_candidates(page)
+                print(f"[main] gefundene dayCandidates: {len(day_candidates)}")
 
-                target_visible_in_buttons = _target_day_present_in_buttons(page, target_date)
+                target_visible_in_candidates = _target_day_present_in_candidates(page, target_date)
                 available_values = _get_available_dates(page)
                 target_str = target_date.strftime("%Y-%m-%d")
                 target_visible_in_select = any(v.startswith(target_str) for v in available_values)
 
-                print(f"[main] target_visible_in_buttons={target_visible_in_buttons}")
+                print(f"[main] target_visible_in_candidates={target_visible_in_candidates}")
                 print(f"[main] target_visible_in_select={target_visible_in_select}")
-
-                if not target_visible_in_buttons and not target_visible_in_select:
-                    _dump_debug(page, "day-target-missing-all")
-                    browser.close()
-                    print(f"FEHLER: Ziel-Datum {target_str} ist weder global als .dayBtn noch im menuDaySelect vorhanden.")
-                    sys.exit(1)
+                print(f"[main] current_view_matches_target={_current_view_matches_target(page, target_date)}")
 
                 dishes = scrape_day(page, target_date)
-                browser.close()
 
-            if not dishes:
-                print("FEHLER: Kein Feiertag, aber keine Gerichte fuer den Ziel-Tag gefunden.")
-                print("FEHLER: Abbruch, damit latest-Bild NICHT mit leerem/falschem Inhalt ueberschrieben wird.")
-                sys.exit(1)
+                if not dishes:
+                    _dump_debug(page, "day-failed")
+                    _save_debug_dump(page, "day-failed")
+                    browser.close()
+                    print("FEHLER: Zieltag konnte nicht robust geladen oder geparst werden.")
+                    print("FEHLER: Abbruch, damit latest-Bild NICHT ueberschrieben wird.")
+                    sys.exit(1)
+
+                browser.close()
 
         print(f"Gerichte    : {len(dishes)}")
         img = render_day(dishes, target_date, kw, label, local, is_holiday)
@@ -1877,20 +2150,13 @@ def main():
             for date_obj in scrape_dates:
                 dk = day_key(date_obj)
                 print(f"[week] scrape {dk}")
-
-                target_visible_in_buttons = _target_day_present_in_buttons(page, date_obj)
-                target_visible_in_select = any(
-                    v.startswith(date_obj.strftime("%Y-%m-%d"))
-                    for v in _get_available_dates(page)
-                )
-
-                if not target_visible_in_buttons and not target_visible_in_select:
-                    print(f"[week] WARNUNG: {date_obj} weder global als dayBtn noch im menuDaySelect vorhanden -> skip")
-                    continue
-
                 d2 = scrape_day(page, date_obj)
                 if d2:
                     week_data[dk] = d2
+
+            if not week_data:
+                _dump_debug(page, "week-failed")
+                _save_debug_dump(page, "week-failed")
 
             browser.close()
 
