@@ -9,12 +9,14 @@ Umgebungsvariablen:
   DISPLAY_DAY           Ziel-Tag manuell: monday|tuesday|wednesday|thursday|friday
                         (leer = Automatik: vor 13:30 heute, ab 13:30 naechster Werktag)
 
-Wichtige Aenderungen:
-- day-Mode rendert nur einen Tag als 2-spaltige Kachelmatrix.
+Wichtige Verhaltensaenderungen:
+- day-Mode rendert nur genau einen Tag als 2-spaltige Kachelmatrix.
+- Vor der Tagesauswahl wird explizit versucht, die richtige KW anzuklicken.
+- Wenn der Zieltag im day-Mode nicht wirklich im menuDaySelect vorhanden ist
+  oder keine Gerichte extrahiert werden koennen, bricht das Script mit Exit 1 ab.
+  Dadurch wird latest_<location>.jpg NICHT mit einem falschen/leeren Bild ueberschrieben.
 - Pro Location wird current_<location>.json geschrieben, damit RSS/Workflow
-  nicht mehr "irgendein" altes Bild anhand des Dateinamens waehlen.
-- Das Warten nach menuDaySelect ist robuster: nicht nur meal-count, sondern
-  stabiler Inhalts-Snapshot und korrekter Select-Wert.
+  nicht mehr per Dateinamen-Sortierung das falsche Bild waehlen.
 """
 
 import os
@@ -72,7 +74,6 @@ R_ODD = (240, 246, 252)
 R_EVEN = (255, 255, 255)
 C_VG = (34, 139, 34)
 C_V = (100, 180, 60)
-C_TXT = (30, 30, 30)
 WHITE = (255, 255, 255)
 GRID = (190, 210, 230)
 C_HOL_BG = (220, 220, 220)
@@ -210,7 +211,6 @@ def resolve_target_date(local_dt, holidays_all):
         days_ahead = (target_weekday - today.weekday()) % 7
         candidate = today + timedelta(days=days_ahead)
 
-        # Falls per DISPLAY_DAY ein Wochenende oder Feiertag getroffen wuerde, weiter springen
         for _ in range(14):
             if candidate.weekday() < 5 and candidate not in holidays_all:
                 break
@@ -373,6 +373,24 @@ JS_MENU_SNAPSHOT = r"""
 })()
 """
 
+JS_KW_CANDIDATES = r"""
+(function(){
+  var rx = /^KW\s+\d{1,2}$/i;
+  var out = [];
+  var seen = new Set();
+  var els = Array.from(document.querySelectorAll('button, [role="button"], a, div, span'));
+  for (var el of els) {
+    if (!el || !el.offsetParent) continue;
+    var txt = (el.textContent || '').replace(/\s+/g, ' ').trim();
+    if (rx.test(txt) && !seen.has(txt)) {
+      seen.add(txt);
+      out.push(txt);
+    }
+  }
+  return JSON.stringify(out);
+})()
+"""
+
 
 # ── Scraper ────────────────────────────────────────────────────────────────────
 def _dump_debug(page, label):
@@ -513,6 +531,7 @@ def setup_eurest(page):
         for sel in ["button:has-text('nein')", "button:has-text('Nein')", "button:has-text('no')"]:
             try:
                 page.click(sel, timeout=2000)
+                print("[setup] Filter-Modal mit 'Nein' geschlossen")
                 break
             except Exception:
                 pass
@@ -570,6 +589,139 @@ def _get_menu_snapshot(page):
             "signature": "",
             "firstMeals": [],
         }
+
+
+def _get_kw_candidates(page):
+    try:
+        vals = json.loads(page.evaluate(JS_KW_CANDIDATES))
+        print(f"[kw] sichtbar: {vals}")
+        return vals if isinstance(vals, list) else []
+    except Exception as e:
+        print(f"[kw] Kandidaten-Fehler: {e}")
+        return []
+
+
+def _wait_for_any_stable_menu(page, before_snapshot, max_wait_ms=8000, interval_ms=500):
+    before_sig = before_snapshot.get("signature", "")
+    last_sig = None
+    stable = 0
+    last_snapshot = before_snapshot
+    polls = max_wait_ms // interval_ms
+
+    for idx in range(polls):
+        page.wait_for_timeout(interval_ms)
+        snap = _get_menu_snapshot(page)
+        last_snapshot = snap
+        current_sig = snap.get("signature", "")
+        meal_count = snap.get("mealCount", 0)
+        current_select = snap.get("selectValue", "")
+
+        print(
+            f"  [kw-stable] poll={idx+1}/{polls} "
+            f"select={current_select!r} meals={meal_count} siglen={len(current_sig)} "
+            f"first={snap.get('firstMeals', [])}"
+        )
+
+        if meal_count <= 0 or not current_sig:
+            stable = 0
+            last_sig = current_sig
+            continue
+
+        if current_sig == last_sig:
+            stable += 1
+        else:
+            stable = 0
+
+        last_sig = current_sig
+
+        if stable >= 2 and (current_sig != before_sig or meal_count > 0):
+            print("  [kw-stable] OK - Inhalte sind stabil")
+            return snap
+
+    print("  [kw-stable] WARNUNG - Timeout, nutze letzten Snapshot")
+    return last_snapshot
+
+
+def _click_kw(page, target_kw_text):
+    # 1) role=button exact
+    try:
+        page.get_by_role("button", name=target_kw_text).click(timeout=2000)
+        print(f"[kw] click via role/button: {target_kw_text}")
+        return True
+    except Exception:
+        pass
+
+    # 2) text exact
+    try:
+        page.get_by_text(target_kw_text, exact=True).click(timeout=2000)
+        print(f"[kw] click via text exact: {target_kw_text}")
+        return True
+    except Exception:
+        pass
+
+    # 3) JS-Klick auf passendes sichtbares Element oder naechsten klickbaren Parent
+    try:
+        clicked = page.evaluate(
+            """
+            (targetText) => {
+              var nodes = Array.from(document.querySelectorAll('button, [role="button"], a, div, span'));
+              function isVisible(el){ return !!(el && el.offsetParent); }
+              function clickEl(el){
+                try { el.click(); return true; } catch(e) {}
+                return false;
+              }
+              for (var el of nodes) {
+                if (!isVisible(el)) continue;
+                var txt = (el.textContent || '').replace(/\\s+/g, ' ').trim();
+                if (txt === targetText) {
+                  if (clickEl(el)) return 'clicked-self';
+                  var p = el.parentElement;
+                  var hops = 0;
+                  while (p && hops < 5) {
+                    if (isVisible(p) && clickEl(p)) return 'clicked-parent:' + p.tagName;
+                    p = p.parentElement;
+                    hops++;
+                  }
+                }
+              }
+              return 'no-match';
+            }
+            """,
+            target_kw_text
+        )
+        print(f"[kw] JS-Klick Ergebnis: {clicked!r}")
+        return "clicked" in str(clicked)
+    except Exception as e:
+        print(f"[kw] JS-Klick Fehler: {e}")
+        return False
+
+
+def ensure_target_week(page, expected_date):
+    iso_year, iso_week, _ = expected_date.isocalendar()
+    target_kw_text = f"KW {iso_week:02d}"
+    print(f"[kw] Zielwoche fuer {expected_date}: {target_kw_text} (ISO {iso_year})")
+
+    before_snapshot = _get_menu_snapshot(page)
+    before_dates = _get_available_dates(page)
+    _get_kw_candidates(page)
+
+    # Falls Ziel-Datum bereits vorhanden ist, keine Umschaltung noetig.
+    target_str = expected_date.strftime("%Y-%m-%d")
+    if any(v.startswith(target_str) for v in before_dates):
+        print(f"[kw] Ziel-Datum {target_str} bereits in Optionen vorhanden")
+        return before_dates
+
+    clicked = _click_kw(page, target_kw_text)
+    if clicked:
+        _wait_for_any_stable_menu(page, before_snapshot, max_wait_ms=8000, interval_ms=500)
+        page.wait_for_timeout(1200)
+        _dump_debug(page, f"kw-{target_kw_text}")
+    else:
+        print(f"[kw] WARNUNG: {target_kw_text} konnte nicht aktiv geklickt werden")
+
+    after_dates = _get_available_dates(page)
+    print(f"[kw] Optionen nach KW-Pruefung: {after_dates}")
+    return after_dates
 
 
 def click_day(page, date_obj, available_values):
@@ -835,7 +987,6 @@ def _find_uniform_font_size(draw, texts, max_w, max_h, size_start=19, size_min=1
 
 # ── Render Tagesansicht: 2×N Matrix ───────────────────────────────────────────
 def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
-    """2-spaltige Kachel-Matrix. Kategorie klein oben in jeder Kachel."""
     img = Image.new("RGB", (W, H), (245, 248, 252))
     d = ImageDraw.Draw(img)
 
@@ -852,7 +1003,6 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     PAD = 7
     NCOLS = 2
 
-    # Header
     d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
     weekday_names = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag", "Sonntag"]
     day_str = f"{weekday_names[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}"
@@ -1301,6 +1451,7 @@ def main():
         print(f"Feiertag    : {is_holiday or 'nein'}")
 
         dishes = []
+
         if not is_holiday:
             with sync_playwright() as pw:
                 browser = pw.chromium.launch()
@@ -1308,10 +1459,27 @@ def main():
                     viewport={"width": 1400, "height": 900},
                     extra_http_headers={"Accept-Language": "de-DE,de;q=0.9,en;q=0.1"},
                 )
+
                 setup_eurest(page)
-                available_values = _get_available_dates(page)
+
+                # Zuerst versuchen, die passende KW sichtbar/aktiv zu schalten.
+                available_values = ensure_target_week(page, target_date)
+
+                target_str = target_date.strftime("%Y-%m-%d")
+                if not any(v.startswith(target_str) for v in available_values):
+                    _dump_debug(page, "day-target-missing")
+                    browser.close()
+                    print(f"FEHLER: Ziel-Datum {target_str} ist nach KW-Umschaltung nicht im menuDaySelect vorhanden.")
+                    print(f"FEHLER: Verfügbare Werte: {available_values}")
+                    sys.exit(1)
+
                 dishes = scrape_day(page, target_date, available_values)
                 browser.close()
+
+            if not dishes:
+                print("FEHLER: Kein Feiertag, aber keine Gerichte fuer den Ziel-Tag gefunden.")
+                print("FEHLER: Abbruch, damit latest-Bild NICHT mit leerem/falschem Inhalt ueberschrieben wird.")
+                sys.exit(1)
 
         print(f"Gerichte    : {len(dishes)}")
         img = render_day(dishes, target_date, kw, label, local, is_holiday)
@@ -1363,17 +1531,26 @@ def main():
         print(f"Scraping    : {[day_key(dt) for dt in scrape_dates]}")
 
         week_data = {}
+
         with sync_playwright() as pw:
             browser = pw.chromium.launch()
             page = browser.new_page(
                 viewport={"width": 1400, "height": 900},
                 extra_http_headers={"Accept-Language": "de-DE,de;q=0.9,en;q=0.1"},
             )
+
             setup_eurest(page)
-            available_values = _get_available_dates(page)
+
+            # Auch im week-Mode zunaechst die Ziel-KW scharf setzen.
+            available_values = ensure_target_week(page, target_monday)
 
             for date_obj in scrape_dates:
                 dk = day_key(date_obj)
+                target_str = date_obj.strftime("%Y-%m-%d")
+                if not any(v.startswith(target_str) for v in available_values):
+                    print(f"[week] WARNUNG: {target_str} nicht in menuDaySelect vorhanden -> skip")
+                    continue
+
                 d2 = scrape_day(page, date_obj, available_values)
                 if d2:
                     week_data[dk] = d2
@@ -1383,7 +1560,7 @@ def main():
         print(f"\nErgebnis    : {list(week_data.keys())}  ({len(week_data)}/{len(scrape_dates)})")
         if not week_data:
             print("Keine Speisedaten – kein Bild.")
-            sys.exit(0)
+            sys.exit(1)
 
         img = render_week(week_data, kw, label, local, holiday_map, today_date, target_monday)
         img.save(str(out_path), "JPEG", quality=92)
