@@ -2571,7 +2571,7 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
         is_hol = holiday_map[day] is not None
         is_past = _is_past(day, today_date)
         is_today = _is_today(day, today_date)
-        col = (220, 150, 0) if is_today else (C_HOL_HDR if is_hol else ((160, 160, 160) if is_past else LIGHT)))
+        col = (220, 150, 0) if is_today else (C_HOL_HDR if is_hol else ((160, 160, 160) if is_past else LIGHT))
         d.rectangle([(x, y), (x + dw - 1, y + DAY_H - 1)], fill=col)
         b = d.textbbox((0, 0), day, font=fday)
         d.text((x + (dw - (b[2] - b[0])) // 2, y + (DAY_H - (b[3] - b[1])) // 2), day, font=fday, fill=WHITE)
