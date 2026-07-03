@@ -37,10 +37,15 @@ permissions:
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+concurrency:
+  group: kantine-screenshot-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   scrape:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
           - location_id: '8949'
@@ -53,48 +58,59 @@ jobs:
 
       - name: Skip if location filter set
         id: check
+        shell: bash
         run: |
           LOC_INPUT="${{ github.event.inputs.location }}"
           if [ -z "$LOC_INPUT" ] || [ "$LOC_INPUT" = "both" ]; then
-            echo "SKIP=false" >> $GITHUB_ENV
+            echo "SKIP=false" >> "$GITHUB_ENV"
           elif [ "$LOC_INPUT" = "${{ matrix.location_name }}" ]; then
-            echo "SKIP=false" >> $GITHUB_ENV
+            echo "SKIP=false" >> "$GITHUB_ENV"
           else
-            echo "SKIP=true" >> $GITHUB_ENV
+            echo "SKIP=true" >> "$GITHUB_ENV"
           fi
+          echo "LOC_INPUT=${LOC_INPUT:-<leer>}"
 
       - name: Determine WEEK_OFFSET
         if: env.SKIP != 'true'
+        shell: bash
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "WEEK_OFFSET=${{ github.event.inputs.week_offset }}" >> $GITHUB_ENV
+            echo "WEEK_OFFSET=${{ github.event.inputs.week_offset }}" >> "$GITHUB_ENV"
           else
-            echo "WEEK_OFFSET=0" >> $GITHUB_ENV
+            echo "WEEK_OFFSET=0" >> "$GITHUB_ENV"
           fi
+          echo "WEEK_OFFSET=$WEEK_OFFSET"
 
       - name: Determine DISPLAY_MODE
         if: env.SKIP != 'true'
+        shell: bash
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "DISPLAY_MODE=${{ github.event.inputs.display_mode }}" >> $GITHUB_ENV
+            echo "DISPLAY_MODE=${{ github.event.inputs.display_mode }}" >> "$GITHUB_ENV"
           else
-            echo "DISPLAY_MODE=day" >> $GITHUB_ENV
+            echo "DISPLAY_MODE=day" >> "$GITHUB_ENV"
           fi
+          echo "DISPLAY_MODE=$DISPLAY_MODE"
 
       - name: Determine DISPLAY_DAY
         if: env.SKIP != 'true'
+        shell: bash
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "DISPLAY_DAY=${{ github.event.inputs.display_day }}" >> $GITHUB_ENV
+            echo "DISPLAY_DAY=${{ github.event.inputs.display_day }}" >> "$GITHUB_ENV"
           else
-            echo "DISPLAY_DAY=" >> $GITHUB_ENV
+            echo "DISPLAY_DAY=" >> "$GITHUB_ENV"
           fi
+          echo "DISPLAY_DAY=${DISPLAY_DAY:-<leer>}"
 
       - name: Install dependencies
         if: env.SKIP != 'true'
+        shell: bash
         run: |
+          set -euo pipefail
           sudo apt-get update -q
-          sudo apt-get install -yq chromium-browser fonts-dejavu fonts-liberation
+          sudo apt-get install -yq chromium-browser fonts-dejavu fonts-liberation rsync
+          python -m pip install --upgrade pip
           pip install playwright Pillow
           python -m playwright install chromium
           python -m playwright install-deps chromium
@@ -103,20 +119,46 @@ jobs:
         if: env.SKIP != 'true'
         id: screenshot
         env:
-          EUREST_LOCATION_ID:   ${{ matrix.location_id }}
+          EUREST_LOCATION_ID: ${{ matrix.location_id }}
           EUREST_LOCATION_NAME: ${{ matrix.location_name }}
-        run: python scripts/take_screenshot.py
+          WEEK_OFFSET: ${{ env.WEEK_OFFSET }}
+          DISPLAY_MODE: ${{ env.DISPLAY_MODE }}
+          DISPLAY_DAY: ${{ env.DISPLAY_DAY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/take_screenshot.py
+          echo "Dateien nach Render:"
+          find docs/images -maxdepth 1 -type f | sort
 
-      - name: Generate RSS feeds
+      - name: Prepare location artifact
         if: env.SKIP != 'true' && steps.screenshot.outcome == 'success'
-        run: python scripts/generate_rss.py
+        shell: bash
+        run: |
+          set -euo pipefail
 
-      - name: Upload docs artifact
+          LOC="${{ matrix.location_name }}"
+          rm -rf artifact
+          mkdir -p artifact/docs/images
+
+          test -f "docs/images/latest_${LOC}.jpg"
+          test -f "docs/images/current_${LOC}.json"
+
+          cp "docs/images/latest_${LOC}.jpg" "artifact/docs/images/"
+          cp "docs/images/current_${LOC}.json" "artifact/docs/images/"
+
+          find docs/images -maxdepth 1 -type f -name "kantine_*_${LOC}.jpg" -exec cp {} artifact/docs/images/ \;
+
+          echo "Artifact-Inhalt:"
+          find artifact -maxdepth 4 -type f | sort
+
+      - name: Upload location artifact
         if: env.SKIP != 'true' && steps.screenshot.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: docs-${{ matrix.location_name }}
-          path: docs/
+          path: artifact/docs
+          if-no-files-found: error
           retention-days: 1
 
       - name: Upload debug artifacts
@@ -125,12 +167,13 @@ jobs:
         with:
           name: kantine-debug-${{ matrix.location_name }}-${{ github.run_number }}
           path: docs/images/
+          if-no-files-found: warn
           retention-days: 10
 
   commit:
     needs: scrape
     runs-on: ubuntu-latest
-    if: always() && needs.scrape.result != 'failure'
+    if: always()
 
     steps:
       - uses: actions/checkout@v4
@@ -139,21 +182,78 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: docs-schaeffler
-          path: docs/
+          path: incoming/schaeffler
         continue-on-error: true
 
       - name: Download aumovio artifact
         uses: actions/download-artifact@v4
         with:
           name: docs-aumovio
-          path: docs/
+          path: incoming/aumovio
         continue-on-error: true
 
-      - name: Commit and push
+      - name: Merge downloaded artifacts
+        shell: bash
         run: |
-          git config user.name  "github-actions[bot]"
+          set -euo pipefail
+          mkdir -p docs/images
+
+          if [ -d "incoming/schaeffler/docs" ]; then
+            echo "Merging Schaeffler artifact..."
+            rsync -av "incoming/schaeffler/docs/" "docs/"
+          else
+            echo "Kein Schaeffler-Artifact vorhanden."
+          fi
+
+          if [ -d "incoming/aumovio/docs" ]; then
+            echo "Merging Aumovio artifact..."
+            rsync -av "incoming/aumovio/docs/" "docs/"
+          else
+            echo "Kein Aumovio-Artifact vorhanden."
+          fi
+
+          echo "Finale Dateien nach Merge:"
+          find docs -maxdepth 3 -type f | sort
+
+      - name: Generate RSS feeds from manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python scripts/generate_rss.py
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          MODE="day"
+          WEEK_OFFSET="0"
+          DISPLAY_DAY=""
+
+          if [ "${GITHUB_EVENT_NAME}" = "workflow_dispatch" ]; then
+            if [ -n "${{ github.event.inputs.display_mode }}" ]; then
+              MODE="${{ github.event.inputs.display_mode }}"
+            fi
+            if [ -n "${{ github.event.inputs.week_offset }}" ]; then
+              WEEK_OFFSET="${{ github.event.inputs.week_offset }}"
+            fi
+            DISPLAY_DAY="${{ github.event.inputs.display_day }}"
+          fi
+
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
           git add docs/
-          git diff --cached --quiet && echo "Keine Aenderungen – nichts zu committen" && exit 0
-          git commit -m "chore: kantine update $(date -u +%Y-%m-%d) MODE=${DISPLAY_MODE:-day}"
+
+          if git diff --cached --quiet; then
+            echo "Keine Aenderungen – nichts zu committen"
+            exit 0
+          fi
+
+          MSG="chore: kantine update $(date -u +%Y-%m-%d) MODE=${MODE} WEEK_OFFSET=${WEEK_OFFSET}"
+          if [ -n "$DISPLAY_DAY" ]; then
+            MSG="${MSG} DISPLAY_DAY=${DISPLAY_DAY}"
+          fi
+
+          git commit -m "$MSG"
           git push
