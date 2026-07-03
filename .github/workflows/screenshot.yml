@@ -20,15 +20,10 @@ on:
         required: false
         default: ''
   schedule:
-    # Mo-Do 11:30 UTC = 13:30 CEST -> naechster Tag ab jetzt (heutiger Tag bis 13:29)
     - cron: '30 11 * * 1-4'
-    # Mo-Do 05:00 UTC = 07:00 CEST -> heutiger Tag
     - cron: '0 5 * * 1-4'
-    # Fr 05:00 UTC = 07:00 CEST -> Freitag
     - cron: '0 5 * * 5'
-    # Fr 11:30 UTC = 13:30 CEST -> Montag naechste Woche
     - cron: '30 11 * * 5'
-    # Sa + So 08:00 UTC = 10:00 CEST -> Montag naechste Woche
     - cron: '0 8 * * 6,0'
 
 permissions:
@@ -79,7 +74,7 @@ jobs:
           else
             echo "WEEK_OFFSET=0" >> "$GITHUB_ENV"
           fi
-          echo "WEEK_OFFSET=$WEEK_OFFSET"
+          echo "WEEK_OFFSET=${WEEK_OFFSET:-<leer>}"
 
       - name: Determine DISPLAY_MODE
         if: env.SKIP != 'true'
@@ -90,7 +85,7 @@ jobs:
           else
             echo "DISPLAY_MODE=day" >> "$GITHUB_ENV"
           fi
-          echo "DISPLAY_MODE=$DISPLAY_MODE"
+          echo "DISPLAY_MODE=${DISPLAY_MODE:-<leer>}"
 
       - name: Determine DISPLAY_DAY
         if: env.SKIP != 'true'
@@ -146,7 +141,6 @@ jobs:
 
           cp "docs/images/latest_${LOC}.jpg" "artifact/docs/images/"
           cp "docs/images/current_${LOC}.json" "artifact/docs/images/"
-
           find docs/images -maxdepth 1 -type f -name "kantine_*_${LOC}.jpg" -exec cp {} artifact/docs/images/ \;
 
           echo "Artifact-Inhalt:"
@@ -183,14 +177,21 @@ jobs:
         with:
           name: docs-schaeffler
           path: incoming/schaeffler
-        continue-on-error: true
 
       - name: Download aumovio artifact
         uses: actions/download-artifact@v4
         with:
           name: docs-aumovio
           path: incoming/aumovio
-        continue-on-error: true
+
+      - name: Debug downloaded artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "Incoming dirs:"
+          find incoming -maxdepth 5 -type d | sort || true
+          echo "Incoming files:"
+          find incoming -maxdepth 5 -type f | sort || true
 
       - name: Merge downloaded artifacts
         shell: bash
@@ -198,16 +199,16 @@ jobs:
           set -euo pipefail
           mkdir -p docs/images
 
-          if [ -d "incoming/schaeffler/docs" ]; then
+          if [ -d "incoming/schaeffler/images" ]; then
             echo "Merging Schaeffler artifact..."
-            rsync -av "incoming/schaeffler/docs/" "docs/"
+            rsync -av "incoming/schaeffler/" "docs/"
           else
             echo "Kein Schaeffler-Artifact vorhanden."
           fi
 
-          if [ -d "incoming/aumovio/docs" ]; then
+          if [ -d "incoming/aumovio/images" ]; then
             echo "Merging Aumovio artifact..."
-            rsync -av "incoming/aumovio/docs/" "docs/"
+            rsync -av "incoming/aumovio/" "docs/"
           else
             echo "Kein Aumovio-Artifact vorhanden."
           fi
@@ -241,7 +242,7 @@ jobs:
           fi
 
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "github-actions[bot]@users.noreply.github.com]"
 
           git add docs/
 
