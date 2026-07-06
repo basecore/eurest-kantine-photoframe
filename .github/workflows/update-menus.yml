@@ -1,0 +1,92 @@
+name: Update Menus
+
+on:
+  workflow_dispatch:
+    inputs:
+      display_mode:
+        description: "Display mode: day or week"
+        required: true
+        default: "day"
+        type: choice
+        options:
+          - day
+          - week
+      display_day:
+        description: "Optional for day mode: monday|tuesday|wednesday|thursday|friday"
+        required: false
+        default: ""
+      week_offset:
+        description: "0 = current week/current-day logic, 1 = next week"
+        required: false
+        default: "0"
+      only:
+        description: "Optional filter: siemens or schaeffler,aumovio"
+        required: false
+        default: ""
+
+  schedule:
+    # Werktags morgens; bei Bedarf Uhrzeit anpassen.
+    - cron: "0 4 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-menus
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      PYTHONUNBUFFERED: "1"
+      TZ: Europe/Berlin
+
+      DISPLAY_MODE: ${{ github.event.inputs.display_mode || 'day' }}
+      DISPLAY_DAY: ${{ github.event.inputs.display_day || '' }}
+      WEEK_OFFSET: ${{ github.event.inputs.week_offset || '0' }}
+      ONLY: ${{ github.event.inputs.only || '' }}
+
+      # Optional als Repo Secret hinterlegen, falls benötigt
+      CATERINGPORTAL_SID: ${{ secrets.CATERINGPORTAL_SID }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pillow playwright pypdf
+          python -m playwright install --with-deps chromium
+
+      - name: Show effective settings
+        run: |
+          echo "DISPLAY_MODE=$DISPLAY_MODE"
+          echo "DISPLAY_DAY=$DISPLAY_DAY"
+          echo "WEEK_OFFSET=$WEEK_OFFSET"
+          echo "ONLY=$ONLY"
+
+      - name: Generate all menus
+        run: python generate_all.py
+
+      - name: Commit updated images and manifests
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add docs/images
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Update photoframe menus"
+          git push
