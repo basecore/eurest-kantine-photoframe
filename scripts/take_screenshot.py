@@ -55,7 +55,7 @@ LOCATION_LABEL = LOCATION_LABELS.get(LOCATION_ID, f"Kantine {LOCATION_ID}")
 
 CATEGORY_FALLBACK = {
     "8949": ["Suppe", "Ostenviertel", "Kumpfmühl", "Stadtamhof", "Reinhausen", "Salatbar", "Dessert"],
-    "8950": ["Suppe", "Ostenviertel", "Weichs", "Brandlberg", "Niederwinzer", "Oberwinzer", "Salatbar", "Dessert"],
+    "8950": ["Suppe", "Ostenviertel", "Weichs", "Brandlberg", "Niederwinzer", "Königswiesen", "Oberwinzer", "Salatbar", "Dessert"],
 }
 EXTRA_CATEGORY_CANDIDATES = [
     "EssBar Lunch 11:00-13:30",
@@ -77,7 +77,7 @@ GERMAN_DAY_LONG = ["Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "S
 
 OUT_DIR = Path("docs/images")
 OUT_DIR.mkdir(parents=True, exist_ok=True)
-MAX_KEEP = 14
+MAX_KEEP = 1
 W, H = 800, 600
 FOOTER_H = 20
 
@@ -1792,8 +1792,6 @@ def _extract_dishes_from_html_text(text, target_date, strict=True):
     return []
 
 
-
-
 def _network_fallback(page, capture, target_date):
     capture.dump(f"{LOCATION_NAME}_responses")
     json_payloads = []
@@ -1824,6 +1822,7 @@ def _network_fallback(page, capture, target_date):
             _save_text_dump(f"{LOCATION_NAME}_net_hit_url", best_menu["entry"].get("url", ""))
             return dishes
     candidates = capture.candidate_entries()
+
     def _prio(entry):
         url = entry.get("url", "")
         score = entry.get("score", 0)
@@ -1834,6 +1833,7 @@ def _network_fallback(page, capture, target_date):
         if "model=textblock" in url:
             return (1, score)
         return (0, score)
+
     candidates = sorted(candidates, key=_prio, reverse=True)
     print(f"[net] Kandidatenanzahl: {len(candidates)}")
     for entry in candidates[:15]:
@@ -1874,6 +1874,7 @@ def _network_fallback(page, capture, target_date):
     except Exception as e:
         print(f"[net] page.content()-Extraktion Fehler: {e}")
     return []
+
 
 # ── PDF-Fallback ───────────────────────────────────────────────────────────────
 def _http_get_bytes(url):
@@ -2292,8 +2293,10 @@ def _pdf_fallback_day(page, target_date, pdf_cache=None):
 
     return dishes
 
+
 EUREST_VEGAN_GERICHTMERKMAL_IDS = {"2"}
 EUREST_VEGETARIAN_GERICHTMERKMAL_IDS = {"1"}
+
 
 def _json_load_safe(text):
     try:
@@ -2301,13 +2304,16 @@ def _json_load_safe(text):
     except Exception:
         return None
 
+
 def _date_only_from_iso(value):
     return (value or "")[:10]
+
 
 def _parse_id_set(raw):
     if raw is None:
         return set()
     return {x.strip() for x in str(raw).split(",") if x and x.strip()}
+
 
 def _detect_vv_from_gerichtmerkmale(raw):
     ids = _parse_id_set(raw)
@@ -2316,6 +2322,7 @@ def _detect_vv_from_gerichtmerkmale(raw):
     if ids & EUREST_VEGETARIAN_GERICHTMERKMAL_IDS:
         return "V"
     return ""
+
 
 def _is_eurest_week_menu_payload(data):
     if not isinstance(data, dict) or data.get("success") is not True:
@@ -2330,6 +2337,7 @@ def _is_eurest_week_menu_payload(data):
             return True
     return False
 
+
 def _is_eurest_meal_category_payload(data):
     if not isinstance(data, dict) or data.get("success") is not True:
         return False
@@ -2341,6 +2349,7 @@ def _is_eurest_meal_category_payload(data):
         for row in content
     )
 
+
 def _format_eurest_price(value):
     if value in [None, ""]:
         return ""
@@ -2349,8 +2358,10 @@ def _format_eurest_price(value):
     except Exception:
         return _stringify_price(value)
 
+
 def _normalize_eurest_meal_name(name):
     return re.sub(r"\s+", " ", str(name or "").replace("_", " ")).strip()
+
 
 def _build_eurest_category_map(meal_category_payload):
     category_map = {}
@@ -2378,6 +2389,7 @@ def _build_eurest_category_map(meal_category_payload):
             category_map[cat_id] = candidate
     return category_map
 
+
 def _pick_newer_menu_row(existing, candidate):
     existing_g = existing.get("speiseplanAdvancedGericht", {}) if isinstance(existing, dict) else {}
     candidate_g = candidate.get("speiseplanAdvancedGericht", {}) if isinstance(candidate, dict) else {}
@@ -2390,6 +2402,7 @@ def _pick_newer_menu_row(existing, candidate):
     existing_id = existing_g.get("id") or 0
     candidate_id = candidate_g.get("id") or 0
     return candidate if candidate_id >= existing_id else existing
+
 
 def _menu_payload_target_score(menu_payload, target_date):
     target_iso = target_date.isoformat()
@@ -2410,6 +2423,7 @@ def _menu_payload_target_score(menu_payload, target_date):
             if _date_only_from_iso(g.get("datum")) == target_iso:
                 row_hits += 1
     return (row_hits, week_hits, len(menu_payload.get("content", [])))
+
 
 def _extract_dishes_from_eurest_menu_payload(menu_payload, meal_category_payload, target_date):
     if not _is_eurest_week_menu_payload(menu_payload):
@@ -2462,9 +2476,11 @@ def _extract_dishes_from_eurest_menu_payload(menu_payload, meal_category_payload
         print(f"[net-eurest] {meal['kategorie']}: {meal['name']} | {meal['preis']} | {meal['vv']}")
     return meals
 
+
 def _select_best_meal_category_payload(payload_candidates):
     if not payload_candidates:
         return None
+
     def score(item):
         entry = item["entry"]
         payload = item["payload"]
@@ -2472,11 +2488,14 @@ def _select_best_meal_category_payload(payload_candidates):
         content = payload.get("content", [])
         exact_model = 1 if "model=mealcategory" in url else 0
         return (exact_model, len(content), len(entry.get("body", "")))
+
     return sorted(payload_candidates, key=score, reverse=True)[0]
+
 
 def _select_best_menu_payload(payload_candidates, target_date):
     if not payload_candidates:
         return None
+
     def score(item):
         entry = item["entry"]
         payload = item["payload"]
@@ -2484,6 +2503,7 @@ def _select_best_menu_payload(payload_candidates, target_date):
         exact_model = 1 if "model=menu" in url else 0
         row_hits, week_hits, week_count = _menu_payload_target_score(payload, target_date)
         return (row_hits, week_hits, exact_model, week_count, len(entry.get("body", "")))
+
     best = sorted(payload_candidates, key=score, reverse=True)[0]
     rs = score(best)
     print(f"[net-eurest] best menu payload score={rs} url={best['entry'].get('url','')[:180]}")
@@ -2600,6 +2620,7 @@ def scrape_day(page, date_obj):
 
     return []
 
+
 # ── Render-Helfer ──────────────────────────────────────────────────────────────
 def _split_chars(draw, word, font, max_w):
     parts = []
@@ -2713,15 +2734,14 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     ftit = lf(20, True)
     fdate = lf(13)
     fftr = lf(10)
-    fbdg = lf(12, True)
-    fprc = lf(15, True)   # vorher 12 -> groesser
-    fcat = lf(12, True)   # vorher 10 -> groesser
+    fbdg = lf(11, True)
+    fprc = lf(14, True)
+    fcat = lf(12, True)
 
     HDR_H = 58
     LEGEND_H = 22
     GAP = 4
     PAD = 6
-    NCOLS = 2
 
     d.rectangle([(0, 0), (W, HDR_H)], fill=PRIMARY)
     day_str = f"{GERMAN_DAY_LONG[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}"
@@ -2739,6 +2759,27 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     content_bot = H - FOOTER_H - LEGEND_H - 4
     content_h = content_bot - content_top
 
+    def _fit_tile_text(text, max_w, max_h):
+        best = None
+        for size in range(22, 7, -1):
+            f = lf(size)
+            lh = _line_h(d, f)
+            lines = wrap_text(d, text, f, max_w, max_lines=8)
+            if not lines:
+                continue
+            if len(lines) * lh <= max_h:
+                return f, lh, lines
+            best = (f, lh, lines)
+
+        if best is None:
+            f = lf(8)
+            lh = _line_h(d, f)
+            return f, lh, [text]
+
+        f, lh, lines = best
+        max_visible = max(1, max_h // max(lh, 1))
+        return f, lh, lines[:max_visible]
+
     if is_holiday:
         d.rectangle([(0, content_top), (W, content_bot)], fill=C_HOL_BG)
         msg = f"Feiertag: {is_holiday}"
@@ -2750,6 +2791,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
             font=fm,
             fill=C_HOL_TXT,
         )
+
     elif not dishes:
         d.rectangle([(0, content_top), (W, content_bot)], fill=R_ODD)
         msg = "Keine Speisedaten verfügbar"
@@ -2761,6 +2803,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
             font=fm,
             fill=TEXT_MUTED,
         )
+
     else:
         cats_ordered = []
         seen = set()
@@ -2770,15 +2813,15 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
                 cats_ordered.append(cat)
                 seen.add(cat)
 
+        NCOLS = 3 if len(cats_ordered) >= 8 else 2
         n = len(cats_ordered)
         nrows = math.ceil(n / NCOLS)
 
         cell_w = (W - GAP * (NCOLS + 1)) // NCOLS
         cell_h = (content_h - GAP * (nrows + 1)) // nrows
 
-        name_max_w = cell_w - 2 * PAD
         cat_label_h = _line_h(d, fcat) + 4
-        price_h_est = _line_h(d, fprc) + 4
+        name_max_w = cell_w - 2 * PAD
 
         for idx, cat in enumerate(cats_ordered):
             col = idx % NCOLS
@@ -2800,8 +2843,6 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
             if not it:
                 continue
 
-            # Badge-Hoehe erst bestimmen, damit die Textgroesse pro Kachel
-            # individuell und besser lesbar berechnet wird.
             badge_h = 0
             badge_box = None
             badge_text = ""
@@ -2816,20 +2857,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
                 badge_box = (bw2, bh2)
                 badge_h = bh2 + 4
 
-            name_max_h_local = max(46, cell_h - cat_label_h - badge_h - price_h_est - 3 * PAD)
-
-            # WICHTIG:
-            # Nicht mehr eine einheitliche Groesse fuer alle Gerichte des Tages,
-            # sondern pro Kachel separat fitten.
-            fn, lhn, name_lines = _fit_font(
-                d,
-                it["name"],
-                name_max_w,
-                name_max_h_local,
-                size_start=22,
-                size_min=12,
-                bold=False,
-            )
+            price_reserved_h = _line_h(d, fprc) + 6
 
             cy = cy0 + cat_label_h + PAD
 
@@ -2839,8 +2867,13 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
                 d.text((cx0 + PAD + 4, cy + 1), badge_text, font=fbdg, fill=WHITE)
                 cy += bh2 + 4
 
+            text_bottom = cy1 - price_reserved_h - PAD
+            text_max_h = max(14, text_bottom - cy)
+
+            fn, lhn, name_lines = _fit_tile_text(it["name"], name_max_w, text_max_h)
+
             for ln in name_lines:
-                if cy + lhn > cy1 - price_h_est - PAD:
+                if cy + lhn > text_bottom:
                     break
                 d.text((cx0 + PAD, cy), ln, font=fn, fill=TEXT)
                 cy += lhn
@@ -2861,7 +2894,11 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
 
     fleg = lf(11)
     lx = 6
-    for col, txt in [(C_VG, "Vegan"), (C_V, "Vegetarisch"), (C_HOL_HDR, "Feiertag"), (C_TODAY, "Heute")]:
+    for col, txt in [
+        (C_VG, "Vegan"),
+        (C_V, "Vegetarisch"),
+        (C_HOL_HDR, "Feiertag"),
+    ]:
         d.rectangle([(lx, leg_y + 5), (lx + 12, leg_y + 15)], fill=col)
         b = d.textbbox((0, 0), txt, font=fleg)
         d.text((lx + 15, leg_y + 4), txt, font=fleg, fill=TEXT)
