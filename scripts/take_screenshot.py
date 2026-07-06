@@ -2713,14 +2713,14 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     ftit = lf(20, True)
     fdate = lf(13)
     fftr = lf(10)
-    fbdg = lf(11, True)
-    fprc = lf(12, True)
-    fcat = lf(10, True)
+    fbdg = lf(12, True)
+    fprc = lf(15, True)   # vorher 12 -> groesser
+    fcat = lf(12, True)   # vorher 10 -> groesser
 
     HDR_H = 58
     LEGEND_H = 22
     GAP = 4
-    PAD = 7
+    PAD = 6
     NCOLS = 2
 
     d.rectangle([(0, 0), (W, HDR_H)], fill=PRIMARY)
@@ -2777,15 +2777,8 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
         cell_h = (content_h - GAP * (nrows + 1)) // nrows
 
         name_max_w = cell_w - 2 * PAD
-        cat_label_h = _line_h(d, fcat) + 2
-        badge_h_est = _line_h(d, fbdg) + 6
-        price_h_est = _line_h(d, fprc) + 2
-        name_max_h = cell_h - cat_label_h - badge_h_est - price_h_est - 3 * PAD
-
-        all_names = [it["name"] for it in dishes]
-        uni_size = _find_uniform_font_size(d, all_names, name_max_w, name_max_h, size_start=18, size_min=9)
-        fn = lf(uni_size)
-        lhn = _line_h(d, fn)
+        cat_label_h = _line_h(d, fcat) + 4
+        price_h_est = _line_h(d, fprc) + 4
 
         for idx, cat in enumerate(cats_ordered):
             col = idx % NCOLS
@@ -2801,25 +2794,51 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
 
             d.rounded_rectangle([(cx0, cy0), (cx1, cy0 + cat_label_h + 2)], radius=6, fill=SECONDARY)
             d.rectangle([(cx0, cy0 + cat_label_h - 2), (cx1, cy0 + cat_label_h + 2)], fill=SECONDARY)
-            d.text((cx0 + PAD, cy0 + 2), cat, font=fcat, fill=TEXT_ON_SECONDARY)
+            d.text((cx0 + PAD, cy0 + 3), cat, font=fcat, fill=TEXT_ON_SECONDARY)
 
             it = next((x for x in dishes if x["kategorie"] == cat), None)
             if not it:
                 continue
 
-            cy = cy0 + cat_label_h + PAD
+            # Badge-Hoehe erst bestimmen, damit die Textgroesse pro Kachel
+            # individuell und besser lesbar berechnet wird.
+            badge_h = 0
+            badge_box = None
+            badge_text = ""
+            badge_col = None
 
             if it["vv"]:
-                bl = "Vegan" if it["vv"] == "VG" else "Veg."
-                bc_col = C_VG if it["vv"] == "VG" else C_V
-                bb = d.textbbox((0, 0), bl, font=fbdg)
-                bw2 = bb[2] - bb[0] + 6
-                bh2 = bb[3] - bb[1] + 3
-                d.rounded_rectangle([(cx0 + PAD, cy), (cx0 + PAD + bw2, cy + bh2)], radius=3, fill=bc_col)
-                d.text((cx0 + PAD + 3, cy + 1), bl, font=fbdg, fill=WHITE)
-                cy += bh2 + 3
+                badge_text = "Vegan" if it["vv"] == "VG" else "Veg."
+                badge_col = C_VG if it["vv"] == "VG" else C_V
+                bb = d.textbbox((0, 0), badge_text, font=fbdg)
+                bw2 = bb[2] - bb[0] + 8
+                bh2 = bb[3] - bb[1] + 4
+                badge_box = (bw2, bh2)
+                badge_h = bh2 + 4
 
-            name_lines = wrap_text(d, it["name"], fn, name_max_w, max_lines=20)
+            name_max_h_local = max(46, cell_h - cat_label_h - badge_h - price_h_est - 3 * PAD)
+
+            # WICHTIG:
+            # Nicht mehr eine einheitliche Groesse fuer alle Gerichte des Tages,
+            # sondern pro Kachel separat fitten.
+            fn, lhn, name_lines = _fit_font(
+                d,
+                it["name"],
+                name_max_w,
+                name_max_h_local,
+                size_start=22,
+                size_min=12,
+                bold=False,
+            )
+
+            cy = cy0 + cat_label_h + PAD
+
+            if badge_box:
+                bw2, bh2 = badge_box
+                d.rounded_rectangle([(cx0 + PAD, cy), (cx0 + PAD + bw2, cy + bh2)], radius=3, fill=badge_col)
+                d.text((cx0 + PAD + 4, cy + 1), badge_text, font=fbdg, fill=WHITE)
+                cy += bh2 + 4
+
             for ln in name_lines:
                 if cy + lhn > cy1 - price_h_est - PAD:
                     break
@@ -2828,7 +2847,12 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
 
             if it["preis"]:
                 pb = d.textbbox((0, 0), it["preis"], font=fprc)
-                d.text((cx1 - (pb[2] - pb[0]) - PAD, cy1 - (pb[3] - pb[1]) - PAD), it["preis"], font=fprc, fill=PRICE)
+                d.text(
+                    (cx1 - (pb[2] - pb[0]) - PAD, cy1 - (pb[3] - pb[1]) - PAD),
+                    it["preis"],
+                    font=fprc,
+                    fill=PRICE,
+                )
 
     leg_y = H - FOOTER_H - LEGEND_H - 2
     d.line([(0, leg_y), (W, leg_y)], fill=GRID, width=1)
@@ -2850,7 +2874,12 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     )
     d.rectangle([(0, H - FOOTER_H), (W, H)], fill=SECONDARY)
     b = d.textbbox((0, 0), footer_txt, font=fftr)
-    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=TEXT_ON_SECONDARY)
+    d.text(
+        ((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2),
+        footer_txt,
+        font=fftr,
+        fill=TEXT_ON_SECONDARY,
+    )
 
     return img
 
