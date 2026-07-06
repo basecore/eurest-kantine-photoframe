@@ -1,5 +1,10 @@
 # Kantinen-Photoframe Regensburg
 
+[![Update Menus](https://github.com/basecore/eurest-kantine-photoframe/actions/workflows/update-menus.yml/badge.svg)](https://github.com/basecore/eurest-kantine-photoframe/actions/workflows/update-menus.yml)
+[![GitHub Pages](https://img.shields.io/website?url=https%3A%2F%2Fbasecore.github.io%2Feurest-kantine-photoframe%2F&label=GitHub%20Pages)](https://basecore.github.io/eurest-kantine-photoframe/)
+[![Python 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)](https://www.python.org/)
+[![Last Commit](https://img.shields.io/github/last-commit/basecore/eurest-kantine-photoframe)](https://github.com/basecore/eurest-kantine-photoframe/commits/main)
+
 > Automatische Speiseplan-Screenshots für den **Philips 8FF3WMI Bilderrahmen** (800 × 600 px).  
 > Unterstützte Kantinen:
 >
@@ -32,7 +37,7 @@ Der Ablauf ist:
 
 ---
 
-## Aktuelles Bild
+## Aktuelle Bilder
 
 ### SCHAEFFLER Regensburg
 ![Aktueller Speiseplan Schaeffler](docs/images/latest_schaeffler.jpg)
@@ -74,7 +79,7 @@ Der Ablauf ist:
 
 ### SCHAEFFLER & AUMOVIO
 - Scraping über Eurest / Webspeiseplan
-- mehrstufiger Fallback:
+- robuster Mehrfach-Fallback:
   - DOM
   - Netzwerk-/JSON
   - PDF
@@ -83,6 +88,12 @@ Der Ablauf ist:
 - kantinenspezifische Corporate-Themes:
   - **Schaeffler:** Grün / Anthrazit
   - **Aumovio:** Orange / Dunkelgrau
+- dynamische Kategorien direkt aus dem DOM, z. B.:
+  - Suppe
+  - Ostenviertel
+  - Kumpfmühl / Weichs / Brandlberg / Niederwinzer / Königswiesen
+  - Salatbar
+  - Dessert
 
 ### SIEMENS
 - Scraping über Siemens CateringPortal
@@ -106,6 +117,14 @@ Der Ablauf ist:
 - Kennzeichnung vergangener Tage
 - Preisanzeige pro Gericht
 - einheitliche Rendergröße für den Bilderrahmen
+- Siemens zusätzlich mit fester 4-Kachel-Tageslogik
+
+### Output / Persistenz
+- `latest_<location>.jpg` für den jeweils aktuellen Stand
+- `current_<location>.json` als Manifest
+- historische Bilder mit Datum / KW
+- RSS-/Feed-Erzeugung aus den Manifest-Dateien
+- Cache-Busting der Bild-URLs über `?v=<timestamp>`
 
 ---
 
@@ -163,6 +182,17 @@ Dieser Workflow:
 
 ---
 
+## Automatischer Zeitplan
+
+| Zeitpunkt | UTC | Aktion |
+|-----------|-----|--------|
+| Werktags Mo–Fr | 04:00 | `Update Menus` Workflow läuft automatisch |
+| Manuell | jederzeit | `workflow_dispatch` mit `display_mode`, `display_day`, `week_offset`, `only` |
+
+> **Hinweis:** GitHub Actions Cron läuft in UTC. In Deutschland entspricht das je nach Sommer-/Winterzeit typischerweise **06:00 Uhr CEST** bzw. **05:00 Uhr CET**.
+
+---
+
 ## Verzeichnisstruktur
 
 ```text
@@ -210,9 +240,9 @@ Der Bilderrahmen (Philips 8FF3WMI) kann RSS-Feeds mit Bildern abonnieren.
 
 ### SCHAEFFLER Regensburg
 
-**Feed-URL (HTTPS):**
+**Feed-URL (HTTPS / GitHub Pages):**
 ```text
-https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/feed_schaeffler.xml
+https://basecore.github.io/eurest-kantine-photoframe/feed_schaeffler.xml
 ```
 
 **Feed-URL (HTTP, bplaced – kein Cache):**
@@ -222,16 +252,16 @@ http://basecore.bplaced.net/eurest/feed_schaeffler.php
 
 **Direktes Bild:**
 ```text
-https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/images/latest_schaeffler.jpg
+https://basecore.github.io/eurest-kantine-photoframe/images/latest_schaeffler.jpg
 ```
 
 ---
 
 ### AUMOVIO Regensburg
 
-**Feed-URL (HTTPS):**
+**Feed-URL (HTTPS / GitHub Pages):**
 ```text
-https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/feed_aumovio.xml
+https://basecore.github.io/eurest-kantine-photoframe/feed_aumovio.xml
 ```
 
 **Feed-URL (HTTP, bplaced – kein Cache):**
@@ -241,16 +271,16 @@ http://basecore.bplaced.net/eurest/feed_aumovio.php
 
 **Direktes Bild:**
 ```text
-https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/images/latest_aumovio.jpg
+https://basecore.github.io/eurest-kantine-photoframe/images/latest_aumovio.jpg
 ```
 
 ---
 
 ### SIEMENS Regensburg
 
-**Feed-URL (HTTPS):**
+**Feed-URL (HTTPS / GitHub Pages):**
 ```text
-https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/feed_siemens.xml
+https://basecore.github.io/eurest-kantine-photoframe/feed_siemens.xml
 ```
 
 **Feed-URL (HTTP, bplaced – kein Cache):**
@@ -260,7 +290,7 @@ http://basecore.bplaced.net/eurest/feed_siemens.php
 
 **Direktes Bild:**
 ```text
-https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/images/latest_siemens.jpg
+https://basecore.github.io/eurest-kantine-photoframe/images/latest_siemens.jpg
 ```
 
 ---
@@ -376,7 +406,7 @@ DISPLAY_MODE=week WEEK_OFFSET=1 python scripts/take_screenshot_siemens.py
 Settings → Pages → Source: Deploy from branch → main → /docs
 ```
 
-Dann erreichbar unter:
+Danach erreichbar unter:
 
 ```text
 https://basecore.github.io/eurest-kantine-photoframe/
@@ -413,6 +443,27 @@ Besonderheiten:
   - Essen 3
 - Tagesansicht als Standard
 - Wochenansicht optional
+
+---
+
+## Feed-Generierung
+
+Die Feed-Erzeugung erfolgt über `scripts/generate_rss.py`.
+
+Dabei werden je Standort zwei Formate erzeugt:
+
+- `feed_<location>.xml`
+  - für HTTPS / GitHub Pages
+- `feed_<location>.php`
+  - für HTTP / bplaced / ältere Reader
+
+Die Feed-Auswahl basiert **nicht** auf Dateisortierung, sondern auf den Manifest-Dateien:
+
+- `current_schaeffler.json`
+- `current_aumovio.json`
+- `current_siemens.json`
+
+Zusätzlich wird Cache-Busting über `?v=<timestamp>` an die Bild-URL gehängt.
 
 ---
 
