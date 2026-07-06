@@ -74,10 +74,10 @@ jobs:
           echo "ONLY=$ONLY"
 
       - name: Generate all menus
-        run: python generate_all.py
+        run: python scripts/generate_all.py
 
       - name: Generate RSS feeds
-        run: python generate_rss.py
+        run: python scripts/generate_rss.py
 
       - name: Commit updated images and manifests
         run: |
