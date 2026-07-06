@@ -25,7 +25,6 @@ on:
         default: ""
 
   schedule:
-    # Werktags morgens; bei Bedarf Uhrzeit anpassen.
     - cron: "0 4 * * 1-5"
 
 permissions:
@@ -48,7 +47,6 @@ jobs:
       WEEK_OFFSET: ${{ github.event.inputs.week_offset || '0' }}
       ONLY: ${{ github.event.inputs.only || '' }}
 
-      # Optional als Repo Secret hinterlegen, falls benötigt
       CATERINGPORTAL_SID: ${{ secrets.CATERINGPORTAL_SID }}
 
     steps:
@@ -76,6 +74,13 @@ jobs:
       - name: Generate all menus
         run: python scripts/generate_all.py
 
+      - name: Show generated files
+        run: |
+          echo "Root docs:"
+          find docs -maxdepth 3 -type f | sort || true
+          echo "Scripts docs:"
+          find scripts/docs -maxdepth 3 -type f | sort || true
+
       - name: Generate RSS feeds
         run: python scripts/generate_rss.py
 
@@ -84,7 +89,6 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add docs/images
           git add docs/
 
           if git diff --cached --quiet; then
