@@ -1,16 +1,34 @@
-# Eurest Kantine Regensburg – Photoframe
+# Kantinen-Photoframe Regensburg
 
-> Automatischer Wochenmenü-Screenshot für den **Philips 8FF3WMI Bilderrahmen** (800 × 600 px).
-> Unterstützte Kantinen: **SCHAEFFLER Regensburg (0967)** & **AUMOVIO Regensburg (1553)**
+> Automatische Speiseplan-Screenshots für den **Philips 8FF3WMI Bilderrahmen** (800 × 600 px).  
+> Unterstützte Kantinen:
+>
+> - **SCHAEFFLER Regensburg** (Eurest)
+> - **AUMOVIO Regensburg** (Eurest)
+> - **SIEMENS Regensburg** (CateringPortal)
 
 ---
 
 ## Was macht dieses Projekt?
 
-1. **Scrapen** – Ein Playwright-Script öffnet [eurest.webspeiseplan.de](https://eurest.webspeiseplan.de/39799C127F748D639984F4CDBEB44846), wählt die Kantine aus, bestätigt die Privacy-Policy, stellt die Sprache auf Deutsch und extrahiert strukturierte Menüdaten direkt aus dem DOM.
-2. **Rendern** – Die Daten werden als 800 × 600 JPEG gerendert – optimiert für den Bilderrahmen.
-3. **RSS-Feed** – Je Kantine wird ein RSS-Feed erzeugt, sodass der Bilderrahmen das aktuelle Bild via URL abrufen kann.
-4. **GitHub Actions** – Der gesamte Ablauf ist vollständig automatisiert, beide Kantinen laufen parallel.
+Dieses Repository erzeugt automatisch aktuelle **800 × 600 JPEG-Speisepläne** für digitale Bilderrahmen, GitHub Pages und RSS-/PhotoFrame-Feeds.
+
+Der Ablauf ist:
+
+1. **Scrapen**
+   - **SCHAEFFLER** und **AUMOVIO** werden über `eurest.webspeiseplan.de` geladen.
+   - **SIEMENS** wird über `siemens.cateringportal.io` geladen.
+
+2. **Rendern**
+   - Ausgabe als **800 × 600 JPEG**
+   - **Tagesansicht als Standard**
+   - **Wochenansicht optional**
+
+3. **Feeds erzeugen**
+   - RSS-/PhotoFrame-Feeds auf Basis der aktuellen Manifest-Dateien
+
+4. **GitHub Actions**
+   - Vollautomatische Aktualisierung per Workflow
 
 ---
 
@@ -22,6 +40,9 @@
 ### AUMOVIO Regensburg
 ![Aktueller Speiseplan Aumovio](docs/images/latest_aumovio.jpg)
 
+### SIEMENS Regensburg
+![Aktueller Speiseplan Siemens](docs/images/latest_siemens.jpg)
+
 ---
 
 ## Hardware
@@ -32,56 +53,150 @@
 
 - **Bilderrahmen:** Philips 8FF3WMI, 800 × 600 px, RSS-Feed-Unterstützung
 - **Netzwerk:** Der Rahmen hängt per WLAN am TP-Link Router
-- **Aktualisierung:** Das Bild wird täglich um 02:00 Uhr (deutsche Zeit) automatisch aktualisiert
+- **Aktualisierung:** Die Bilder werden automatisch über GitHub Actions aktualisiert
 
 ---
 
-## Automatischer Zeitplan
+## Features
 
-| Zeitpunkt | Uhrzeit (DE) | Aktion |
-|-----------|-------------|--------|
-| Täglich Mo–Do | 02:00 Uhr | Aktuelle Woche neu generieren (korrekter Tagesstatus) |
-| Freitag | 14:00 Uhr | Nächste Woche vorabladen |
-| Samstag & Sonntag | 10:00 Uhr | Nächste Woche |
-| Manuell | jederzeit | Workflow Dispatch mit `week_offset` und `location` |
+### Allgemein
+- **Tagesansicht als Standard**
+- **Wochenansicht optional**
+- manueller Zieltag per `DISPLAY_DAY`
+- automatische Umschaltung:
+  - **vor 13:30 Uhr** → heutiger Werktag
+  - **ab 13:30 Uhr** → nächster Werktag
+- Ausgabe als **JPEG 800 × 600**
+- Speicherung von:
+  - `latest_<location>.jpg`
+  - `current_<location>.json`
+  - historischen Bildern `kantine_<...>.jpg`
 
-> Das Nachtupdate um 02:00 Uhr stellt sicher, dass vergangene Tage korrekt als „vergangen“ markiert sind und das Bild immer den aktuellen Stand widerspiegelt. Ab Freitag 14:00 Uhr ist die nächste Woche bereits verfügbar.
+### SCHAEFFLER & AUMOVIO
+- Scraping über Eurest / Webspeiseplan
+- mehrstufiger Fallback:
+  - DOM
+  - Netzwerk-/JSON
+  - PDF
+- **Tagesansicht**
+- **Wochenansicht**
+- kantinenspezifische Corporate-Themes:
+  - **Schaeffler:** Grün / Anthrazit
+  - **Aumovio:** Orange / Dunkelgrau
+
+### SIEMENS
+- Scraping über Siemens CateringPortal
+- **Tagesansicht standardmäßig**
+- **Wochenansicht optional**
+- Siemens-Farben:
+  - **Petrol** `#009999`
+  - **Schwarz**
+  - **Weiß**
+  - **Healthy Orange** `#EC6602`
+- feste Kategorien:
+  - `Suppe`
+  - `Essen 1`
+  - `Essen 2`
+  - `Essen 3`
+
+### Darstellung
+- Vegan-/Vegetarisch-Badges
+- Feiertagserkennung (Bayern)
+- Hervorhebung von **Heute**
+- Kennzeichnung vergangener Tage
+- Preisanzeige pro Gericht
+- einheitliche Rendergröße für den Bilderrahmen
 
 ---
 
-## Render-Details
+## Ansichtslogik
 
-- **Auflösung:** 800 × 600 px (JPEG, Qualität 92)
-- **Kategorien:** Dynamisch aus dem DOM – z. B. Suppe, Ostenviertel, Kumpfmühl, Stadtamhof, Salatbar, Dessert
-- **Badges:** Vegan, Vegetarisch (erkannt aus Gerichtsname und Feature-Icons)
-- **Feiertage:** Bayerische Feiertage werden erkannt und angezeigt
-- **Heute:** Aktueller Tag wird golden hervorgehoben
-- **Vergangene Tage:** Werden grau ausgegraut
-- **Einheitliche Schriftgröße** pro Zeile – alle Zellen haben dieselbe Schriftgröße
-- **Preis:** Wird unten rechts in jeder Zelle angezeigt
+### Tagesansicht (`DISPLAY_MODE=day`)
+Standardmodus für alle drei Kantinen.
+
+Automatik:
+- **vor 13:30 Uhr** → heutiger Werktag
+- **ab 13:30 Uhr** → nächster Werktag
+
+Optional kann ein fixer Zieltag gesetzt werden:
+
+```bash
+DISPLAY_DAY=monday
+DISPLAY_DAY=tuesday
+DISPLAY_DAY=wednesday
+DISPLAY_DAY=thursday
+DISPLAY_DAY=friday
+```
+
+### Wochenansicht (`DISPLAY_MODE=week`)
+- zeigt Montag bis Freitag
+- `WEEK_OFFSET=0` → aktuelle Woche
+- `WEEK_OFFSET=1` → nächste Woche
+
+---
+
+## Automatischer Workflow
+
+Empfohlener Hauptworkflow:
+
+- **`.github/workflows/update-menus.yml`**
+
+Dieser Workflow:
+
+1. installiert die Abhängigkeiten
+2. ruft `python scripts/generate_all.py` auf
+3. erzeugt danach RSS-/Feed-Dateien
+4. committed die aktualisierten Dateien unter `docs/`
+
+### Workflow-Inputs
+- `display_mode`
+- `display_day`
+- `week_offset`
+- `only`
+
+### Beispiele
+- alle Menüs in Tagesansicht
+- nur Siemens
+- nur Schaeffler + Aumovio
+- Wochenansicht
+- fixer Zieltag
 
 ---
 
 ## Verzeichnisstruktur
 
-```
+```text
 .github/
   workflows/
-    screenshot.yml              # GitHub Actions Workflow (Matrix: schaeffler + aumovio)
+    update-menus.yml                 # Hauptworkflow
+
 scripts/
-  take_screenshot.py            # Scraping + Rendering (Eurest-Flow)
-  generate_rss.py               # RSS-Feed Generierung (je Kantine)
+  take_screenshot_eurest.py          # Eurest: Schaeffler + Aumovio
+  take_screenshot_siemens.py         # Siemens
+  generate_all.py                    # Orchestrator für alle drei Menüs
+  generate_rss.py                    # RSS-/Feed-Erzeugung
+
 docs/
   images/
-    latest_schaeffler.jpg       # Aktuellstes Bild Schaeffler
-    latest_aumovio.jpg          # Aktuellstes Bild Aumovio
-    kantine_YYYY-WNN_schaeffler.jpg   # Archiv Schaeffler (max. 8 Bilder)
-    kantine_YYYY-WNN_aumovio.jpg      # Archiv Aumovio (max. 8 Bilder)
-  feed_schaeffler.xml           # RSS-Feed Schaeffler (HTTPS)
-  feed_schaeffler.php           # RSS-Feed Schaeffler (HTTP, bplaced, kein Cache)
-  feed_aumovio.xml              # RSS-Feed Aumovio (HTTPS)
-  feed_aumovio.php              # RSS-Feed Aumovio (HTTP, bplaced, kein Cache)
-  index.html                    # Übersichtsseite (GitHub Pages)
+    latest_schaeffler.jpg
+    latest_aumovio.jpg
+    latest_siemens.jpg
+
+    current_schaeffler.json
+    current_aumovio.json
+    current_siemens.json
+
+    kantine_*.jpg
+
+  feed_schaeffler.xml
+  feed_schaeffler.php
+  feed_aumovio.xml
+  feed_aumovio.php
+  feed_siemens.xml
+  feed_siemens.php
+
+  index.html
+
 sources/
   IMG/
     .gitkeep
@@ -91,40 +206,61 @@ sources/
 
 ## RSS-Feed für den Bilderrahmen
 
-Der Bilderrahmen (Philips 8FF3WMI) kann einen RSS-Feed mit Bildern abonnieren.
+Der Bilderrahmen (Philips 8FF3WMI) kann RSS-Feeds mit Bildern abonnieren.
 
 ### SCHAEFFLER Regensburg
 
 **Feed-URL (HTTPS):**
-```
+```text
 https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/feed_schaeffler.xml
 ```
 
-**Feed-URL (HTTP, bplaced – kein Cache, für Philips Frame):**
-```
+**Feed-URL (HTTP, bplaced – kein Cache):**
+```text
 http://basecore.bplaced.net/eurest/feed_schaeffler.php
 ```
 
-Alternativ direkt das aktuelle Bild:
-```
+**Direktes Bild:**
+```text
 https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/images/latest_schaeffler.jpg
 ```
+
+---
 
 ### AUMOVIO Regensburg
 
 **Feed-URL (HTTPS):**
-```
+```text
 https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/feed_aumovio.xml
 ```
 
-**Feed-URL (HTTP, bplaced – kein Cache, für Philips Frame):**
-```
+**Feed-URL (HTTP, bplaced – kein Cache):**
+```text
 http://basecore.bplaced.net/eurest/feed_aumovio.php
 ```
 
-Alternativ direkt das aktuelle Bild:
-```
+**Direktes Bild:**
+```text
 https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/images/latest_aumovio.jpg
+```
+
+---
+
+### SIEMENS Regensburg
+
+**Feed-URL (HTTPS):**
+```text
+https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/feed_siemens.xml
+```
+
+**Feed-URL (HTTP, bplaced – kein Cache):**
+```text
+http://basecore.bplaced.net/eurest/feed_siemens.php
+```
+
+**Direktes Bild:**
+```text
+https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/images/latest_siemens.jpg
 ```
 
 ---
@@ -134,51 +270,115 @@ https://raw.githubusercontent.com/basecore/eurest-kantine-photoframe/main/docs/i
 ### Voraussetzungen
 
 ```bash
-pip install playwright Pillow
-python -m playwright install chromium
-sudo apt-get install -y fonts-dejavu fonts-liberation  # Linux
+python -m pip install --upgrade pip
+pip install pillow playwright pypdf
+python -m playwright install --with-deps chromium
 ```
 
-### Ausführen
-
+Optional unter Linux zusätzlich Schriftarten:
 ```bash
-# Schaeffler – nächste Woche (Standard)
-EUREST_LOCATION_ID=8949 EUREST_LOCATION_NAME=schaeffler python scripts/take_screenshot.py
+sudo apt-get install -y fonts-dejavu fonts-liberation
+```
 
-# Aumovio – nächste Woche
-EUREST_LOCATION_ID=8950 EUREST_LOCATION_NAME=aumovio python scripts/take_screenshot.py
+### Alle drei Menüs erzeugen
+```bash
+python scripts/generate_all.py
+```
 
-# Aktuelle Woche
-WEEK_OFFSET=0 EUREST_LOCATION_ID=8949 EUREST_LOCATION_NAME=schaeffler python scripts/take_screenshot.py
+### Nur Siemens erzeugen
+```bash
+ONLY=siemens python scripts/generate_all.py
+```
 
-# RSS-Feeds generieren
+### Nur Schaeffler und Aumovio
+```bash
+ONLY=schaeffler,aumovio python scripts/generate_all.py
+```
+
+### Wochenansicht für alle
+```bash
+DISPLAY_MODE=week WEEK_OFFSET=1 python scripts/generate_all.py
+```
+
+### Tagesansicht auf fixen Tag setzen
+```bash
+DISPLAY_MODE=day DISPLAY_DAY=wednesday python scripts/generate_all.py
+```
+
+### RSS-/Feed-Dateien erzeugen
+```bash
 python scripts/generate_rss.py
 ```
 
-Die Bilder werden unter `docs/images/kantine_YYYY-WNN_<location>.jpg` gespeichert.
+---
+
+## Einzelaufrufe
+
+### SCHAEFFLER
+```bash
+EUREST_LOCATION_ID=8949 EUREST_LOCATION_NAME=schaeffler python scripts/take_screenshot_eurest.py
+```
+
+### AUMOVIO
+```bash
+EUREST_LOCATION_ID=8950 EUREST_LOCATION_NAME=aumovio python scripts/take_screenshot_eurest.py
+```
+
+### SIEMENS
+```bash
+python scripts/take_screenshot_siemens.py
+```
+
+### Aktuelle Woche erzwingen
+```bash
+WEEK_OFFSET=0 EUREST_LOCATION_ID=8949 EUREST_LOCATION_NAME=schaeffler python scripts/take_screenshot_eurest.py
+```
+
+### Siemens Wochenansicht
+```bash
+DISPLAY_MODE=week WEEK_OFFSET=1 python scripts/take_screenshot_siemens.py
+```
 
 ---
 
 ## Umgebungsvariablen
 
-| Variable | Standard | Beschreibung |
-|----------|----------|--------------|
-| `EUREST_LOCATION_ID` | `8949` | `8949` = Schaeffler, `8950` = Aumovio |
-| `EUREST_LOCATION_NAME` | `schaeffler` | Kurzname für Dateinamen (`schaeffler` / `aumovio`) |
-| `WEEK_OFFSET` | `1` | `0` = aktuelle Woche, `1` = nächste Woche |
+### Gemeinsame Variablen
 
-> Kein GitHub Secret erforderlich – die Eurest-Seite ist öffentlich zugänglich.
+| Variable | Standard | Beschreibung |
+|---|---|---|
+| `DISPLAY_MODE` | `day` | `day` oder `week` |
+| `DISPLAY_DAY` | leer | Optional fixer Wochentag |
+| `WEEK_OFFSET` | `0` für day / `1` für week | aktuelle oder nächste Woche |
+| `ONLY` | leer | optionaler Filter für `generate_all.py` |
+
+### Eurest
+
+| Variable | Standard | Beschreibung |
+|---|---|---|
+| `EUREST_LOCATION_ID` | `8949` | `8949` = Schaeffler, `8950` = Aumovio |
+| `EUREST_LOCATION_NAME` | `schaeffler` | Kurzname für Dateinamen |
+
+### Siemens
+
+| Variable | Standard | Beschreibung |
+|---|---|---|
+| `CATERINGPORTAL_URL` | Siemens Regensburg Mittagessen | Basis-URL für Siemens |
+| `CATERINGPORTAL_SID` | leer | optionale Session-ID |
+| `DISPLAY_MODE` | `day` | Tagesansicht als Standard |
+| `DISPLAY_DAY` | leer | optional fixer Wochentag |
 
 ---
 
 ## GitHub Pages aktivieren
 
-```
+```text
 Settings → Pages → Source: Deploy from branch → main → /docs
 ```
 
 Dann erreichbar unter:
-```
+
+```text
 https://basecore.github.io/eurest-kantine-photoframe/
 ```
 
@@ -186,31 +386,72 @@ https://basecore.github.io/eurest-kantine-photoframe/
 
 ## Technische Details
 
-### Scraping-Strategie (Eurest webspeiseplan)
+### Eurest
+Die Eurest-Seite benötigt einen mehrstufigen Initialisierungsflow:
 
-Die Eurest-Seite erfordert einen mehrstufigen Initialisierungsflow vor dem eigentlichen Scraping:
+1. Mandanten-URL öffnen
+2. Kantine auswählen
+3. Privacy-Policy bestätigen
+4. Sprache auf Deutsch setzen
+5. Optionales Filter-Modal schließen
+6. Tagesdaten extrahieren
 
-| Schritt | Aktion |
-|---------|--------|
-| 1 | Mandanten-URL öffnen: `eurest.webspeiseplan.de/39799C127F748D639984F4CDBEB44846` |
-| 2 | `locationSelection` auf `8949` (Schaeffler) oder `8950` (Aumovio) setzen |
-| 3 | Privacy-Policy-Checkbox aktivieren + OK klicken |
-| 4 | Sprache „Deutsch“ wählen + „Weiter“ klicken |
-| 5 | Optionales Modal „persoenlicher Filter“ mit „Nein“ schließen |
-| 6 | Pro Werktag: Tages-Button (`.dayBtn`) klicken, DOM extrahieren |
+Fallbacks:
+- DOM
+- Netzwerk-/JSON
+- PDF
 
-- **DOM-basiert:** Kategorien aus `.category-wrapper` → `.category-name-container`, Gerichte aus `.mealNameWrapper`, Preise aus `.price-value`, Vegan/Vegetarisch aus `.image-feature`-Icons
-- **Dynamische Kategorien:** Die Kategorienamen (Suppe, Ostenviertel, Kumpfmühl, Stadtamhof, Salatbar, Dessert) werden direkt aus dem DOM gelesen – kein festes Mapping nötig
-- **Matrix-Build:** Beide Kantinen laufen parallel als separate GitHub-Actions-Jobs
+### Siemens
+Die Siemens-Seite wird direkt datumsbezogen geladen und über DOM-Strukturen ausgelesen.
 
-### Vergleich: Siemens vs. Eurest
+Besonderheiten:
+- Sprachumschaltung auf Deutsch
+- Kategorien-Mapping auf:
+  - Suppe
+  - Essen 1
+  - Essen 2
+  - Essen 3
+- Tagesansicht als Standard
+- Wochenansicht optional
 
-| Merkmal | [siemens-kantine-photoframe](https://github.com/basecore/siemens-kantine-photoframe) | eurest-kantine-photoframe |
-|---------|----------------------|---------------------------|
-| Portal | siemens.cateringportal.io (Angular) | eurest.webspeiseplan.de (React) |
-| Einstieg | Direkte URL mit Datum | Mandanten-URL + Kantine wählen |
-| Kategorien | Fix: Suppe / E1 / E2 / E3 | Dynamisch aus DOM |
-| Authentifizierung | Optional: Session-ID (Secret) | Keine |
-| Kantinen | 1 (Siemens Regensburg) | 2 (Schaeffler + Aumovio) |
-| Ausgabe | 1 Bild, 1 RSS-Feed | 2 Bilder, 2 RSS-Feeds |
-| Actions-Jobs | 1 Job | 2 parallele Jobs (Matrix) |
+---
+
+## Debug / Troubleshooting
+
+Wenn im GitHub-Action-Log zwar `Saved: docs/images/...` erscheint, die Dateien aber nicht im Repository landen, liegt das meist am falschen Working Directory.
+
+Wichtig:
+- `scripts/generate_all.py` sollte die Generatoren aus `scripts/` starten
+- aber mit **Working Directory = Repo-Root**
+
+Sonst landen die Ausgaben versehentlich unter:
+
+```text
+scripts/docs/images/
+```
+
+statt unter:
+
+```text
+docs/images/
+```
+
+---
+
+## Zusammenfassung
+
+Dieses Repository erzeugt automatisch aktuelle Photoframe-Speisepläne für:
+
+- **SCHAEFFLER**
+- **AUMOVIO**
+- **SIEMENS**
+
+mit:
+- Tagesansicht als Standard
+- optionaler Wochenansicht
+- fixer Tagessteuerung per `DISPLAY_DAY`
+- Corporate-spezifischem Design
+- JPEG-Output für Bilderrahmen
+- Manifest-Dateien für stabile Weiterverarbeitung
+- RSS-/Feed-Erzeugung
+- automatisierter GitHub-Action-Aktualisierung
