@@ -31,6 +31,7 @@ FRAME_HEIGHT = 600
 LOCATIONS = {
     "schaeffler": "SCHAEFFLER Regensburg",
     "aumovio": "AUMOVIO Regensburg",
+    "siemens": "SIEMENS Regensburg",
 }
 
 
