@@ -1,0 +1,18 @@
+{
+  "location_name": "siemens",
+  "location_label": "SIEMENS Regensburg",
+  "display_mode": "day",
+  "display_day": "",
+  "week_offset": 0,
+  "label": "2026-W28",
+  "kw": 28,
+  "image": "kantine_2026-W28_2026-07-07_siemens.jpg",
+  "latest": "latest_siemens.jpg",
+  "dish_count": 4,
+  "is_holiday": "",
+  "generated_at_utc": "2026-07-06T13:02:05.698040Z",
+  "generated_at_local": "2026-07-06T15:00:46.515156+02:00",
+  "target_date": "2026-07-07",
+  "target_day_label": "Di 07.07",
+  "week_monday": "2026-07-06"
+}
