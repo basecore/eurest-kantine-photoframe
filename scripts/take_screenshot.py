@@ -81,20 +81,81 @@ MAX_KEEP = 14
 W, H = 800, 600
 FOOTER_H = 20
 
-# ── Colours ────────────────────────────────────────────────────────────────────
-BLUE = (0, 57, 107)
-LIGHT = (0, 119, 193)
-R_ODD = (240, 246, 252)
-R_EVEN = (255, 255, 255)
-C_VG = (34, 139, 34)
-C_V = (100, 180, 60)
+# ── Colours / Themes ───────────────────────────────────────────────────────────
+def hex_rgb(value):
+    value = value.lstrip("#")
+    return tuple(int(value[i:i + 2], 16) for i in (0, 2, 4))
+
+
+THEMES = {
+    "8949": {  # Schaeffler
+        "PRIMARY": hex_rgb("#00893D"),
+        "SECONDARY": hex_rgb("#404547"),
+        "BACKGROUND": hex_rgb("#FFFFFF"),
+        "ROW_ODD": hex_rgb("#F3F7F5"),
+        "ROW_EVEN": hex_rgb("#FFFFFF"),
+        "TEXT": hex_rgb("#404547"),
+        "TEXT_MUTED": hex_rgb("#6E7476"),
+        "TEXT_ON_PRIMARY": hex_rgb("#FFFFFF"),
+        "TEXT_ON_SECONDARY": hex_rgb("#FFFFFF"),
+        "SUBTITLE_ON_PRIMARY": hex_rgb("#DCEEE4"),
+        "PRICE": hex_rgb("#00893D"),
+        "GRID": hex_rgb("#CDD8D2"),
+        "HOLIDAY_BG": hex_rgb("#EEF1F0"),
+        "HOLIDAY_HDR": hex_rgb("#8A8F91"),
+        "HOLIDAY_TXT": hex_rgb("#404547"),
+        "VEGAN": hex_rgb("#00893D"),
+        "VEGETARIAN": hex_rgb("#69A84F"),
+        "TODAY": (255, 200, 0),
+    },
+    "8950": {  # Aumovio
+        "PRIMARY": hex_rgb("#FF4208"),
+        "SECONDARY": hex_rgb("#333333"),
+        "BACKGROUND": hex_rgb("#FFFFFF"),
+        "ROW_ODD": hex_rgb("#FFF3EE"),
+        "ROW_EVEN": hex_rgb("#FFFFFF"),
+        "TEXT": hex_rgb("#333333"),
+        "TEXT_MUTED": hex_rgb("#666666"),
+        "TEXT_ON_PRIMARY": hex_rgb("#333333"),
+        "TEXT_ON_SECONDARY": hex_rgb("#FFFFFF"),
+        "SUBTITLE_ON_PRIMARY": hex_rgb("#4A4A4A"),
+        "PRICE": hex_rgb("#FF4208"),
+        "GRID": hex_rgb("#D8D8D8"),
+        "HOLIDAY_BG": hex_rgb("#F1F1F1"),
+        "HOLIDAY_HDR": hex_rgb("#8A8A8A"),
+        "HOLIDAY_TXT": hex_rgb("#333333"),
+        "VEGAN": hex_rgb("#FF4208"),
+        "VEGETARIAN": hex_rgb("#FF8C69"),
+        "TODAY": (255, 200, 0),
+    },
+}
+
+THEME = THEMES.get(LOCATION_ID, THEMES["8949"])
+
+PRIMARY = THEME["PRIMARY"]
+SECONDARY = THEME["SECONDARY"]
+BG = THEME["BACKGROUND"]
+R_ODD = THEME["ROW_ODD"]
+R_EVEN = THEME["ROW_EVEN"]
+TEXT = THEME["TEXT"]
+TEXT_MUTED = THEME["TEXT_MUTED"]
+TEXT_ON_PRIMARY = THEME["TEXT_ON_PRIMARY"]
+TEXT_ON_SECONDARY = THEME["TEXT_ON_SECONDARY"]
+SUBTITLE_ON_PRIMARY = THEME["SUBTITLE_ON_PRIMARY"]
+PRICE = THEME["PRICE"]
+GRID = THEME["GRID"]
+C_HOL_BG = THEME["HOLIDAY_BG"]
+C_HOL_HDR = THEME["HOLIDAY_HDR"]
+C_HOL_TXT = THEME["HOLIDAY_TXT"]
+C_VG = THEME["VEGAN"]
+C_V = THEME["VEGETARIAN"]
+C_TODAY = THEME["TODAY"]
 WHITE = (255, 255, 255)
-GRID = (190, 210, 230)
-C_HOL_BG = (220, 220, 220)
-C_HOL_HDR = (140, 140, 140)
-C_HOL_TXT = (100, 100, 100)
-C_CAT_TXT = (180, 210, 240)
-C_TODAY = (255, 200, 0)
+
+# Rueckwaertskompatible Aliasse fuer bestehende Zeichenlogik.
+BLUE = PRIMARY
+LIGHT = PRICE
+C_CAT_TXT = TEXT_ON_SECONDARY
 
 _FREG = [
     "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
@@ -2646,7 +2707,7 @@ def _find_uniform_font_size(draw, texts, max_w, max_h, size_start=19, size_min=1
 
 
 def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
-    img = Image.new("RGB", (W, H), (245, 248, 252))
+    img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
 
     ftit = lf(20, True)
@@ -2662,7 +2723,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     PAD = 7
     NCOLS = 2
 
-    d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
+    d.rectangle([(0, 0), (W, HDR_H)], fill=PRIMARY)
     day_str = f"{GERMAN_DAY_LONG[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}"
     title_str = f"{LOCATION_LABEL}  |  KW {kw:02d}"
 
@@ -2671,8 +2732,8 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
     total_h = (bt[3] - bt[1]) + 3 + (bd[3] - bd[1])
     ty = (HDR_H - total_h) // 2
 
-    d.text(((W - (bt[2] - bt[0])) // 2, ty), title_str, font=ftit, fill=WHITE)
-    d.text(((W - (bd[2] - bd[0])) // 2, ty + (bt[3] - bt[1]) + 3), day_str, font=fdate, fill=(180, 210, 240))
+    d.text(((W - (bt[2] - bt[0])) // 2, ty), title_str, font=ftit, fill=TEXT_ON_PRIMARY)
+    d.text(((W - (bd[2] - bd[0])) // 2, ty + (bt[3] - bt[1]) + 3), day_str, font=fdate, fill=SUBTITLE_ON_PRIMARY)
 
     content_top = HDR_H + GAP
     content_bot = H - FOOTER_H - LEGEND_H - 4
@@ -2690,7 +2751,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
             fill=C_HOL_TXT,
         )
     elif not dishes:
-        d.rectangle([(0, content_top), (W, content_bot)], fill=(248, 248, 248))
+        d.rectangle([(0, content_top), (W, content_bot)], fill=R_ODD)
         msg = "Keine Speisedaten verfügbar"
         fm = lf(22, True)
         bm = d.textbbox((0, 0), msg, font=fm)
@@ -2698,7 +2759,7 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
             ((W - (bm[2] - bm[0])) // 2, content_top + (content_h - (bm[3] - bm[1])) // 2),
             msg,
             font=fm,
-            fill=(160, 160, 160),
+            fill=TEXT_MUTED,
         )
     else:
         cats_ordered = []
@@ -2738,9 +2799,9 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
             bg = R_ODD if idx % 2 == 0 else R_EVEN
             d.rounded_rectangle([(cx0, cy0), (cx1, cy1)], radius=6, fill=bg)
 
-            d.rounded_rectangle([(cx0, cy0), (cx1, cy0 + cat_label_h + 2)], radius=6, fill=BLUE)
-            d.rectangle([(cx0, cy0 + cat_label_h - 2), (cx1, cy0 + cat_label_h + 2)], fill=BLUE)
-            d.text((cx0 + PAD, cy0 + 2), cat, font=fcat, fill=C_CAT_TXT)
+            d.rounded_rectangle([(cx0, cy0), (cx1, cy0 + cat_label_h + 2)], radius=6, fill=SECONDARY)
+            d.rectangle([(cx0, cy0 + cat_label_h - 2), (cx1, cy0 + cat_label_h + 2)], fill=SECONDARY)
+            d.text((cx0 + PAD, cy0 + 2), cat, font=fcat, fill=TEXT_ON_SECONDARY)
 
             it = next((x for x in dishes if x["kategorie"] == cat), None)
             if not it:
@@ -2762,24 +2823,24 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
             for ln in name_lines:
                 if cy + lhn > cy1 - price_h_est - PAD:
                     break
-                d.text((cx0 + PAD, cy), ln, font=fn, fill=(30, 30, 30))
+                d.text((cx0 + PAD, cy), ln, font=fn, fill=TEXT)
                 cy += lhn
 
             if it["preis"]:
                 pb = d.textbbox((0, 0), it["preis"], font=fprc)
-                d.text((cx1 - (pb[2] - pb[0]) - PAD, cy1 - (pb[3] - pb[1]) - PAD), it["preis"], font=fprc, fill=LIGHT)
+                d.text((cx1 - (pb[2] - pb[0]) - PAD, cy1 - (pb[3] - pb[1]) - PAD), it["preis"], font=fprc, fill=PRICE)
 
     leg_y = H - FOOTER_H - LEGEND_H - 2
     d.line([(0, leg_y), (W, leg_y)], fill=GRID, width=1)
     leg_y += 1
-    d.rectangle([(0, leg_y), (W, leg_y + LEGEND_H)], fill=(245, 249, 253))
+    d.rectangle([(0, leg_y), (W, leg_y + LEGEND_H)], fill=BG)
 
     fleg = lf(11)
     lx = 6
     for col, txt in [(C_VG, "Vegan"), (C_V, "Vegetarisch"), (C_HOL_HDR, "Feiertag"), (C_TODAY, "Heute")]:
         d.rectangle([(lx, leg_y + 5), (lx + 12, leg_y + 15)], fill=col)
         b = d.textbbox((0, 0), txt, font=fleg)
-        d.text((lx + 15, leg_y + 4), txt, font=fleg, fill=(30, 30, 30))
+        d.text((lx + 15, leg_y + 4), txt, font=fleg, fill=TEXT)
         lx += 15 + (b[2] - b[0]) + 12
 
     footer_txt = (
@@ -2787,15 +2848,15 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
         f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
         f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}"
     )
-    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
+    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=SECONDARY)
     b = d.textbbox((0, 0), footer_txt, font=fftr)
-    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=WHITE)
+    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=TEXT_ON_SECONDARY)
 
     return img
 
 
 def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_date):
-    img = Image.new("RGB", (W, H), (255, 255, 255))
+    img = Image.new("RGB", (W, H), BG)
     d = ImageDraw.Draw(img)
 
     ftit = lf(18, True)
@@ -2812,7 +2873,7 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
     TODAY_BW = 3
     PAD = 5
 
-    d.rectangle([(0, 0), (W, HDR_H)], fill=BLUE)
+    d.rectangle([(0, 0), (W, HDR_H)], fill=PRIMARY)
     friday_date = monday_date + timedelta(4)
     date_range = f"{monday_date.strftime('%d.%m.%Y')} – {friday_date.strftime('%d.%m.%Y')}"
     title_str = f"{LOCATION_LABEL}  |  KW {kw:02d}"
@@ -2822,24 +2883,24 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
     total_h = (bt[3] - bt[1]) + 3 + (bd[3] - bd[1])
     ty = (HDR_H - total_h) // 2
 
-    d.text(((W - (bt[2] - bt[0])) // 2, ty), title_str, font=ftit, fill=WHITE)
-    d.text(((W - (bd[2] - bd[0])) // 2, ty + (bt[3] - bt[1]) + 3), date_range, font=fdate, fill=(180, 210, 240))
+    d.text(((W - (bt[2] - bt[0])) // 2, ty), title_str, font=ftit, fill=TEXT_ON_PRIMARY)
+    d.text(((W - (bd[2] - bd[0])) // 2, ty + (bt[3] - bt[1]) + 3), date_range, font=fdate, fill=SUBTITLE_ON_PRIMARY)
     y = HDR_H
 
     all_days = list(holiday_map.keys())
     dw = (W - STUB_W) // len(all_days)
 
-    d.rectangle([(0, y), (STUB_W - 1, y + DAY_H - 1)], fill=BLUE)
+    d.rectangle([(0, y), (STUB_W - 1, y + DAY_H - 1)], fill=SECONDARY)
     for i, day in enumerate(all_days):
         x = STUB_W + i * dw
         is_hol = holiday_map[day] is not None
         is_past = _is_past(day, today_date)
         is_today = _is_today(day, today_date)
-        col = (220, 150, 0) if is_today else (C_HOL_HDR if is_hol else ((160, 160, 160) if is_past else LIGHT))
+        col = (220, 150, 0) if is_today else (C_HOL_HDR if is_hol else ((160, 160, 160) if is_past else PRIMARY))
         d.rectangle([(x, y), (x + dw - 1, y + DAY_H - 1)], fill=col)
         b = d.textbbox((0, 0), day, font=fday)
-        d.text((x + (dw - (b[2] - b[0])) // 2, y + (DAY_H - (b[3] - b[1])) // 2), day, font=fday, fill=WHITE)
-        d.line([(x, y), (x, y + DAY_H)], fill=BLUE, width=1)
+        d.text((x + (dw - (b[2] - b[0])) // 2, y + (DAY_H - (b[3] - b[1])) // 2), day, font=fday, fill=(TEXT_ON_PRIMARY if not is_hol and not is_past and not is_today else WHITE))
+        d.line([(x, y), (x, y + DAY_H)], fill=SECONDARY, width=1)
         if is_today:
             d.line([(x, y), (x + dw, y)], fill=C_TODAY, width=TODAY_BW)
     y += DAY_H
@@ -2898,7 +2959,7 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
             if is_past:
                 if ri == 0:
                     b = d.textbbox((0, 0), "vergangen", font=fprc)
-                    d.text((x + (dw - (b[2] - b[0])) // 2, y + rh // 2 - 10), "vergangen", font=fprc, fill=(160, 160, 160))
+                    d.text((x + (dw - (b[2] - b[0])) // 2, y + rh // 2 - 10), "vergangen", font=fprc, fill=TEXT_MUTED)
                 continue
 
             if is_hol:
@@ -2922,7 +2983,7 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
             items = [it for it in week_data.get(day, []) if it["kategorie"] == cat]
             if not items:
                 b = d.textbbox((0, 0), "–", font=lf(17))
-                d.text((x + (dw - (b[2] - b[0])) // 2, y + rh // 2 - 11), "–", font=lf(17), fill=(180, 180, 180))
+                d.text((x + (dw - (b[2] - b[0])) // 2, y + rh // 2 - 11), "–", font=lf(17), fill=TEXT_MUTED)
                 continue
 
             it = items[0]
@@ -2939,24 +3000,24 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
                 cy += bh2 + 3
 
             for ln in wrap_text(d, it["name"], fn, avw, max_lines=20):
-                d.text((x + PAD, cy), ln, font=fn, fill=(30, 30, 30))
+                d.text((x + PAD, cy), ln, font=fn, fill=TEXT)
                 cy += lhn
 
             if it["preis"]:
                 b = d.textbbox((0, 0), it["preis"], font=fprc)
-                d.text((x + dw - (b[2] - b[0]) - PAD, y + rh - (b[3] - b[1]) - 3), it["preis"], font=fprc, fill=LIGHT)
+                d.text((x + dw - (b[2] - b[0]) - PAD, y + rh - (b[3] - b[1]) - 3), it["preis"], font=fprc, fill=PRICE)
 
             if is_today:
                 d.line([(x, y + rh - 1), (x + dw, y + rh - 1)], fill=C_TODAY, width=TODAY_BW)
 
-        d.rectangle([(0, y), (STUB_W - 1, y + rh - 1)], fill=BLUE)
+        d.rectangle([(0, y), (STUB_W - 1, y + rh - 1)], fill=SECONDARY)
         d.line([(STUB_W, y), (STUB_W, y + rh)], fill=GRID, width=1)
         sl = cat[:9] if len(cat) > 9 else cat
         for sz in range(11, 5, -1):
             f2 = lf(sz, True)
             b2 = d.textbbox((0, 0), sl, font=f2)
             if b2[2] - b2[0] <= STUB_W - 4:
-                d.text((STUB_W // 2 - (b2[2] - b2[0]) // 2, y + rh // 2 - (b2[3] - b2[1]) // 2), sl, font=f2, fill=WHITE)
+                d.text((STUB_W // 2 - (b2[2] - b2[0]) // 2, y + rh // 2 - (b2[3] - b2[1]) // 2), sl, font=f2, fill=TEXT_ON_SECONDARY)
                 break
         y += rh
 
@@ -2966,7 +3027,7 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
 
     d.line([(0, y), (W, y)], fill=GRID, width=1)
     y += 1
-    d.rectangle([(0, y), (W, y + LEGEND_H)], fill=(245, 249, 253))
+    d.rectangle([(0, y), (W, y + LEGEND_H)], fill=BG)
 
     fleg = lf(11)
     lx = 6
@@ -2979,7 +3040,7 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
     ]:
         d.rectangle([(lx, y + 5), (lx + 12, y + 15)], fill=col)
         b = d.textbbox((0, 0), txt, font=fleg)
-        d.text((lx + 15, y + 4), txt, font=fleg, fill=(30, 30, 30))
+        d.text((lx + 15, y + 4), txt, font=fleg, fill=TEXT)
         lx += 15 + (b[2] - b[0]) + 12
 
     footer_txt = (
@@ -2987,9 +3048,9 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
         f"{local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
         f"eurest.webspeiseplan.de  |  {LOCATION_LABEL}"
     )
-    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=BLUE)
+    d.rectangle([(0, H - FOOTER_H), (W, H)], fill=SECONDARY)
     b = d.textbbox((0, 0), footer_txt, font=fftr)
-    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=WHITE)
+    d.text(((W - (b[2] - b[0])) // 2, H - FOOTER_H + (FOOTER_H - (b[3] - b[1])) // 2), footer_txt, font=fftr, fill=TEXT_ON_SECONDARY)
 
     return img
 
