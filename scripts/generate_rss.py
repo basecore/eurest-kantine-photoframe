@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 """Generiert RSS-Feeds fuer Philips PhotoFrame.
 
-feed_<location>.php  - HTTP URLs via bplaced, .php Extension -> fuer Philips 8FF3WMI PhotoFrame
-feed_<location>.xml  - HTTPS URLs via github.io, moderne Reader
+Einzelfeeds:
+- feed_<location>.php  - HTTP URLs via bplaced, .php Extension
+- feed_<location>.xml  - HTTPS URLs via github.io
+
+Zusätzlich:
+- feed_all.php         - ein Sammelfeed mit allen verfuegbaren Bildern
+- feed_all.xml         - ein Sammelfeed mit allen verfuegbaren Bildern
 
 Wichtig:
-- Die Feed-Auswahl erfolgt NICHT mehr per Dateinamen-Sortierung.
+- Die Feed-Auswahl erfolgt NICHT per Dateinamen-Sortierung.
 - Stattdessen wird pro Kantine die Manifest-Datei current_<location>.json verwendet.
 - Falls ein Bild am selben Tag erneut gerendert wird, sorgt ein Query-Parameter ?v=...
   fuer Cache-Busting auf Bild-URL-Ebene.
@@ -33,6 +38,8 @@ LOCATIONS = {
     "aumovio": "AUMOVIO Regensburg",
     "siemens": "SIEMENS Regensburg",
 }
+
+COMBINED_FEED_NAME = "Alle Kantinen Regensburg – Speisepläne"
 
 
 def _now_utc():
@@ -169,65 +176,131 @@ def _item_title(manifest, location_label):
     return f"Speiseplan – {location_label}"
 
 
-def build_feed(manifest, location_name, location_label, use_http=False, php_header=False):
-    base = BASE_URL_HTTP if use_http else BASE_URL
+def _php_header_lines():
+    return [
+        "<?php",
+        'header("Content-Type: application/rss+xml; charset=utf-8");',
+        'header("Cache-Control: no-cache, no-store, must-revalidate");',
+        'header("Pragma: no-cache");',
+        'header("Expires: 0");',
+        'echo \'<?xml version="1.0" encoding="UTF-8"?>\';',
+        "?>",
+    ]
+
+
+def _image_url_for_manifest(manifest, use_http=False):
     imgurl = IMAGES_URL_HTTP if use_http else IMAGES_URL
     now_dt = _now_utc()
-    now_rfc = _rfc2822(now_dt)
-
     image_name = manifest["image"]
     cache_token = manifest.get("generated_at_utc", now_dt.isoformat().replace("+00:00", "Z"))
     cache_token = quote(cache_token, safe="")
-    img_url = f"{imgurl}/{quote(image_name)}?v={cache_token}"
+    return f"{imgurl}/{quote(image_name)}?v={cache_token}"
 
-    channel_title = f"Eurest Kantine {location_label} – Speiseplan"
+
+def _build_item_lines(manifest, location_name, location_label, use_http=False):
+    base = BASE_URL_HTTP if use_http else BASE_URL
+    now_dt = _now_utc()
+
+    img_url = _image_url_for_manifest(manifest, use_http=use_http)
     item_title = _item_title(manifest, location_label)
     item_pub_rfc = _item_pubdate(manifest, now_dt)
 
     label = manifest.get("label", "")
     description_html = (
-        f'<img src="{img_url}" alt="{location_label} Speiseplan {label or image_name}"/>'
+        f'<img src="{img_url}" alt="{location_label} Speiseplan {label or manifest["image"]}"/>'
     )
     description_xml = html.escape(description_html, quote=True)
 
+    return [
+        "\t\t<item>",
+        f"\t\t\t<title>{html.escape(item_title)}</title>",
+        f"\t\t\t<link>{base}</link>",
+        f"\t\t\t<guid isPermaLink=\"false\">{html.escape(location_name)}::{html.escape(manifest.get('image',''))}::{html.escape(manifest.get('generated_at_utc',''))}</guid>",
+        f"\t\t\t<description>{description_xml}</description>",
+        f"\t\t\t<pubDate>{item_pub_rfc}</pubDate>",
+        f'\t\t\t<media:content url="{html.escape(img_url, quote=True)}" type="image/jpeg" height="{FRAME_HEIGHT}" width="{FRAME_WIDTH}"/>',
+        "\t\t</item>",
+    ]
+
+
+def build_feed(manifest, location_name, location_label, use_http=False, php_header=False):
+    base = BASE_URL_HTTP if use_http else BASE_URL
+    now_dt = _now_utc()
+    now_rfc = _rfc2822(now_dt)
+
+    channel_title = f"Eurest Kantine {location_label} – Speiseplan"
+
     lines = []
     if php_header:
-        lines.append("<?php")
-        lines.append('header("Content-Type: application/rss+xml; charset=utf-8");')
-        lines.append('header("Cache-Control: no-cache, no-store, must-revalidate");')
-        lines.append('header("Pragma: no-cache");')
-        lines.append('header("Expires: 0");')
-        lines.append('echo \'<?xml version="1.0" encoding="UTF-8"?>\';')
-        lines.append("?>")
+        lines.extend(_php_header_lines())
     else:
         lines.append('<?xml version="1.0" encoding="UTF-8"?>')
 
     lines += [
         '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">',
-        '\t<channel>',
-        f'\t\t<title>{channel_title}</title>',
-        f'\t\t<link>{base}</link>',
-        '\t\t<description></description>',
-        f'\t\t<pubDate>{now_rfc}</pubDate>',
-        f'\t\t<lastBuildDate>{now_rfc}</lastBuildDate>',
-        f'\t\t<generator>{base}</generator>',
-        '\t\t<image>',
-        f'\t\t\t<url>{base}/images/icon.jpg</url>',
-        f'\t\t\t<title>{channel_title}</title>',
-        f'\t\t\t<link>{base}</link>',
-        '\t\t</image>',
+        "\t<channel>",
+        f"\t\t<title>{html.escape(channel_title)}</title>",
+        f"\t\t<link>{base}</link>",
+        "\t\t<description></description>",
+        f"\t\t<pubDate>{now_rfc}</pubDate>",
+        f"\t\t<lastBuildDate>{now_rfc}</lastBuildDate>",
+        f"\t\t<generator>{base}</generator>",
+        "\t\t<image>",
+        f"\t\t\t<url>{base}/images/icon.jpg</url>",
+        f"\t\t\t<title>{html.escape(channel_title)}</title>",
+        f"\t\t\t<link>{base}</link>",
+        "\t\t</image>",
+    ]
 
-        '\t\t<item>',
-        f'\t\t\t<title>{item_title}</title>',
-        f'\t\t\t<link>{base}</link>',
-        f'\t\t\t<description>{description_xml}</description>',
-        f'\t\t\t<pubDate>{item_pub_rfc}</pubDate>',
-        f'\t\t\t<media:content url="{html.escape(img_url, quote=True)}" type="image/jpeg" height="{FRAME_HEIGHT}" width="{FRAME_WIDTH}"/>',
-        '\t\t</item>',
+    lines += _build_item_lines(manifest, location_name, location_label, use_http=use_http)
 
-        '\t</channel>',
-        '</rss>',
-        '',
+    lines += [
+        "\t</channel>",
+        "</rss>",
+        "",
+    ]
+    return "\n".join(lines)
+
+
+def build_combined_feed(manifests_by_location, use_http=False, php_header=False):
+    base = BASE_URL_HTTP if use_http else BASE_URL
+    now_dt = _now_utc()
+    now_rfc = _rfc2822(now_dt)
+
+    lines = []
+    if php_header:
+        lines.extend(_php_header_lines())
+    else:
+        lines.append('<?xml version="1.0" encoding="UTF-8"?>')
+
+    lines += [
+        '<rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">',
+        "\t<channel>",
+        f"\t\t<title>{html.escape(COMBINED_FEED_NAME)}</title>",
+        f"\t\t<link>{base}</link>",
+        "\t\t<description>Alle aktuellen Kantinen-Speisepläne in einem Feed.</description>",
+        f"\t\t<pubDate>{now_rfc}</pubDate>",
+        f"\t\t<lastBuildDate>{now_rfc}</lastBuildDate>",
+        f"\t\t<generator>{base}</generator>",
+        "\t\t<image>",
+        f"\t\t\t<url>{base}/images/icon.jpg</url>",
+        f"\t\t\t<title>{html.escape(COMBINED_FEED_NAME)}</title>",
+        f"\t\t\t<link>{base}</link>",
+        "\t\t</image>",
+    ]
+
+    # feste Reihenfolge
+    for location_name in ["schaeffler", "aumovio", "siemens"]:
+        manifest = manifests_by_location.get(location_name)
+        if not manifest:
+            continue
+        location_label = LOCATIONS[location_name]
+        lines += _build_item_lines(manifest, location_name, location_label, use_http=use_http)
+
+    lines += [
+        "\t</channel>",
+        "</rss>",
+        "",
     ]
     return "\n".join(lines)
 
@@ -236,10 +309,14 @@ def main():
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 
+    resolved_manifests = {}
+
     for loc_name, loc_label in LOCATIONS.items():
         manifest = _resolve_manifest(loc_name, loc_label)
         if not manifest:
             continue
+
+        resolved_manifests[loc_name] = manifest
 
         xml_path = DOCS_DIR / f"feed_{loc_name}.xml"
         php_path = DOCS_DIR / f"feed_{loc_name}.php"
@@ -255,6 +332,25 @@ def main():
             encoding="utf-8"
         )
         print(f"[{loc_name}] feed_{loc_name}.php geschrieben")
+
+    # Sammelfeed mit allen verfuegbaren Bildern
+    if resolved_manifests:
+        all_xml_path = DOCS_DIR / "feed_all.xml"
+        all_php_path = DOCS_DIR / "feed_all.php"
+
+        all_xml_path.write_text(
+            build_combined_feed(resolved_manifests, use_http=False, php_header=False),
+            encoding="utf-8"
+        )
+        print("[all] feed_all.xml geschrieben")
+
+        all_php_path.write_text(
+            build_combined_feed(resolved_manifests, use_http=True, php_header=True),
+            encoding="utf-8"
+        )
+        print("[all] feed_all.php geschrieben")
+    else:
+        print("[all] Keine Manifeste vorhanden – Sammelfeed wird nicht erzeugt")
 
 
 if __name__ == "__main__":
