@@ -2,9 +2,11 @@
 """
 Generate all three photoframe menu images in one run.
 
-Expected repo layout:
-- take_screenshot_eurest.py
-- take_screenshot_siemens.py
+Repo layout expected:
+- scripts/generate_all.py
+- scripts/take_screenshot_eurest.py
+- scripts/take_screenshot_siemens.py
+- scripts/generate_rss.py
 - docs/images/
 
 Supported env vars:
@@ -19,7 +21,8 @@ import sys
 import subprocess
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
+SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = SCRIPT_DIR.parent
 PYTHON = sys.executable
 
 GLOBAL_DISPLAY_MODE = (os.environ.get("DISPLAY_MODE") or "day").strip().lower() or "day"
@@ -65,11 +68,11 @@ def should_run(task_name):
 
 
 def run_task(task):
-    script_path = ROOT / task["script"]
+    script_path = SCRIPT_DIR / task["script"]
     if not script_path.exists():
         raise FileNotFoundError(
-            f"Script not found: {script_path}.\n"
-            f"Bitte prüfen, ob dein Eurest-Skript als '{task['script']}' vorliegt."
+            f"Script not found: {script_path}\n"
+            f"Bitte prüfen, ob die Datei unter scripts/{task['script']} liegt."
         )
 
     env = os.environ.copy()
@@ -82,7 +85,8 @@ def run_task(task):
 
     print("\n" + "=" * 72)
     print(f"Generiere: {task['name']}")
-    print(f"Script   : {task['script']}")
+    print(f"Script   : {script_path}")
+    print(f"CWD      : {REPO_ROOT}")
     print(f"Mode     : {env.get('DISPLAY_MODE')}")
     print(f"Day      : {env.get('DISPLAY_DAY')!r}")
     print(f"Offset   : {env.get('WEEK_OFFSET')}")
@@ -90,7 +94,7 @@ def run_task(task):
 
     subprocess.run(
         [PYTHON, str(script_path)],
-        cwd=str(ROOT),
+        cwd=str(REPO_ROOT),
         env=env,
         check=True,
     )
@@ -98,11 +102,12 @@ def run_task(task):
 
 def main():
     print("Photoframe batch generation")
-    print(f"Repo root     : {ROOT}")
-    print(f"DISPLAY_MODE  : {GLOBAL_DISPLAY_MODE}")
-    print(f"DISPLAY_DAY   : {GLOBAL_DISPLAY_DAY!r}")
-    print(f"WEEK_OFFSET   : {GLOBAL_WEEK_OFFSET}")
-    print(f"ONLY filter   : {sorted(ONLY) if ONLY else 'none'}")
+    print(f"Script dir     : {SCRIPT_DIR}")
+    print(f"Repo root      : {REPO_ROOT}")
+    print(f"DISPLAY_MODE   : {GLOBAL_DISPLAY_MODE}")
+    print(f"DISPLAY_DAY    : {GLOBAL_DISPLAY_DAY!r}")
+    print(f"WEEK_OFFSET    : {GLOBAL_WEEK_OFFSET}")
+    print(f"ONLY filter    : {sorted(ONLY) if ONLY else 'none'}")
 
     failures = []
 
