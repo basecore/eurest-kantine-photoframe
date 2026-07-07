@@ -6,8 +6,10 @@ Einzelfeeds:
 - feed_<location>.xml  - HTTPS URLs via github.io
 
 Zusätzlich:
-- feed_all.php         - ein Sammelfeed mit allen verfuegbaren Bildern
-- feed_all.xml         - ein Sammelfeed mit allen verfuegbaren Bildern
+- feed_all.php         - ein Sammelfeed mit allen verfuegbaren Einzelbildern
+- feed_all.xml         - ein Sammelfeed mit allen verfuegbaren Einzelbildern
+- feed_all_main.php    - ein Feed fuer das kombinierte Hauptgerichte-Bild
+- feed_all_main.xml    - ein Feed fuer das kombinierte Hauptgerichte-Bild
 
 Wichtig:
 - Die Feed-Auswahl erfolgt NICHT per Dateinamen-Sortierung.
@@ -37,6 +39,10 @@ LOCATIONS = {
     "schaeffler": "SCHAEFFLER Regensburg",
     "aumovio": "AUMOVIO Regensburg",
     "siemens": "SIEMENS Regensburg",
+}
+
+SPECIAL_LOCATION = {
+    "all_main": "ALLE Hauptgerichte Regensburg",
 }
 
 COMBINED_FEED_NAME = "Alle Kantinen Regensburg – Speisepläne"
@@ -160,11 +166,15 @@ def _item_pubdate(manifest, now_dt):
     return _rfc2822(now_dt)
 
 
-def _item_title(manifest, location_label):
+def _item_title(manifest, location_label, location_name):
     display_mode = manifest.get("display_mode", "")
     label = manifest.get("label", "")
     target_day_label = manifest.get("target_day_label", "")
     target_date = manifest.get("target_date", "")
+
+    if location_name == "all_main":
+        suffix = target_day_label or target_date or label or "Tagesübersicht"
+        return f"Alle Hauptgerichte {suffix} – Regensburg"
 
     if display_mode == "day":
         suffix = target_day_label or target_date or label or "Tagesplan"
@@ -174,6 +184,12 @@ def _item_title(manifest, location_label):
         return f"Wochenspeiseplan {label} – {location_label}"
 
     return f"Speiseplan – {location_label}"
+
+
+def _channel_title(location_name, location_label):
+    if location_name == "all_main":
+        return "Kantinenvergleich Regensburg – Alle Hauptgerichte"
+    return f"{location_label} – Speiseplan"
 
 
 def _php_header_lines():
@@ -202,7 +218,7 @@ def _build_item_lines(manifest, location_name, location_label, use_http=False):
     now_dt = _now_utc()
 
     img_url = _image_url_for_manifest(manifest, use_http=use_http)
-    item_title = _item_title(manifest, location_label)
+    item_title = _item_title(manifest, location_label, location_name)
     item_pub_rfc = _item_pubdate(manifest, now_dt)
 
     label = manifest.get("label", "")
@@ -228,7 +244,7 @@ def build_feed(manifest, location_name, location_label, use_http=False, php_head
     now_dt = _now_utc()
     now_rfc = _rfc2822(now_dt)
 
-    channel_title = f"Eurest Kantine {location_label} – Speiseplan"
+    channel_title = _channel_title(location_name, location_label)
 
     lines = []
     if php_header:
@@ -289,7 +305,6 @@ def build_combined_feed(manifests_by_location, use_http=False, php_header=False)
         "\t\t</image>",
     ]
 
-    # feste Reihenfolge
     for location_name in ["schaeffler", "aumovio", "siemens"]:
         manifest = manifests_by_location.get(location_name)
         if not manifest:
@@ -333,7 +348,27 @@ def main():
         )
         print(f"[{loc_name}] feed_{loc_name}.php geschrieben")
 
-    # Sammelfeed mit allen verfuegbaren Bildern
+    special_name = "all_main"
+    special_label = SPECIAL_LOCATION[special_name]
+    special_manifest = _resolve_manifest(special_name, special_label)
+    if special_manifest:
+        xml_path = DOCS_DIR / "feed_all_main.xml"
+        php_path = DOCS_DIR / "feed_all_main.php"
+
+        xml_path.write_text(
+            build_feed(special_manifest, special_name, special_label, use_http=False, php_header=False),
+            encoding="utf-8"
+        )
+        print("[all_main] feed_all_main.xml geschrieben")
+
+        php_path.write_text(
+            build_feed(special_manifest, special_name, special_label, use_http=True, php_header=True),
+            encoding="utf-8"
+        )
+        print("[all_main] feed_all_main.php geschrieben")
+    else:
+        print("[all_main] Kein Manifest/Bild vorhanden – Spezialfeed wird nicht erzeugt")
+
     if resolved_manifests:
         all_xml_path = DOCS_DIR / "feed_all.xml"
         all_php_path = DOCS_DIR / "feed_all.php"
