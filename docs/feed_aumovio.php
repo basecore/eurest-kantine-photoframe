@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>Eurest Kantine AUMOVIO Regensburg – Speiseplan</title>
 		<link>http://basecore.bplaced.net/eurest</link>
 		<description></description>
-		<pubDate>Mon, 06 Jul 2026 13:02:05 +0000</pubDate>
-		<lastBuildDate>Mon, 06 Jul 2026 13:02:05 +0000</lastBuildDate>
+		<pubDate>Tue, 07 Jul 2026 07:35:33 +0000</pubDate>
+		<lastBuildDate>Tue, 07 Jul 2026 07:35:33 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net/eurest</generator>
 		<image>
 			<url>http://basecore.bplaced.net/eurest/images/icon.jpg</url>
@@ -21,9 +21,10 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<item>
 			<title>Tagesplan Di 07.07 – AUMOVIO Regensburg</title>
 			<link>http://basecore.bplaced.net/eurest</link>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_aumovio.jpg?v=2026-07-06T13%3A00%3A46.349589Z&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W28&quot;/&gt;</description>
+			<guid isPermaLink="false">aumovio::kantine_2026-W28_2026-07-07_aumovio.jpg::2026-07-07T07:34:14.447799Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_aumovio.jpg?v=2026-07-07T07%3A34%3A14.447799Z&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W28&quot;/&gt;</description>
 			<pubDate>Tue, 07 Jul 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_aumovio.jpg?v=2026-07-06T13%3A00%3A46.349589Z" type="image/jpeg" height="600" width="800"/>
+			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_aumovio.jpg?v=2026-07-07T07%3A34%3A14.447799Z" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>
