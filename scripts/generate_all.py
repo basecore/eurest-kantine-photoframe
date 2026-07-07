@@ -1,19 +1,21 @@
 #!/usr/bin/env python3
 """
-Generate all three photoframe menu images in one run.
+Generate all photoframe menu images in one run.
 
 Repo layout expected:
 - scripts/generate_all.py
 - scripts/take_screenshot_eurest.py
 - scripts/take_screenshot_siemens.py
+- scripts/generate_combined.py
 - scripts/generate_rss.py
 - docs/images/
 
 Supported env vars:
-  DISPLAY_MODE   day|week         default: day
-  DISPLAY_DAY    optional weekday override for day mode
-  WEEK_OFFSET    optional         default: 0 for day, 1 for week
-  ONLY           optional comma-separated filter, e.g. "siemens" or "schaeffler,aumovio"
+  DISPLAY_MODE        day|week         default: day
+  DISPLAY_DAY         optional weekday override for day mode
+  WEEK_OFFSET         optional         default: 0 for day, 1 for week
+  ONLY                optional comma-separated filter, e.g. "siemens" or "schaeffler,aumovio"
+  GENERATE_COMBINED   1|0|true|false  default: 1
 """
 
 import os
@@ -35,6 +37,13 @@ ONLY = {
     for x in (os.environ.get("ONLY") or "").split(",")
     if x.strip()
 }
+
+GENERATE_COMBINED = (
+    (os.environ.get("GENERATE_COMBINED") or "1").strip().lower()
+    not in {"0", "false", "no", "off"}
+)
+
+REQUIRED_FOR_COMBINED = {"schaeffler", "aumovio", "siemens"}
 
 TASKS = [
     {
@@ -67,12 +76,31 @@ def should_run(task_name):
     return task_name.lower() in ONLY
 
 
-def run_task(task):
-    script_path = SCRIPT_DIR / task["script"]
+def should_run_combined():
+    if not GENERATE_COMBINED:
+        print("\n[skip] all_main – GENERATE_COMBINED ist deaktiviert")
+        return False
+
+    if GLOBAL_DISPLAY_MODE != "day":
+        print(f"\n[skip] all_main – nur im day-Modus sinnvoll (aktuell: {GLOBAL_DISPLAY_MODE})")
+        return False
+
+    if not ONLY:
+        return True
+
+    if REQUIRED_FOR_COMBINED.issubset(ONLY):
+        return True
+
+    print("\n[skip] all_main – ONLY-Filter enthält nicht alle drei Kantinen")
+    return False
+
+
+def run_python_script(script_name, title, extra_env=None):
+    script_path = SCRIPT_DIR / script_name
     if not script_path.exists():
         raise FileNotFoundError(
             f"Script not found: {script_path}\n"
-            f"Bitte prüfen, ob die Datei unter scripts/{task['script']} liegt."
+            f"Bitte prüfen, ob die Datei unter scripts/{script_name} liegt."
         )
 
     env = os.environ.copy()
@@ -81,10 +109,11 @@ def run_task(task):
         "DISPLAY_DAY": GLOBAL_DISPLAY_DAY,
         "WEEK_OFFSET": GLOBAL_WEEK_OFFSET,
     })
-    env.update(task["env"])
+    if extra_env:
+        env.update(extra_env)
 
     print("\n" + "=" * 72)
-    print(f"Generiere: {task['name']}")
+    print(f"Generiere: {title}")
     print(f"Script   : {script_path}")
     print(f"CWD      : {REPO_ROOT}")
     print(f"Mode     : {env.get('DISPLAY_MODE')}")
@@ -100,14 +129,23 @@ def run_task(task):
     )
 
 
+def run_task(task):
+    run_python_script(task["script"], task["name"], task["env"])
+
+
+def run_combined_task():
+    run_python_script("generate_combined.py", "all_main")
+
+
 def main():
     print("Photoframe batch generation")
-    print(f"Script dir     : {SCRIPT_DIR}")
-    print(f"Repo root      : {REPO_ROOT}")
-    print(f"DISPLAY_MODE   : {GLOBAL_DISPLAY_MODE}")
-    print(f"DISPLAY_DAY    : {GLOBAL_DISPLAY_DAY!r}")
-    print(f"WEEK_OFFSET    : {GLOBAL_WEEK_OFFSET}")
-    print(f"ONLY filter    : {sorted(ONLY) if ONLY else 'none'}")
+    print(f"Script dir         : {SCRIPT_DIR}")
+    print(f"Repo root          : {REPO_ROOT}")
+    print(f"DISPLAY_MODE       : {GLOBAL_DISPLAY_MODE}")
+    print(f"DISPLAY_DAY        : {GLOBAL_DISPLAY_DAY!r}")
+    print(f"WEEK_OFFSET        : {GLOBAL_WEEK_OFFSET}")
+    print(f"ONLY filter        : {sorted(ONLY) if ONLY else 'none'}")
+    print(f"GENERATE_COMBINED  : {GENERATE_COMBINED}")
 
     failures = []
 
@@ -122,6 +160,13 @@ def main():
             failures.append((task["name"], str(e)))
             print(f"\n[ERROR] {task['name']} fehlgeschlagen: {e}")
 
+    if not failures and should_run_combined():
+        try:
+            run_combined_task()
+        except Exception as e:
+            failures.append(("all_main", str(e)))
+            print(f"\n[ERROR] all_main fehlgeschlagen: {e}")
+
     print("\n" + "-" * 72)
     if failures:
         print("Batch abgeschlossen mit Fehlern:")
@@ -134,6 +179,8 @@ def main():
     print("- latest_schaeffler.jpg")
     print("- latest_aumovio.jpg")
     print("- latest_siemens.jpg")
+    if should_run_combined():
+        print("- latest_all_main.jpg")
 
 
 if __name__ == "__main__":
