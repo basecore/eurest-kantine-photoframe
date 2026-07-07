@@ -7,7 +7,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 ?>
 <rss version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
 	<channel>
-		<title>AUMOVIO Regensburg – Speiseplan</title>
+		<title>Kantinenvergleich Regensburg – Alle Hauptgerichte</title>
 		<link>http://basecore.bplaced.net/eurest</link>
 		<description></description>
 		<pubDate>Tue, 07 Jul 2026 10:40:26 +0000</pubDate>
@@ -15,16 +15,16 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<generator>http://basecore.bplaced.net/eurest</generator>
 		<image>
 			<url>http://basecore.bplaced.net/eurest/images/icon.jpg</url>
-			<title>AUMOVIO Regensburg – Speiseplan</title>
+			<title>Kantinenvergleich Regensburg – Alle Hauptgerichte</title>
 			<link>http://basecore.bplaced.net/eurest</link>
 		</image>
 		<item>
-			<title>Tagesplan Di 07.07 – AUMOVIO Regensburg</title>
+			<title>Alle Hauptgerichte Di 07.07 – Regensburg</title>
 			<link>http://basecore.bplaced.net/eurest</link>
-			<guid isPermaLink="false">aumovio::kantine_2026-W28_2026-07-07_aumovio.jpg::2026-07-07T10:39:06.773177Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_aumovio.jpg?v=2026-07-07T10%3A39%3A06.773177Z&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W28&quot;/&gt;</description>
+			<guid isPermaLink="false">all_main::kantine_2026-W28_2026-07-07_all_main.jpg::2026-07-07T10:40:26.006987Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_all_main.jpg?v=2026-07-07T10%3A40%3A26.006987Z&quot; alt=&quot;ALLE Hauptgerichte Regensburg Speiseplan 2026-W28&quot;/&gt;</description>
 			<pubDate>Tue, 07 Jul 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_aumovio.jpg?v=2026-07-07T10%3A39%3A06.773177Z" type="image/jpeg" height="600" width="800"/>
+			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_all_main.jpg?v=2026-07-07T10%3A40%3A26.006987Z" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>

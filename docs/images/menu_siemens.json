@@ -1,0 +1,38 @@
+{
+  "location_name": "siemens",
+  "location_label": "SIEMENS Regensburg",
+  "display_mode": "day",
+  "label": "2026-W28",
+  "kw": 28,
+  "target_date": "2026-07-07",
+  "target_day_label": "Di 07.07",
+  "generated_at_utc": "2026-07-07T10:40:25.747874Z",
+  "generated_at_local": "2026-07-07T12:39:06.920465+02:00",
+  "is_holiday": "",
+  "source": "siemens.cateringportal.io",
+  "theme": {
+    "primary": "#009999",
+    "secondary": "#000000",
+    "price": "#EC6602"
+  },
+  "main_dishes": [
+    {
+      "category": "Essen 1",
+      "name": "Ravioli mit Pestofüllung / Frischkäsesoße",
+      "price": "3,20 €",
+      "vv": ""
+    },
+    {
+      "category": "Essen 2",
+      "name": "Hähnchenkeule, gebraten / Bulgur mit Zitrone / Antipasti-Gemüse",
+      "price": "6,10 €",
+      "vv": ""
+    },
+    {
+      "category": "Essen 3",
+      "name": "Schweinebraten / Knödel / Weißkrautsalat",
+      "price": "6,20 €",
+      "vv": ""
+    }
+  ]
+}

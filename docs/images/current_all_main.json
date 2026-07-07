@@ -1,0 +1,16 @@
+{
+  "location_name": "all_main",
+  "location_label": "ALLE Hauptgerichte Regensburg",
+  "display_mode": "day",
+  "label": "2026-W28",
+  "kw": 28,
+  "image": "kantine_2026-W28_2026-07-07_all_main.jpg",
+  "latest": "latest_all_main.jpg",
+  "dish_count": 12,
+  "is_holiday": "",
+  "generated_at_utc": "2026-07-07T10:40:26.006987Z",
+  "generated_at_local": "2026-07-07T12:40:25.823066+02:00",
+  "target_date": "2026-07-07",
+  "target_day_label": "Di 07.07",
+  "week_monday": "2026-07-06"
+}

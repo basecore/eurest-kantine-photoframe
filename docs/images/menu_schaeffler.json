@@ -1,0 +1,44 @@
+{
+  "location_name": "schaeffler",
+  "location_label": "SCHAEFFLER Regensburg",
+  "display_mode": "day",
+  "label": "2026-W28",
+  "kw": 28,
+  "target_date": "2026-07-07",
+  "target_day_label": "Di 07.07",
+  "generated_at_utc": "2026-07-07T10:38:04.875837Z",
+  "generated_at_local": "2026-07-07T12:37:10.459366+02:00",
+  "is_holiday": "",
+  "source": "eurest.webspeiseplan.de",
+  "theme": {
+    "primary": "#00893D",
+    "secondary": "#404547",
+    "price": "#00893D"
+  },
+  "main_dishes": [
+    {
+      "category": "Ostenviertel",
+      "name": "PASTA MANUFAKTUR I mit frischer Pasta, wahlweise mit Gorgonzola Sauce oder Basilikum-Pesto",
+      "price": "4,57 €",
+      "vv": "V"
+    },
+    {
+      "category": "Kumpfmühl",
+      "name": "SCHWEINEFILET SZECHUAN STYLE | Zuckerschoten, Zwiebeln, Reis",
+      "price": "6,90 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "taste the GAME I WORLD BOWL | Kidney-Bohnen, Hirse, Mango-Chili, Salsa, Rote Bete, Rucola",
+      "price": "5,90 €",
+      "vv": "VG"
+    },
+    {
+      "category": "Reinhausen",
+      "name": "ADD ON I Karotten-Sesam Stick, Miso-Mayo",
+      "price": "2,50 €",
+      "vv": ""
+    }
+  ]
+}
