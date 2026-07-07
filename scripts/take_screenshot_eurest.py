@@ -3178,6 +3178,79 @@ def _write_current_manifest(
     print(f"Manifest: {manifest_path}")
 
 
+def _rgb_to_hex(rgb):
+    return "#{:02X}{:02X}{:02X}".format(*rgb)
+
+
+EUREST_OVERVIEW_EXCLUDE = {
+    "suppe",
+    "salatbar",
+    "dessert",
+    "dessert 2",
+    "essbar lunch",
+    "essbar lunch 11:00-13:30",
+}
+
+
+def extract_main_dishes_for_overview(dishes):
+    out = []
+    for dish in dishes or []:
+        cat = (dish.get("kategorie") or "").strip()
+        name = re.sub(r"\s+", " ", (dish.get("name") or "")).strip()
+
+        if not name or name == "–":
+            continue
+
+        if cat.casefold() in EUREST_OVERVIEW_EXCLUDE:
+            continue
+
+        out.append({
+            "category": cat,
+            "name": name,
+            "price": (dish.get("preis") or "").strip(),
+            "vv": (dish.get("vv") or "").strip(),
+        })
+
+    return out
+
+
+def _write_overview_source(
+    *,
+    location_name,
+    location_label,
+    target_date,
+    target_day_label,
+    label,
+    kw,
+    local_dt,
+    dishes,
+    is_holiday="",
+):
+    path = OUT_DIR / f"menu_{location_name}.json"
+
+    data = {
+        "location_name": location_name,
+        "location_label": location_label,
+        "display_mode": "day",
+        "label": label,
+        "kw": kw,
+        "target_date": target_date.isoformat(),
+        "target_day_label": target_day_label,
+        "generated_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
+        "generated_at_local": local_dt.isoformat(),
+        "is_holiday": is_holiday or "",
+        "source": "eurest.webspeiseplan.de",
+        "theme": {
+            "primary": _rgb_to_hex(PRIMARY),
+            "secondary": _rgb_to_hex(SECONDARY),
+            "price": _rgb_to_hex(PRICE),
+        },
+        "main_dishes": extract_main_dishes_for_overview(dishes),
+    }
+
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"Overview source: {path}")
+
 # ── Main ───────────────────────────────────────────────────────────────────────
 def main():
     now = datetime.now(timezone.utc)
@@ -3283,6 +3356,18 @@ def main():
             target_day_label=dk,
             week_monday=target_monday,
             dish_count=len(dishes),
+            is_holiday=is_holiday,
+        )
+
+        _write_overview_source(
+            location_name=LOCATION_NAME,
+            location_label=LOCATION_LABEL,
+            target_date=target_date,
+            target_day_label=dk,
+            label=label,
+            kw=kw,
+            local_dt=local,
+            dishes=dishes,
             is_holiday=is_holiday,
         )
 
