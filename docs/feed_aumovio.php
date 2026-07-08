@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>AUMOVIO Regensburg – Speiseplan</title>
 		<link>http://basecore.bplaced.net/eurest</link>
 		<description></description>
-		<pubDate>Tue, 07 Jul 2026 10:40:26 +0000</pubDate>
-		<lastBuildDate>Tue, 07 Jul 2026 10:40:26 +0000</lastBuildDate>
+		<pubDate>Wed, 08 Jul 2026 06:26:23 +0000</pubDate>
+		<lastBuildDate>Wed, 08 Jul 2026 06:26:23 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net/eurest</generator>
 		<image>
 			<url>http://basecore.bplaced.net/eurest/images/icon.jpg</url>
@@ -19,12 +19,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<link>http://basecore.bplaced.net/eurest</link>
 		</image>
 		<item>
-			<title>Tagesplan Di 07.07 – AUMOVIO Regensburg</title>
+			<title>Tagesplan Mi 08.07 – AUMOVIO Regensburg</title>
 			<link>http://basecore.bplaced.net/eurest</link>
-			<guid isPermaLink="false">aumovio::kantine_2026-W28_2026-07-07_aumovio.jpg::2026-07-07T10:39:06.773177Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_aumovio.jpg?v=2026-07-07T10%3A39%3A06.773177Z&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W28&quot;/&gt;</description>
-			<pubDate>Tue, 07 Jul 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-07_aumovio.jpg?v=2026-07-07T10%3A39%3A06.773177Z" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">aumovio::kantine_2026-W28_2026-07-08_aumovio.jpg::2026-07-08T06:25:03.699487Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-08_aumovio.jpg?v=2026-07-08T06%3A25%3A03.699487Z&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W28&quot;/&gt;</description>
+			<pubDate>Wed, 08 Jul 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-08_aumovio.jpg?v=2026-07-08T06%3A25%3A03.699487Z" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>

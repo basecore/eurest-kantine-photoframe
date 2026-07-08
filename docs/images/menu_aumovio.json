@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W28",
   "kw": 28,
-  "target_date": "2026-07-07",
-  "target_day_label": "Di 07.07",
-  "generated_at_utc": "2026-07-07T10:39:06.773402Z",
-  "generated_at_local": "2026-07-07T12:38:05.041289+02:00",
+  "target_date": "2026-07-08",
+  "target_day_label": "Mi 08.07",
+  "generated_at_utc": "2026-07-08T06:25:03.699727Z",
+  "generated_at_local": "2026-07-08T08:24:02.479440+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,32 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PERSISCHER AUBERGINEN-EINTOPF | mit Kichererbsen, Tomaten, Kumin, & Fladenbrot",
+      "name": "VOLLKORN PASTA | mit Linsenbolognaise & Basilikum",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "LAUCH-KARTOFFEL-FRITTATA | Artischocken, Schmand, Rucola, Zitrone",
+      "name": "CORDON BLEU I vom Hähnchen mit Pommes frites und Zitrone",
       "price": "6,90 €",
-      "vv": "V"
+      "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "taste the GAME I CHEESE BURGER | Chicken, Korean BBQ, Cheddar, Relish, Pommes Frites",
-      "price": "9,90 €",
+      "name": "SEELACHSFILET I mit Salzkartoffeln, Karottengemüse und Zitronensoße",
+      "price": "7,10 €",
       "vv": ""
     },
     {
       "category": "Niederwinzer",
-      "name": "SCHNITZEL WIENER ART | vom Hähnchen mit Zitrone & Kartoffel-Gurkensalat oder Pommes Frites",
-      "price": "6,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Königswiesen",
-      "name": "STEAKHOUSE SALAD | Austernpilze, Caesar Dressing, Röstbrot, Grana Padano",
-      "price": "7,50 €",
+      "name": "CAMEMBERT | gebacken mit Preiselbeeren Paprika-Zucchinigemüsesalat & Steinofenbaguette",
+      "price": "6,50 €",
       "vv": "V"
     }
   ]

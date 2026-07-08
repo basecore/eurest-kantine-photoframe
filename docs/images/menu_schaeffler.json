@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W28",
   "kw": 28,
-  "target_date": "2026-07-07",
-  "target_day_label": "Di 07.07",
-  "generated_at_utc": "2026-07-07T10:38:04.875837Z",
-  "generated_at_local": "2026-07-07T12:37:10.459366+02:00",
+  "target_date": "2026-07-08",
+  "target_day_label": "Mi 08.07",
+  "generated_at_utc": "2026-07-08T06:24:02.282513Z",
+  "generated_at_local": "2026-07-08T08:23:00.652602+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PASTA MANUFAKTUR I mit frischer Pasta, wahlweise mit Gorgonzola Sauce oder Basilikum-Pesto",
+      "name": "MIE-NUDELN RAMEN STYLE | mit grünem Spargel, Ei, Sesam & Röstzwiebeln",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SCHWEINEFILET SZECHUAN STYLE | Zuckerschoten, Zwiebeln, Reis",
+      "name": "HÄHNCHENSCHNITZEL | Gurkensalat, Bratkartoffeln",
       "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "taste the GAME I WORLD BOWL | Kidney-Bohnen, Hirse, Mango-Chili, Salsa, Rote Bete, Rucola",
-      "price": "5,90 €",
-      "vv": "VG"
-    },
-    {
-      "category": "Reinhausen",
-      "name": "ADD ON I Karotten-Sesam Stick, Miso-Mayo",
-      "price": "2,50 €",
+      "name": "PIZZA MANUFAKTUR I Pizza auf Stein frisch gebacken mit Mozzarella, Champignons, Salami oder Schinken",
+      "price": "7,50 €",
       "vv": ""
     }
   ]
