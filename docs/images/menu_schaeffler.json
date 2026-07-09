@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W28",
   "kw": 28,
-  "target_date": "2026-07-09",
-  "target_day_label": "Do 09.07",
-  "generated_at_utc": "2026-07-09T09:40:13.675330Z",
-  "generated_at_local": "2026-07-09T11:39:12.312226+02:00",
+  "target_date": "2026-07-10",
+  "target_day_label": "Fr 10.07",
+  "generated_at_utc": "2026-07-09T11:53:24.907683Z",
+  "generated_at_local": "2026-07-09T13:52:35.570165+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,14 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "Spinatknödel | mit Pilzsauce, Schmand & Röstzwiebeln",
+      "name": "PERSISCHER AUBERGINEN-EINTOPF | mit Kichererbsen, Tomaten, Kumin, & Fladenbrot",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "FRIKADELLE | Kartoffel-Radieschensalat, Senf-Meerrettichsauce",
-      "price": "8,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "taste the GAME I BLACK CHEESE BURGER | Crispy Chicken, Korean BBQ, Cheddar, Relish, Pommes Frites",
-      "price": "9,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Dessert 3",
-      "name": "Marmor Pudding",
-      "price": "",
+      "name": "DORADENFILET I gebraten dazu Bandnudeln mit Trüffelaroma, Champignons & Kirschtomaten",
+      "price": "8,50 €",
       "vv": ""
     }
   ]

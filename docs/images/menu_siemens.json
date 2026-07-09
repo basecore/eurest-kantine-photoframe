@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W28",
   "kw": 28,
-  "target_date": "2026-07-09",
-  "target_day_label": "Do 09.07",
-  "generated_at_utc": "2026-07-09T09:42:21.802498Z",
-  "generated_at_local": "2026-07-09T11:41:02.828884+02:00",
+  "target_date": "2026-07-10",
+  "target_day_label": "Fr 10.07",
+  "generated_at_utc": "2026-07-09T11:55:33.003691Z",
+  "generated_at_local": "2026-07-09T13:54:14.346984+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Quarkstrudel / Vanillesoße / Dessertkirschen",
+      "name": "Obazda / Rettichsalat / Laugenbrezel",
       "price": "3,20 €",
       "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Putenschnitzel, gebacken / Kartoffelwedges / Zitronenecke",
-      "price": "5,70 €",
+      "name": "Pizza mit Chorizo und Schafskäse / oder / Pizza Antipasti",
+      "price": "6,10 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Wrap, vegetarisch gefüllt / Avocado / oder / Wrap nach mexikanischer Art",
-      "price": "6,00 €",
-      "vv": "V"
+      "name": "Bismarckhering nach Hausfrauenart / Salzkartoffeln mit Butter / Zwiebelringe, weiß",
+      "price": "5,20 €",
+      "vv": ""
     }
   ]
 }
