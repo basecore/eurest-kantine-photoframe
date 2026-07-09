@@ -34,21 +34,21 @@ MAX_KEEP = 3
 LOCATIONS = [
     {
         "name": "schaeffler",
-        "label": "SCHAEFFLER Regensburg",
+        "label": "SCHAEFFLER",
         "fallback_primary": "#00893D",
         "fallback_secondary": "#404547",
         "fallback_price": "#00893D",
     },
     {
         "name": "aumovio",
-        "label": "AUMOVIO Regensburg",
+        "label": "AUMOVIO",
         "fallback_primary": "#FF4208",
         "fallback_secondary": "#333333",
         "fallback_price": "#FF4208",
     },
     {
         "name": "siemens",
-        "label": "SIEMENS Regensburg",
+        "label": "SIEMENS",
         "fallback_primary": "#009999",
         "fallback_secondary": "#000000",
         "fallback_price": "#EC6602",
@@ -330,7 +330,7 @@ def _draw_badge(draw, text, color, x, y):
     return bw, bh
 
 
-def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme):
+def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme, *, name_size_boost=0, name_size_min=None):
     pad = 6
     price_font = lf(13, bold=True)
     cat_font = lf(10, bold=True)
@@ -371,15 +371,16 @@ def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme):
     name_max_h = max(12, name_bottom - cy)
 
     max_lines = 3 if (y1 - y0) >= 78 else 2
-    start_size = 18 if (y1 - y0) >= 76 else 15
-
+    start_size = (18 if (y1 - y0) >= 76 else 15) + name_size_boost
+    size_min = name_size_min if name_size_min is not None else 8
+    
     name_font, name_lh, name_lines = _fit_font(
         draw,
         re.sub(r"\s+", " ", (dish.get("name") or "").strip()),
         name_max_w,
         name_max_h,
         size_start=start_size,
-        size_min=8,
+        size_min=size_min,
     )
     name_lines = _limit_lines(draw, name_lines, name_font, name_max_w, max_lines)
 
@@ -397,6 +398,26 @@ def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme):
             font=price_font,
             fill=theme["price"],
         )
+
+def _filtered_overview_dishes(src):
+    dishes = src.get("main_dishes") or []
+    filtered_dishes = []
+    for dish in dishes:
+        category = re.sub(r"\s+", " ", (dish.get("category") or "").strip()).casefold()
+
+        if not category:
+            filtered_dishes.append(dish)
+            continue
+        if "suppe" in category:
+            continue
+        if "salat" in category:
+            continue
+        if "dessert" in category:
+            continue
+
+        filtered_dishes.append(dish)
+
+    return filtered_dishes
 
 
 def render_combined(sources_by_name, target_date, label, kw, local_dt):
@@ -436,7 +457,8 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
     for idx, loc in enumerate(LOCATIONS):
         src = sources_by_name[loc["name"]]
         theme = _theme_for_source(src, loc)
-        dishes = src.get("main_dishes") or []
+        dishes = _filtered_overview_dishes(src)
+        
         is_holiday = src.get("is_holiday", "")
 
         x0 = GAP + idx * (col_w + GAP)
@@ -453,7 +475,7 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
         fcol = lf(13, True)
         fcnt = lf(10)
 
-        label_text = src.get("location_label") or loc["label"]
+        label_text = loc["label"]
         count_text = (
             is_holiday and "Feiertag"
         ) or (
@@ -504,7 +526,20 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
             ry1 = ry0 + row_h
             if ry1 > inner_bottom:
                 break
-            _draw_dish_card(draw, dish, x0 + 5, ry0, x1 - 5, ry1, theme)
+            if loc["name"] == "aumovio":
+                _draw_dish_card(
+                    draw,
+                    dish,
+                    x0 + 5,
+                    ry0,
+                    x1 - 5,
+                    ry1,
+                    theme,
+                    name_size_boost=6,
+                    name_size_min=12,
+                )
+            else:
+                _draw_dish_card(draw, dish, x0 + 5, ry0, x1 - 5, ry1, theme)
 
     leg_y = H - FOOTER_H - LEGEND_H - 2
     draw.line([(0, leg_y), (W, leg_y)], fill=GRID, width=1)
@@ -608,7 +643,11 @@ def main():
     shutil.copy(str(out_path), str(latest_path))
     print(f"{latest_path.name} aktualisiert")
 
-    dish_count = sum(len((sources_by_name[loc['name']].get("main_dishes") or [])) for loc in LOCATIONS)
+    # in main()
+    dish_count = sum(
+        len(_filtered_overview_dishes(sources_by_name[loc["name"]]))
+        for loc in LOCATIONS
+    )
 
     _write_current_manifest(
         location_name="all_main",
