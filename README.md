@@ -39,6 +39,9 @@ Der Ablauf ist:
 
 ## Aktuelle Bilder
 
+### Alle Kantinen (Übersicht)
+![Übersicht alle Kantinen](docs/images/latest_all_main.jpg)
+
 ### SCHAEFFLER Regensburg
 ![Aktueller Speiseplan Schaeffler](docs/images/latest_schaeffler.jpg)
 
@@ -208,6 +211,7 @@ scripts/
 
 docs/
   images/
+    latest_all_main.jpg
     latest_schaeffler.jpg
     latest_aumovio.jpg
     latest_siemens.jpg
