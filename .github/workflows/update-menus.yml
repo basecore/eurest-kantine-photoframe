@@ -114,12 +114,12 @@ jobs:
           echo "dated_filename=${FNAME}" >> $GITHUB_OUTPUT
           echo "Dated filename: ${FNAME}"
 
-      - name: Delete images older than 21 days (GitHub)
+      - name: Delete images older than 5 days (GitHub)
         id: find_old
         if: steps.skip_check.outputs.skip == 'false'
         continue-on-error: true
         run: |
-          CUTOFF=$(date -u -d "21 days ago" +%Y-%m-%d)
+          CUTOFF=$(date -u -d "5 days ago" +%Y-%m-%d)
           OLD_LIST=""
           for f in docs/images/kantine_*.jpg; do
             [ -e "$f" ] || continue
