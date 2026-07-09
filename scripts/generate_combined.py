@@ -330,7 +330,7 @@ def _draw_badge(draw, text, color, x, y):
     return bw, bh
 
 
-def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme, *, name_size_boost=0, name_size_min=None):
+def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme, *, total_dishes=0, prefer_more_lines=False):
     pad = 6
     price_font = lf(13, bold=True)
     cat_font = lf(10, bold=True)
@@ -370,9 +370,20 @@ def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme, *, name_size_boost=0, nam
     name_bottom = y1 - pad - price_reserved_h
     name_max_h = max(12, name_bottom - cy)
 
-    max_lines = 3 if (y1 - y0) >= 78 else 2
-    start_size = (18 if (y1 - y0) >= 76 else 15) + name_size_boost
-    size_min = name_size_min if name_size_min is not None else 8
+    card_h = y1 - y0
+
+    if prefer_more_lines and total_dishes and total_dishes <= 6:
+        max_lines = 3
+        start_size = 18 if card_h >= 76 else 16
+        size_min = 10
+    elif total_dishes >= 7:
+        max_lines = 2 if card_h >= 58 else 1
+        start_size = 16 if card_h >= 70 else 14
+        size_min = 8
+    else:
+        max_lines = 3 if card_h >= 78 else 2
+        start_size = 18 if card_h >= 76 else 15
+        size_min = 8
     
     name_font, name_lh, name_lines = _fit_font(
         draw,
@@ -539,7 +550,17 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
                     name_size_min=12,
                 )
             else:
-                _draw_dish_card(draw, dish, x0 + 5, ry0, x1 - 5, ry1, theme)
+                _draw_dish_card(
+                    draw,
+                    dish,
+                    x0 + 5,
+                    ry0,
+                    x1 - 5,
+                    ry1,
+                    theme,
+                    total_dishes=len(dishes),
+                    prefer_more_lines=(loc["name"] == "aumovio"),
+                )
 
     leg_y = H - FOOTER_H - LEGEND_H - 2
     draw.line([(0, leg_y), (W, leg_y)], fill=GRID, width=1)
