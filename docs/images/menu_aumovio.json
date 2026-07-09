@@ -6,8 +6,8 @@
   "kw": 28,
   "target_date": "2026-07-09",
   "target_day_label": "Do 09.07",
-  "generated_at_utc": "2026-07-09T07:42:33.865093Z",
-  "generated_at_local": "2026-07-09T09:41:51.766842+02:00",
+  "generated_at_utc": "2026-07-09T08:45:49.189610Z",
+  "generated_at_local": "2026-07-09T10:44:59.654134+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -50,6 +50,12 @@
       "category": "Oberwinzer",
       "name": "ADD ON I Karotten-Sesam Stick, Miso-Mayo",
       "price": "2,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Dessert 3",
+      "name": "Karamell Pudding mit Keks",
+      "price": "1,33 €",
       "vv": ""
     }
   ]
