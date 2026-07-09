@@ -217,11 +217,7 @@ jobs:
           if [[ -n "${OLD_FILES}" ]]; then
             echo "Deleting old files from bplaced: ${OLD_FILES}"
             for fname in ${OLD_FILES}; do
-              echo "ncftp delete: /www/images/${fname}"
-              ncftp -u "$FTP_USER" -p "$BPLACED_PASS" "$FTP_HOST" << FTPCMD || true
-delete /www/images/${fname}
-quit
-FTPCMD
+              printf "delete /www/images/%s\nquit\n" "${fname}" | ncftp -u "$FTP_USER" -p "$BPLACED_PASS" "$FTP_HOST" || true
             done
           else
             echo "No old files to delete on bplaced."
