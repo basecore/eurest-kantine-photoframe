@@ -35,8 +35,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # ─────────────────────────────────────────────
+  # Job 1: Build + git push (GitHub-hosted)
+  # ─────────────────────────────────────────────
   build:
     runs-on: ubuntu-latest
+    outputs:
+      commit_sha: ${{ steps.github_push.outputs.commit_sha }}
+      build_outcome: ${{ steps.generate_menus.outcome }}
+      rss_outcome: ${{ steps.generate_rss.outcome }}
+      github_push_outcome: ${{ steps.github_push.outcome }}
 
     env:
       PYTHONUNBUFFERED: "1"
@@ -72,19 +80,23 @@ jobs:
           echo "ONLY=$ONLY"
 
       - name: Generate all menus
+        id: generate_menus
+        continue-on-error: true
         run: python scripts/generate_all.py
 
       - name: Show generated files
         run: |
           echo "Root docs:"
           find docs -maxdepth 3 -type f | sort || true
-          echo "Scripts docs:"
-          find scripts/docs -maxdepth 3 -type f | sort || true
 
       - name: Generate RSS feeds
+        id: generate_rss
+        continue-on-error: true
         run: python scripts/generate_rss.py
 
       - name: Commit updated images and manifests
+        id: github_push
+        continue-on-error: true
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -93,8 +105,415 @@ jobs:
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
-            exit 0
+          else
+            git commit -m "Update photoframe menus"
+            git pull --rebase origin main
+            git push
           fi
 
-          git commit -m "Update photoframe menus"
-          git push
+          echo "commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+
+  # ─────────────────────────────────────────────────────────────────
+  # Job 2: FTP Upload via self-hosted HAOS runner (primary)
+  # Läuft auf Home Assistant mit Heim-IP → bplaced blockiert nicht
+  # ─────────────────────────────────────────────────────────────────
+  upload-haos:
+    runs-on: [self-hosted, haos]
+    needs: build
+    continue-on-error: true
+    env:
+      BPLACED_PASS: ${{ secrets.BPLACED_FTP_PASSWORD }}
+      COMMIT_SHA: ${{ needs.build.outputs.commit_sha }}
+    outputs:
+      upload_outcome: ${{ job.status }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.build.outputs.commit_sha }}
+          fetch-depth: 1
+
+      - name: Verify expected files exist
+        run: |
+          echo "COMMIT_SHA=${COMMIT_SHA}"
+          ls -lh docs/ || true
+          ls -lh docs/images/ || true
+
+      - name: Install ncftp on runner
+        run: |
+          which ncftpput || (apt-get update -q && apt-get install -yq ncftp)
+
+      - name: Deploy to bplaced via ncftpput (HAOS self-hosted)
+        id: ftp_haos
+        run: |
+          FTP_HOST="basecore.bplaced.net"
+          FTP_USER="basecore"
+          MAX_RETRIES=5
+          RETRY_DELAY=30
+          CMD_TIMEOUT=120
+
+          attempt=1
+          while [ $attempt -le $MAX_RETRIES ]; do
+            echo "ncftpput attempt $attempt of $MAX_RETRIES..."
+
+            # Upload PHP feeds
+            UPLOAD_OK=true
+            for phpfile in docs/feed_all.php docs/feed_all_main.php; do
+              if [[ -f "$phpfile" ]]; then
+                timeout $CMD_TIMEOUT ncftpput -u "$FTP_USER" -p "$BPLACED_PASS" -P 21 "$FTP_HOST" /www/ "$phpfile" || UPLOAD_OK=false
+              fi
+            done
+
+            # Upload XML feeds
+            for xmlfile in docs/feed_all.xml docs/feed_all_main.xml; do
+              if [[ -f "$xmlfile" ]]; then
+                timeout $CMD_TIMEOUT ncftpput -u "$FTP_USER" -p "$BPLACED_PASS" -P 21 "$FTP_HOST" /www/ "$xmlfile" || UPLOAD_OK=false
+              fi
+            done
+
+            # Upload all images
+            if ls docs/images/kantine_*.jpg 1>/dev/null 2>&1; then
+              timeout $CMD_TIMEOUT ncftpput -u "$FTP_USER" -p "$BPLACED_PASS" -P 21 "$FTP_HOST" /www/images/ docs/images/kantine_*.jpg || UPLOAD_OK=false
+            fi
+
+            if $UPLOAD_OK; then
+              echo "ncftpput success."
+              break
+            fi
+
+            echo "ncftpput failed. Waiting ${RETRY_DELAY}s..."
+            sleep $RETRY_DELAY
+            attempt=$((attempt + 1))
+          done
+
+          if [[ $attempt -gt $MAX_RETRIES ]]; then
+            exit 1
+          fi
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Job 3: FTP Upload via GitHub Actions (fallback)
+  # Läuft nur wenn Job 2 fehlschlägt oder HAOS-Runner nicht erreichbar
+  # ──────────────────────────────────────────────────────────────────────
+  upload-fallback:
+    runs-on: ubuntu-latest
+    needs: [build, upload-haos]
+    if: always() && needs.upload-haos.result != 'success'
+    continue-on-error: true
+    env:
+      BPLACED_PASS: ${{ secrets.BPLACED_FTP_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.build.outputs.commit_sha }}
+          fetch-depth: 1
+
+      - name: Install FTP tools
+        run: sudo apt-get update -q && sudo apt-get install -yq lftp ncftp
+
+      - name: Deploy to bplaced via FTP (GitHub-hosted fallback)
+        run: |
+          FTP_HOST="basecore.bplaced.net"
+          FTP_USER="basecore"
+          MAX_RETRIES=6
+          RETRY_DELAY=60
+          CMD_TIMEOUT=120
+
+          # Build lftp put commands for all files
+          PUT_CMDS=""
+          for phpfile in docs/feed_all.php docs/feed_all_main.php; do
+            if [[ -f "$phpfile" ]]; then
+              PUT_CMDS="${PUT_CMDS} cd /www; put ${phpfile} $(basename ${phpfile});"
+            fi
+          done
+          for xmlfile in docs/feed_all.xml docs/feed_all_main.xml; do
+            if [[ -f "$xmlfile" ]]; then
+              PUT_CMDS="${PUT_CMDS} cd /www; put ${xmlfile} $(basename ${xmlfile});"
+            fi
+          done
+          if ls docs/images/kantine_*.jpg 1>/dev/null 2>&1; then
+            for img in docs/images/kantine_*.jpg; do
+              PUT_CMDS="${PUT_CMDS} cd /www/images; put ${img} $(basename ${img});"
+            done
+          fi
+
+          lftp_upload() {
+            local attempt=1
+            while [ $attempt -le $MAX_RETRIES ]; do
+              echo "lftp attempt $attempt of $MAX_RETRIES..."
+              if timeout $CMD_TIMEOUT lftp \
+                -u "$FTP_USER","$BPLACED_PASS" \
+                -e "set ftp:ssl-allow false; set net:timeout 20; set net:max-retries 1; set ftp:passive-mode true;${PUT_CMDS} bye" \
+                ftp://$FTP_HOST; then
+                echo "lftp success."
+                return 0
+              fi
+              echo "lftp failed. Waiting ${RETRY_DELAY}s..."
+              sleep $RETRY_DELAY
+              attempt=$((attempt + 1))
+            done
+            return 1
+          }
+
+          ncftp_upload() {
+            local attempt=1
+            while [ $attempt -le $MAX_RETRIES ]; do
+              echo "ncftpput attempt $attempt of $MAX_RETRIES..."
+              local OK=true
+              for phpfile in docs/feed_all.php docs/feed_all_main.php; do
+                [[ -f "$phpfile" ]] && { timeout $CMD_TIMEOUT ncftpput -u "$FTP_USER" -p "$BPLACED_PASS" -P 21 "$FTP_HOST" /www/ "$phpfile" || OK=false; }
+              done
+              for xmlfile in docs/feed_all.xml docs/feed_all_main.xml; do
+                [[ -f "$xmlfile" ]] && { timeout $CMD_TIMEOUT ncftpput -u "$FTP_USER" -p "$BPLACED_PASS" -P 21 "$FTP_HOST" /www/ "$xmlfile" || OK=false; }
+              done
+              if ls docs/images/kantine_*.jpg 1>/dev/null 2>&1; then
+                timeout $CMD_TIMEOUT ncftpput -u "$FTP_USER" -p "$BPLACED_PASS" -P 21 "$FTP_HOST" /www/images/ docs/images/kantine_*.jpg || OK=false
+              fi
+              if $OK; then
+                echo "ncftpput success."
+                return 0
+              fi
+              echo "ncftpput failed. Waiting ${RETRY_DELAY}s..."
+              sleep $RETRY_DELAY
+              attempt=$((attempt + 1))
+            done
+            return 1
+          }
+
+          if lftp_upload; then
+            echo "UPLOAD_METHOD=lftp-fallback" >> $GITHUB_ENV
+          elif ncftp_upload; then
+            echo "UPLOAD_METHOD=ncftp-fallback" >> $GITHUB_ENV
+          else
+            echo "UPLOAD_METHOD=failed" >> $GITHUB_ENV
+            exit 1
+          fi
+
+  # ─────────────────────────────────────────────
+  # Job 4: Status E-Mail
+  # ─────────────────────────────────────────────
+  notify:
+    runs-on: ubuntu-latest
+    needs: [build, upload-haos, upload-fallback]
+    if: always()
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build status email
+        run: |
+          RUN_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          REPO_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          BU="${{ needs.build.outputs.build_outcome }}"
+          RS="${{ needs.build.outputs.rss_outcome }}"
+          GH="${{ needs.build.outputs.github_push_outcome }}"
+          UH="${{ needs.upload-haos.result }}"
+          UF="${{ needs.upload-fallback.result }}"
+
+          status_icon() {
+            case "$1" in
+              success) echo "✅ OK" ;;
+              failure) echo "❌ FAILED" ;;
+              skipped) echo "⏭ SKIPPED" ;;
+              *)       echo "❓ UNKNOWN" ;;
+            esac
+          }
+
+          BU_I=$(status_icon "$BU")
+          RS_I=$(status_icon "$RS")
+          GH_I=$(status_icon "$GH")
+          UH_I=$(status_icon "$UH")
+          UF_I=$(status_icon "$UF")
+
+          if [[ "$UH" == "success" ]]; then
+            UPLOAD_NOTE=" (via HAOS self-hosted runner)"
+          elif [[ "$UF" == "success" ]]; then
+            UPLOAD_NOTE=" (via GitHub Actions fallback)"
+          else
+            UPLOAD_NOTE=" (all methods failed)"
+          fi
+
+          if [[ "$BU" == "success" && "$GH" == "success" && ( "$UH" == "success" || "$UF" == "success" ) ]]; then
+            SUBJ="✅ OK: Eurest Kantine PhotoFrame update ($RUN_TIME)"
+            HC="#2e7d32"
+            OV="All tasks successful"
+          else
+            SUBJ="❌ FAILED: Eurest Kantine PhotoFrame update ($RUN_TIME)"
+            HC="#b71c1c"
+            OV="One or more tasks failed"
+          fi
+
+          # Find latest image for preview
+          LATEST_IMG=$(ls -t docs/images/kantine_*.jpg 2>/dev/null | head -1 || true)
+          LATEST_FNAME=$(basename "$LATEST_IMG" 2>/dev/null || true)
+          IMG_SECTION=""
+          if [[ -n "$LATEST_FNAME" ]]; then
+            IMG_URL="http://basecore.bplaced.net/images/${LATEST_FNAME}"
+            IMG_SECTION="<div style=\"margin-top:24px;\"><h3 style=\"color:#333;margin-bottom:8px;\">📸 Aktuelles Kantinenbild (${LATEST_FNAME})</h3><img src=\"${IMG_URL}\" alt=\"Kantine Menü\" style=\"max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;\"/><p style=\"font-size:11px;color:#999;margin-top:4px;\">Falls das Bild nicht lädt: <a href=\"${IMG_URL}\">direkt öffnen</a></p></div>"
+          fi
+
+          cat > email_body.html << 'MAILEOF'
+          <!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
+          <body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
+          MAILEOF
+
+          cat >> email_body.html << MAILEOF2
+            <div style="background:${HC};color:#fff;padding:16px 20px;border-radius:6px 6px 0 0;">
+              <h2 style="margin:0;">Eurest Kantine PhotoFrame – Update Status</h2>
+            </div>
+            <div style="border:1px solid #ddd;padding:20px;">
+              <p><strong>Time:</strong> ${RUN_TIME}</p>
+              <p><strong>Status:</strong> ${OV}</p>
+              <table style="width:100%;border-collapse:collapse;font-size:14px;">
+                <tr style="background:#f5f5f5;">
+                  <th style="text-align:left;padding:8px;border:1px solid #ddd;">Task</th>
+                  <th style="text-align:left;padding:8px;border:1px solid #ddd;">Status</th>
+                </tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">Menü-Generierung</td><td style="padding:8px;border:1px solid #ddd;">${BU_I}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">RSS-Feeds</td><td style="padding:8px;border:1px solid #ddd;">${RS_I}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">GitHub push</td><td style="padding:8px;border:1px solid #ddd;">${GH_I}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">FTP Upload HAOS (primary)</td><td style="padding:8px;border:1px solid #ddd;">${UH_I}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">FTP Upload GitHub (fallback)</td><td style="padding:8px;border:1px solid #ddd;">${UF_I}</td></tr>
+              </table>
+              <p><strong>Upload method:</strong>${UPLOAD_NOTE}</p>
+              ${IMG_SECTION}
+              <p style="font-size:13px;margin-top:20px;"><a href="${REPO_URL}">🔗 View GitHub Actions log</a></p>
+            </div></body></html>
+          MAILEOF2
+
+          echo "EMAIL_SUBJECT=${SUBJ}" >> $GITHUB_ENV
+
+      - name: Send status email
+        uses: basecore/action-send-mail@master
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: ${{ env.EMAIL_SUBJECT }}
+          body: file://email_body.html
+          to: basecore@gmx.de
+          from: Eurest Kantine PhotoFrame <${{ secrets.MAIL_USERNAME }}>
+          content_type: text/html
+
+  # ──────────────────────────────────────────────────────────────────────
+  # Job 5: bplaced feed Verification (HAOS runner)
+  # ──────────────────────────────────────────────────────────────────────
+  verify-bplaced:
+    runs-on: [self-hosted, haos]
+    needs: [build, upload-haos, upload-fallback]
+    if: |
+      always() &&
+      (needs.upload-haos.result == 'success' || needs.upload-fallback.result == 'success')
+    steps:
+      - name: Wait for bplaced propagation (90s)
+        run: |
+          echo "Waiting 90 seconds for bplaced to serve updated files..."
+          sleep 90
+
+      - name: Fetch and verify feed_all.xml content
+        id: verify
+        run: |
+          FEED_URL="http://basecore.bplaced.net/feed_all.xml"
+          TODAY=$(date -u +%Y-%m-%d)
+          MAX_ATTEMPTS=4
+          RETRY_DELAY=60
+
+          VERIFY_STATUS="fail"
+          HTTP_STATUS=""
+          CONTENT_SNIPPET=""
+          ATTEMPT=1
+
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "Attempt $ATTEMPT of $MAX_ATTEMPTS..."
+            RESPONSE=$(curl -s -o /tmp/feed_response.txt -w "%{http_code}" \
+              --max-time 30 --connect-timeout 10 -L "${FEED_URL}" 2>/dev/null) || true
+            HTTP_STATUS="${RESPONSE}"
+            echo "HTTP status: ${HTTP_STATUS}"
+
+            if [[ "${HTTP_STATUS}" == "200" ]]; then
+              CONTENT=$(cat /tmp/feed_response.txt 2>/dev/null || echo "")
+              CONTENT_SNIPPET=$(echo "$CONTENT" | head -c 500 | tr '\n' ' ')
+              if echo "$CONTENT" | grep -q "${TODAY}"; then
+                VERIFY_STATUS="ok"
+                echo "✅ Feed verified: today's date found."
+                break
+              else
+                echo "⚠️ Feed 200 but date not yet updated. Retrying in ${RETRY_DELAY}s..."
+              fi
+            else
+              echo "⚠️ HTTP ${HTTP_STATUS} — retrying in ${RETRY_DELAY}s..."
+            fi
+            sleep $RETRY_DELAY
+            ATTEMPT=$((ATTEMPT + 1))
+          done
+
+          echo "verify_status=${VERIFY_STATUS}" >> $GITHUB_OUTPUT
+          echo "http_status=${HTTP_STATUS}" >> $GITHUB_OUTPUT
+          echo "content_snippet=${CONTENT_SNIPPET}" >> $GITHUB_OUTPUT
+          echo "date_today=${TODAY}" >> $GITHUB_OUTPUT
+
+      - name: Build verification email
+        run: |
+          VS="${{ steps.verify.outputs.verify_status }}"
+          HTTP="${{ steps.verify.outputs.http_status }}"
+          TODAY="${{ steps.verify.outputs.date_today }}"
+          SNIPPET="${{ steps.verify.outputs.content_snippet }}"
+          RUN_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          FEED_URL="http://basecore.bplaced.net/feed_all.xml"
+          REPO_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          if [[ "$VS" == "ok" ]]; then
+            SUBJ="✅ bplaced LIVE: feed_all.xml aktualisiert (${TODAY})"
+            HC="#2e7d32"
+            STATUS_MSG="✅ feed_all.xml ist aktuell – das heutige Datum (${TODAY}) wurde im Feed gefunden."
+            STATUS_DETAIL="bplaced liefert die neue Version aus."
+          else
+            SUBJ="⚠️ bplaced CHECK FAILED: feed_all.xml ggf. nicht aktualisiert (${TODAY})"
+            HC="#e65100"
+            STATUS_MSG="⚠️ feed_all.xml konnte nicht als aktuell verifiziert werden."
+            STATUS_DETAIL="Das heutige Datum (${TODAY}) wurde nach mehreren Versuchen nicht gefunden. HTTP-Status: ${HTTP}. Bitte manuell prüfen."
+          fi
+
+          cat > verify_email.html << 'MAILEOF'
+          <!DOCTYPE html><html lang="de"><head><meta charset="UTF-8"></head>
+          <body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;color:#333;">
+          MAILEOF
+
+          cat >> verify_email.html << MAILEOF2
+            <div style="background:${HC};color:#fff;padding:16px 20px;border-radius:6px 6px 0 0;">
+              <h2 style="margin:0;">Eurest Kantine PhotoFrame – bplaced Verifikation</h2>
+            </div>
+            <div style="border:1px solid #ddd;padding:20px;">
+              <p><strong>Zeit:</strong> ${RUN_TIME}</p>
+              <p style="font-size:15px;">${STATUS_MSG}</p>
+              <p style="color:#555;">${STATUS_DETAIL}</p>
+              <table style="width:100%;border-collapse:collapse;font-size:14px;margin-top:12px;">
+                <tr style="background:#f5f5f5;">
+                  <th style="text-align:left;padding:8px;border:1px solid #ddd;">Detail</th>
+                  <th style="text-align:left;padding:8px;border:1px solid #ddd;">Wert</th>
+                </tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">Feed URL</td><td style="padding:8px;border:1px solid #ddd;"><a href="${FEED_URL}">${FEED_URL}</a></td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">HTTP Status</td><td style="padding:8px;border:1px solid #ddd;">${HTTP}</td></tr>
+                <tr><td style="padding:8px;border:1px solid #ddd;">Erwartetes Datum</td><td style="padding:8px;border:1px solid #ddd;">${TODAY}</td></tr>
+              </table>
+              <div style="margin-top:20px;">
+                <p style="font-size:13px;color:#777;">Vorschau feed_all.xml (erste 500 Zeichen):</p>
+                <pre style="background:#f5f5f5;padding:12px;border-radius:4px;font-size:11px;overflow:auto;white-space:pre-wrap;">${SNIPPET}</pre>
+              </div>
+              <p style="font-size:13px;margin-top:20px;"><a href="${REPO_URL}">🔗 GitHub Actions Log</a></p>
+            </div></body></html>
+          MAILEOF2
+
+          echo "VERIFY_SUBJECT=${SUBJ}" >> $GITHUB_ENV
+
+      - name: Send verification email
+        uses: basecore/action-send-mail@master
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: ${{ env.VERIFY_SUBJECT }}
+          body: file://verify_email.html
+          to: basecore@gmx.de
+          from: Eurest Kantine PhotoFrame <${{ secrets.MAIL_USERNAME }}>
+          content_type: text/html
