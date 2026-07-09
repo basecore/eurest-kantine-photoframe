@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W28",
   "kw": 28,
-  "target_date": "2026-07-08",
-  "target_day_label": "Mi 08.07",
-  "generated_at_utc": "2026-07-08T06:26:22.891165Z",
-  "generated_at_local": "2026-07-08T08:25:03.869813+02:00",
+  "target_date": "2026-07-09",
+  "target_day_label": "Do 09.07",
+  "generated_at_utc": "2026-07-09T07:43:53.044398Z",
+  "generated_at_local": "2026-07-09T09:42:34.009733+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Linsenbolognese / Pommes frites / Gouda, gerieben",
+      "name": "Quarkstrudel / Vanillesoße / Dessertkirschen",
       "price": "3,20 €",
       "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Schweinesteak / Rosmarin-Drillinge / Gurkensalat mit Joghurt",
-      "price": "5,80 €",
+      "name": "Putenschnitzel, gebacken / Kartoffelwedges / Zitronenecke",
+      "price": "5,70 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Pad Prik King,Thai Curry mit Rind / Jasminreis / Spiegelei",
-      "price": "6,50 €",
-      "vv": ""
+      "name": "Wrap, vegetarisch gefüllt / Avocado / (vegan - ohne tierische Lebensmittel) / oder / Wrap nach mexikanischer Art",
+      "price": "6,00 €",
+      "vv": "VG"
     }
   ]
 }

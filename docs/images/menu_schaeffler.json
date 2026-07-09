@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W28",
   "kw": 28,
-  "target_date": "2026-07-08",
-  "target_day_label": "Mi 08.07",
-  "generated_at_utc": "2026-07-08T06:24:02.282513Z",
-  "generated_at_local": "2026-07-08T08:23:00.652602+02:00",
+  "target_date": "2026-07-09",
+  "target_day_label": "Do 09.07",
+  "generated_at_utc": "2026-07-09T07:41:51.604168Z",
+  "generated_at_local": "2026-07-09T09:41:00.930347+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "MIE-NUDELN RAMEN STYLE | mit grünem Spargel, Ei, Sesam & Röstzwiebeln",
+      "name": "Spinatknödel | mit Pilzsauce, Schmand & Röstzwiebeln",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HÄHNCHENSCHNITZEL | Gurkensalat, Bratkartoffeln",
-      "price": "6,90 €",
+      "name": "FRIKADELLE | Kartoffel-Radieschensalat, Senf-Meerrettichsauce",
+      "price": "8,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "PIZZA MANUFAKTUR I Pizza auf Stein frisch gebacken mit Mozzarella, Champignons, Salami oder Schinken",
-      "price": "7,50 €",
+      "name": "taste the GAME I BLACK CHEESE BURGER | Crispy Chicken, Korean BBQ, Cheddar, Relish, Pommes Frites",
+      "price": "9,90 €",
       "vv": ""
     }
   ]

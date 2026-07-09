@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W28",
   "kw": 28,
-  "target_date": "2026-07-08",
-  "target_day_label": "Mi 08.07",
-  "generated_at_utc": "2026-07-08T06:25:03.699727Z",
-  "generated_at_local": "2026-07-08T08:24:02.479440+02:00",
+  "target_date": "2026-07-09",
+  "target_day_label": "Do 09.07",
+  "generated_at_utc": "2026-07-09T07:42:33.865093Z",
+  "generated_at_local": "2026-07-09T09:41:51.766842+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,39 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "VOLLKORN PASTA | mit Linsenbolognaise & Basilikum",
+      "name": "PENNE SORRENTINA | al Forno, Mozzarella, Hartkäse, Rucola",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "CORDON BLEU I vom Hähnchen mit Pommes frites und Zitrone",
+      "name": "TÜRKISCHER BAUERNSALAT | Lahmacun, Red Dhofar",
+      "price": "8,10 €",
+      "vv": "VG"
+    },
+    {
+      "category": "Brandlberg",
+      "name": "SCHWEINEFILET SZECHUAN STYLE | Zuckerschoten, Zwiebeln, Reis",
       "price": "6,90 €",
       "vv": ""
     },
     {
-      "category": "Brandlberg",
-      "name": "SEELACHSFILET I mit Salzkartoffeln, Karottengemüse und Zitronensoße",
-      "price": "7,10 €",
+      "category": "Niederwinzer",
+      "name": "SCHNITZEL WIENER ART | vom Hähnchen mit Zitrone & Kartoffel-Gurkensalat oder Pommes Frites",
+      "price": "6,90 €",
       "vv": ""
     },
     {
-      "category": "Niederwinzer",
-      "name": "CAMEMBERT | gebacken mit Preiselbeeren Paprika-Zucchinigemüsesalat & Steinofenbaguette",
-      "price": "6,50 €",
-      "vv": "V"
+      "category": "Königswiesen",
+      "name": "taste the GAME I WORLD BOWL | Kidney-Bohnen, Hirse, Mango-Chili, Salsa, Rote Bete, Rucola",
+      "price": "5,90 €",
+      "vv": "VG"
+    },
+    {
+      "category": "Oberwinzer",
+      "name": "ADD ON I Karotten-Sesam Stick, Miso-Mayo",
+      "price": "2,50 €",
+      "vv": ""
     }
   ]
 }
