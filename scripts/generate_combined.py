@@ -537,30 +537,17 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
             ry1 = ry0 + row_h
             if ry1 > inner_bottom:
                 break
-            if loc["name"] == "aumovio":
-                _draw_dish_card(
-                    draw,
-                    dish,
-                    x0 + 5,
-                    ry0,
-                    x1 - 5,
-                    ry1,
-                    theme,
-                    name_size_boost=6,
-                    name_size_min=12,
-                )
-            else:
-                _draw_dish_card(
-                    draw,
-                    dish,
-                    x0 + 5,
-                    ry0,
-                    x1 - 5,
-                    ry1,
-                    theme,
-                    total_dishes=len(dishes),
-                    prefer_more_lines=(loc["name"] == "aumovio"),
-                )
+            _draw_dish_card(
+                draw,
+                dish,
+                x0 + 5,
+                ry0,
+                x1 - 5,
+                ry1,
+                theme,
+                total_dishes=len(dishes),
+                prefer_more_lines=(loc["name"] == "aumovio"),
+            )
 
     leg_y = H - FOOTER_H - LEGEND_H - 2
     draw.line([(0, leg_y), (W, leg_y)], fill=GRID, width=1)
