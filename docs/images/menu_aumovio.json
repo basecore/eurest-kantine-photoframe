@@ -2,12 +2,12 @@
   "location_name": "aumovio",
   "location_label": "AUMOVIO Regensburg",
   "display_mode": "day",
-  "label": "2026-W28",
-  "kw": 28,
-  "target_date": "2026-07-10",
-  "target_day_label": "Fr 10.07",
-  "generated_at_utc": "2026-07-10T09:42:06.454354Z",
-  "generated_at_local": "2026-07-10T11:41:16.952124+02:00",
+  "label": "2026-W29",
+  "kw": 29,
+  "target_date": "2026-07-13",
+  "target_day_label": "Mo 13.07",
+  "generated_at_utc": "2026-07-10T13:31:23.300154Z",
+  "generated_at_local": "2026-07-10T15:30:31.766960+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -17,28 +17,28 @@
   },
   "main_dishes": [
     {
-      "category": "Suppe 2",
-      "name": "Asia Suppe mit Schweinefleisch",
-      "price": "1,51 €",
-      "vv": ""
-    },
-    {
       "category": "Ostenviertel",
-      "name": "LINSEN-TOMATEN CURRY I mit Duftreis",
+      "name": "EBLY-GEMÜSEPFANNE | mit Kichererbsen, Zucchini, Tomatensauce",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "BACKFISCH | mit Remouladensauce & Salzkartoffeln",
-      "price": "7,50 €",
+      "name": "HÄHNCHENBRUST I mit Gemüserahmsoße und Tagliatelle",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "Germknödel I mit Vanillesoße und Mohn",
-      "price": "4,90 €",
-      "vv": "V"
+      "name": "PIZZA MANUFAKTUR I frisch gemachte Pizza mit Mozzarella, Champignons, Salami oder Schinken",
+      "price": "7,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Niederwinzer",
+      "name": "CURRYWURST | rot oder weiß mit hausgemachter Currysoße und Pommes",
+      "price": "6,50 €",
+      "vv": ""
     }
   ]
 }

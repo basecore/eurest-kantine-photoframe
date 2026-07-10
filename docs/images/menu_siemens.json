@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W28",
-  "kw": 28,
-  "target_date": "2026-07-10",
-  "target_day_label": "Fr 10.07",
-  "generated_at_utc": "2026-07-10T09:43:25.577404Z",
-  "generated_at_local": "2026-07-10T11:42:06.601438+02:00",
+  "label": "2026-W29",
+  "kw": 29,
+  "target_date": "2026-07-13",
+  "target_day_label": "Mo 13.07",
+  "generated_at_utc": "2026-07-10T13:32:42.445217Z",
+  "generated_at_local": "2026-07-10T15:31:23.421018+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Obazda / Rettichsalat / Laugenbrezel",
-      "price": "3,20 €",
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
       "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Pizza mit Chorizo und Schafskäse / oder / Pizza Antipasti",
-      "price": "6,10 €",
+      "name": "Überbackener Ziegenkäse / Wassermelone / Pfirsich-Rucola-Salat / Baguette",
+      "price": "6,00 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Bismarckhering nach Hausfrauenart / Salzkartoffeln mit Butter / Zwiebelringe, weiß",
-      "price": "5,20 €",
+      "name": "Lasagne al forno / Hausgemacht / mit Rucola",
+      "price": "6,20 €",
       "vv": ""
     }
   ]

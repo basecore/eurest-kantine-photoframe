@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>Kantinenvergleich Regensburg – Alle Hauptgerichte</title>
 		<link>http://basecore.bplaced.net/eurest</link>
 		<description></description>
-		<pubDate>Fri, 10 Jul 2026 09:43:25 +0000</pubDate>
-		<lastBuildDate>Fri, 10 Jul 2026 09:43:25 +0000</lastBuildDate>
+		<pubDate>Fri, 10 Jul 2026 13:32:42 +0000</pubDate>
+		<lastBuildDate>Fri, 10 Jul 2026 13:32:42 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net/eurest</generator>
 		<image>
 			<url>http://basecore.bplaced.net/eurest/images/icon.jpg</url>
@@ -19,12 +19,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<link>http://basecore.bplaced.net/eurest</link>
 		</image>
 		<item>
-			<title>Alle Hauptgerichte Fr 10.07 – Regensburg</title>
+			<title>Alle Hauptgerichte Mo 13.07 – Regensburg</title>
 			<link>http://basecore.bplaced.net/eurest</link>
-			<guid isPermaLink="false">all_main::kantine_2026-W28_2026-07-10_all_main.jpg::2026-07-10T09:43:25.707408Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-10_all_main.jpg?v=2026-07-10T09%3A43%3A25.707408Z&quot; alt=&quot;ALLE Hauptgerichte Regensburg Speiseplan 2026-W28&quot;/&gt;</description>
-			<pubDate>Fri, 10 Jul 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W28_2026-07-10_all_main.jpg?v=2026-07-10T09%3A43%3A25.707408Z" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">all_main::kantine_2026-W29_2026-07-13_all_main.jpg::2026-07-10T13:32:42.566796Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/eurest/images/kantine_2026-W29_2026-07-13_all_main.jpg?v=2026-07-10T13%3A32%3A42.566796Z&quot; alt=&quot;ALLE Hauptgerichte Regensburg Speiseplan 2026-W29&quot;/&gt;</description>
+			<pubDate>Mon, 13 Jul 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/eurest/images/kantine_2026-W29_2026-07-13_all_main.jpg?v=2026-07-10T13%3A32%3A42.566796Z" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>
