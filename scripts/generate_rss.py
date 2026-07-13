@@ -24,7 +24,7 @@ import html
 import json
 
 BASE_URL = "https://basecore.github.io/eurest-kantine-photoframe"
-BASE_URL_HTTP = "http://basecore.bplaced.net/eurest"
+BASE_URL_HTTP = "http://basecore.bplaced.net"
 IMAGES_URL = f"{BASE_URL}/images"
 IMAGES_URL_HTTP = f"{BASE_URL_HTTP}/images"
 
