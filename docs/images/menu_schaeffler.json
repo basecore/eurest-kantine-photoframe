@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-13",
-  "target_day_label": "Mo 13.07",
-  "generated_at_utc": "2026-07-13T08:05:36.612978Z",
-  "generated_at_local": "2026-07-13T10:04:34.175608+02:00",
+  "target_date": "2026-07-14",
+  "target_day_label": "Di 14.07",
+  "generated_at_utc": "2026-07-13T13:41:23.073579Z",
+  "generated_at_local": "2026-07-13T15:40:21.209284+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "LEMON FUSILLI | Minze, Zitronensauce, Hartkäse",
+      "name": "PASTA MANUFAKTUR I mit frischer Pasta, wahlweise mit Gorgonzola Sauce oder Basilikum-Pesto",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HÄHNCHENBRUST | Aioli Dip, Patata Bravas",
-      "price": "6,50 €",
+      "name": "BUTTER CHICKEN | mit Karotten-Masala-Zitronen-Salat & Jasminreis",
+      "price": "8,10 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "RINDERHACK | Thai Style, Reis, Chili, Koriander, Spiegelei, Brokkoli",
-      "price": "10,90 €",
-      "vv": ""
+      "name": "BOWL | Vollkornreis, Wildkräuter, Ziegenkäse, Balsamico-Dressing, Aprikose",
+      "price": "7,50 €",
+      "vv": "V"
     }
   ]
 }

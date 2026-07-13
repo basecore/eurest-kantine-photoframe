@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-13",
-  "target_day_label": "Mo 13.07",
-  "generated_at_utc": "2026-07-13T08:07:57.252066Z",
-  "generated_at_local": "2026-07-13T10:06:38.292202+02:00",
+  "target_date": "2026-07-14",
+  "target_day_label": "Di 14.07",
+  "generated_at_utc": "2026-07-13T13:43:43.755284Z",
+  "generated_at_local": "2026-07-13T15:42:24.598423+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Currywurst / Pommes frites / Currysoße",
-      "price": "3,00 €",
+      "name": "Gnocchi / Gemüse-Tomaten-Soße / Gouda, gerieben",
+      "price": "3,20 €",
       "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Überbackener Ziegenkäse / Wassermelone / Pfirsich-Rucola-Salat / Baguette",
-      "price": "6,00 €",
+      "name": "Flammkuchen mit Speck und Zwiebeln",
+      "price": "5,80 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Lasagne al forno / Hausgemacht / mit Rucola",
-      "price": "6,20 €",
+      "name": "Beef Rendang / Basmatireis / Frühlingszwiebeln",
+      "price": "6,70 €",
       "vv": ""
     }
   ]
