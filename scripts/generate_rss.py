@@ -6,16 +6,15 @@ Einzelfeeds:
 - feed_<location>.xml  - HTTPS URLs via github.io
 
 Zusätzlich:
-- feed_all.php         - ein Sammelfeed mit allen verfuegbaren Einzelbildern
-- feed_all.xml         - ein Sammelfeed mit allen verfuegbaren Einzelbildern
-- feed_all_main.php    - ein Feed fuer das kombinierte Hauptgerichte-Bild
-- feed_all_main.xml    - ein Feed fuer das kombinierte Hauptgerichte-Bild
+- feed_all.php         - Sammelfeed mit allen verfuegbaren Einzelbildern
+- feed_all.xml         - Sammelfeed mit allen verfuegbaren Einzelbildern
+- feed_all_main.php    - Feed fuer das kombinierte Hauptgerichte-Bild
+- feed_all_main.xml    - Feed fuer das kombinierte Hauptgerichte-Bild
 
 Wichtig:
-- Die Feed-Auswahl erfolgt NICHT per Dateinamen-Sortierung.
-- Stattdessen wird pro Kantine die Manifest-Datei current_<location>.json verwendet.
-- Falls ein Bild am selben Tag erneut gerendert wird, sorgt ein Query-Parameter ?v=...
-  fuer Cache-Busting auf Bild-URL-Ebene.
+- Pro Feed wird immer das im Manifest referenzierte datierte Bild verwendet.
+- Keine Query-Parameter an Bild-URLs fuer Philips-kompatible Feeds.
+- description enthaelt nur ein einfaches HTML-img-Tag als escaped XML.
 """
 
 from pathlib import Path
@@ -206,11 +205,8 @@ def _php_header_lines():
 
 def _image_url_for_manifest(manifest, use_http=False):
     imgurl = IMAGES_URL_HTTP if use_http else IMAGES_URL
-    now_dt = _now_utc()
     image_name = manifest["image"]
-    cache_token = manifest.get("generated_at_utc", now_dt.isoformat().replace("+00:00", "Z"))
-    cache_token = quote(cache_token, safe="")
-    return f"{imgurl}/{quote(image_name)}?v={cache_token}"
+    return f"{imgurl}/{quote(image_name)}"
 
 
 def _build_item_lines(manifest, location_name, location_label, use_http=False):
@@ -222,16 +218,18 @@ def _build_item_lines(manifest, location_name, location_label, use_http=False):
     item_pub_rfc = _item_pubdate(manifest, now_dt)
 
     label = manifest.get("label", "")
-    description_html = (
-        f'<img src="{img_url}" alt="{location_label} Speiseplan {label or manifest["image"]}"/>'
-    )
+    alt_text = f"{location_label} Speiseplan {label or manifest['image']}"
+
+    description_html = f'<img src="{img_url}" alt="{alt_text}"/>'
     description_xml = html.escape(description_html, quote=True)
+
+    guid_value = f"{location_name}::{manifest.get('image', '')}::{manifest.get('generated_at_utc', '')}"
 
     return [
         "\t\t<item>",
         f"\t\t\t<title>{html.escape(item_title)}</title>",
         f"\t\t\t<link>{base}</link>",
-        f"\t\t\t<guid isPermaLink=\"false\">{html.escape(location_name)}::{html.escape(manifest.get('image',''))}::{html.escape(manifest.get('generated_at_utc',''))}</guid>",
+        f"\t\t\t<guid isPermaLink=\"false\">{html.escape(guid_value)}</guid>",
         f"\t\t\t<description>{description_xml}</description>",
         f"\t\t\t<pubDate>{item_pub_rfc}</pubDate>",
         f'\t\t\t<media:content url="{html.escape(img_url, quote=True)}" type="image/jpeg" height="{FRAME_HEIGHT}" width="{FRAME_WIDTH}"/>',
