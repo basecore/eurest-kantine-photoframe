@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-14",
-  "target_day_label": "Di 14.07",
-  "generated_at_utc": "2026-07-13T13:42:24.447368Z",
-  "generated_at_local": "2026-07-13T15:41:23.242985+02:00",
+  "target_date": "2026-07-15",
+  "target_day_label": "Mi 15.07",
+  "generated_at_utc": "2026-07-14T12:51:48.604898Z",
+  "generated_at_local": "2026-07-14T14:50:46.612340+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "MIE-NUDELN RAMEN-STYLE | Tofu, Spinat, Mais",
+      "name": "MANGOLD | geschmort mit Dinkel-Kartoffeln, Karotten & Preiselbeer-Apfel-Dip",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "BRATWURST | mit Kartoffeln, Jus & Krautsalat",
-      "price": "5,90 €",
+      "name": "BBQ HÄHNCHEN I mit Wedges und Cole slaw",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "LOADED FRIES | Pulled Pork, Chili-Honig, Apfel, Röstzwiebeln",
+      "name": "MEATBALLS | Bohnen-Zwiebel Salat, Ajvar, Fladenbrotecke",
       "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Niederwinzer",
-      "name": "SCHNITZEL WIENER ART | vom Hähnchen mit Zitrone & Kartoffel-Gurkensalat oder Pommes Frites",
-      "price": "6,90 €",
+      "name": "CURRYWURST | rot oder weiß mit hausgemachter Currysoße und Pommes",
+      "price": "6,50 €",
       "vv": ""
     }
   ]

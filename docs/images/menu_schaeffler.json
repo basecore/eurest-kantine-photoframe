@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-14",
-  "target_day_label": "Di 14.07",
-  "generated_at_utc": "2026-07-13T13:41:23.073579Z",
-  "generated_at_local": "2026-07-13T15:40:21.209284+02:00",
+  "target_date": "2026-07-15",
+  "target_day_label": "Mi 15.07",
+  "generated_at_utc": "2026-07-14T12:50:46.446745Z",
+  "generated_at_local": "2026-07-14T14:49:43.912661+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PASTA MANUFAKTUR I mit frischer Pasta, wahlweise mit Gorgonzola Sauce oder Basilikum-Pesto",
+      "name": "SENSO-JI | Süßkartoffel-Pfannkuchen mit asiatischer BBQ-Sauce & Salat",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "BUTTER CHICKEN | mit Karotten-Masala-Zitronen-Salat & Jasminreis",
-      "price": "8,10 €",
+      "name": "CHILI CON CARNE | vom Rind mit Vollkornreis, Sauerrahm & Jalapenos",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "BOWL | Vollkornreis, Wildkräuter, Ziegenkäse, Balsamico-Dressing, Aprikose",
+      "name": "PIZZA MANUFAKTUR I Pizza auf Stein frisch gebacken mit Mozzarella, Champignons, Salami oder Schinken",
       "price": "7,50 €",
-      "vv": "V"
+      "vv": ""
     }
   ]
 }

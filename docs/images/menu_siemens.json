@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-14",
-  "target_day_label": "Di 14.07",
-  "generated_at_utc": "2026-07-13T13:43:43.755284Z",
-  "generated_at_local": "2026-07-13T15:42:24.598423+02:00",
+  "target_date": "2026-07-15",
+  "target_day_label": "Mi 15.07",
+  "generated_at_utc": "2026-07-14T12:53:07.921138Z",
+  "generated_at_local": "2026-07-14T14:51:48.749320+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Gnocchi / Gemüse-Tomaten-Soße / Gouda, gerieben",
+      "name": "Spaghetti / Soße nach Carbonara Art",
       "price": "3,20 €",
       "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Flammkuchen mit Speck und Zwiebeln",
-      "price": "5,80 €",
+      "name": "Ravioli mit Amarenakirschen/Peccorino / Salbeibutter / Gebratene Pfifferlinge",
+      "price": "6,20 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Beef Rendang / Basmatireis / Frühlingszwiebeln",
-      "price": "6,70 €",
+      "name": "Bobotie - Afrikanischer Hackbraten / Gelber Reis / Aprikosen-Apfel-Chutney",
+      "price": "6,80 €",
       "vv": ""
     }
   ]
