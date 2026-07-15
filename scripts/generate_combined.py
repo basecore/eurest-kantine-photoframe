@@ -215,13 +215,13 @@ def _trim_to_width(draw, text, font, max_w):
 
     base = text.rstrip(" .,:;-")
     while base:
-        candidate = base + "…"
+        candidate = base + "\u2026"
         b = draw.textbbox((0, 0), candidate, font=font)
         if b[2] - b[0] <= max_w:
             return candidate
         base = base[:-1].rstrip()
 
-    return "…"
+    return "\u2026"
 
 
 def _limit_lines(draw, lines, font, max_w, max_lines):
@@ -367,24 +367,27 @@ def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme, *, total_dishes=0, prefer
     price = (dish.get("price") or "").strip()
     price_reserved_h = (_line_h(draw, price_font) + 2) if price else 0
 
+    # name_bottom guarantees the dish name never overlaps the price area
     name_bottom = y1 - pad - price_reserved_h
     name_max_h = max(12, name_bottom - cy)
 
     card_h = y1 - y0
 
+    # +1 line compared to previous values; the price is always safe because
+    # the drawing loop breaks once cy + name_lh exceeds name_bottom.
     if prefer_more_lines and total_dishes and total_dishes <= 6:
-        max_lines = 3
+        max_lines = 4
         start_size = 18 if card_h >= 76 else 16
         size_min = 10
     elif total_dishes >= 7:
-        max_lines = 2 if card_h >= 58 else 1
+        max_lines = 3 if card_h >= 58 else 2
         start_size = 16 if card_h >= 70 else 14
         size_min = 8
     else:
-        max_lines = 3 if card_h >= 78 else 2
+        max_lines = 4 if card_h >= 78 else 3
         start_size = 18 if card_h >= 76 else 15
         size_min = 8
-    
+
     name_font, name_lh, name_lines = _fit_font(
         draw,
         re.sub(r"\s+", " ", (dish.get("name") or "").strip()),
@@ -448,7 +451,7 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
 
     draw.rectangle([(0, 0), (W, HEADER_H)], fill=HEADER_BG)
 
-    title = "Alle Hauptgerichte – Regensburg"
+    title = "Alle Hauptgerichte \u2013 Regensburg"
     subtitle = f"{GERMAN_DAY_LONG[target_date.weekday()]}, {target_date.strftime('%d.%m.%Y')}  |  KW {kw:02d}"
 
     bt = draw.textbbox((0, 0), title, font=ftit)
@@ -518,7 +521,7 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
             continue
 
         if not dishes:
-            msg = "Keine Hauptgerichte\nverfügbar"
+            msg = "Keine Hauptgerichte\nverf\u00fcgbar"
             fmsg, lhm, lines = _fit_font(draw, msg, col_w - 20, inner_h - 10, size_start=18, size_min=10)
             lines = _limit_lines(draw, lines, fmsg, col_w - 20, 3)
             block_h = lhm * len(lines)
@@ -565,8 +568,8 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
         lx += 15 + (b[2] - b[0]) + 14
 
     footer_txt = (
-        f"KW {kw:02d} / {label}  –  "
-        f"erstellt am {local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  –  "
+        f"KW {kw:02d} / {label}  \u2013  "
+        f"erstellt am {local_dt.strftime('%d.%m.%Y %H:%M Uhr')}  \u2013  "
         f"nur Hauptgerichte (ohne Suppe, Salatbar, Dessert)"
     )
     _draw_footer_bar(draw, footer_txt, fsmall)
