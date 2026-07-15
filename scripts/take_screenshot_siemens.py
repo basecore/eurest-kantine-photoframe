@@ -570,21 +570,129 @@ def norm_cat(raw, used_cats=None):
     return raw.strip()
 
 
-def vv_from_name(name):
-    low = name.lower()
-    if any(w in low for w in ["vegan", "vegane", "veganer", "veganes"]):
-        return "VG"
-    if any(w in low for w in ["vegetarian", "vegetarisch", "vegetarische", "vegetarischer", "vegetarisches"]):
-        return "V"
-    return ""
+def _norm_food_text(text):
+    text = (text or "").lower()
+    repl = {
+        "ä": "ae",
+        "ö": "oe",
+        "ü": "ue",
+        "ß": "ss",
+    }
+    for a, b in repl.items():
+        text = text.replace(a, b)
+    text = re.sub(r"[^a-z0-9\s/-]+", " ", text)
+    text = re.sub(r"\s+", " ", text).strip()
+    return text
 
+
+EXPLICIT_VEGAN_KEYWORDS = {
+    "vegan",
+    "vegane",
+    "veganer",
+    "veganes",
+    "plant based",
+}
+
+EXPLICIT_VEG_KEYWORDS = {
+    "vegetarisch",
+    "vegetarische",
+    "vegetarischer",
+    "vegetarisches",
+    "vegetarian",
+    "veggie",
+}
+
+NON_VEG_CATEGORY_KEYWORDS = {
+    "fisch",
+    "fish",
+}
+
+NON_VEG_KEYWORDS = {
+    "fleisch", "hack", "hackfleisch", "faschiertes",
+    "rind", "rinder", "rinderbraten", "rinderroulade", "rindersteak", "rindfleisch", "beef",
+    "kalb", "kalbfleisch", "veal",
+    "schwein", "schweine", "schweinefleisch", "schweinebauch", "schweinebraten",
+    "schweineruecken", "schweinegeschnetzeltes", "geschnetzeltes", "spanferkel",
+    "surbraten", "krustenbraten", "stelze", "haxe", "schaeuferl", "schaeufele",
+    "braten", "gulasch", "goulash", "ragout", "ragu", "bolognese", "chili con carne",
+    "cevapcici", "koefte", "kofte", "frikadelle", "bulette", "fleischpflanzerl", "pflanzerl",
+    "leberkaese", "leberkase",
+    "wurst", "bratwurst", "currywurst", "weisswurst", "bockwurst", "regensburger",
+    "debreciner", "salami", "schinken", "kochschinken", "rohschinken", "speck", "bacon",
+    "prosciutto", "jamon", "serrano", "chorizo", "mortadella", "pastrami", "salciccia",
+    "pancetta", "guanciale",
+    "pute", "puten", "putengeschnetzeltes", "truthahn", "turkey",
+    "huhn", "huehnchen", "haehnchen", "hendl", "chicken", "pollo", "poulet",
+    "ente", "entenbrust", "gans", "gaensebraten", "gefluegel",
+    "lamm", "lammragout", "lammkeule", "wild", "wildragout", "reh", "hirsch", "kaninchen",
+    "scaloppine", "saltimbocca", "schnitzel", "cordon bleu", "cordonbleu",
+    "piccata", "ossobuco", "osso buco", "steak", "rumpsteak", "minutensteak",
+    "filet", "medaillons", "roastbeef", "hamburger",
+    "fisch", "fish", "fischfilet", "seelachs", "seelachsfilet", "lachs", "lachsfilet",
+    "forelle", "zander", "kabeljau", "dorsch", "rotbarsch", "pangasius",
+    "thunfisch", "tunfisch", "matjes", "hering", "makrele", "sardine", "sardinen",
+    "calamari", "tintenfisch", "pulpo", "oktopus", "garnele", "garnelen", "shrimp",
+    "scampi", "muscheln", "miesmuscheln", "meerestiere", "meeresfruechte", "seafood",
+    "paella valenciana", "paella marinera",
+}
+
+VEG_LIKELY_KEYWORDS = {
+    "kaesespaetzle", "kasespaetzle", "kasspatzen", "kaspressknoedel", "spinatknoedel",
+    "schlutzkrapfen", "rahmschwammerl", "pilzragout", "champignonrahm",
+    "gemueselasagne", "gemuese-lasagne", "lasagne verdure", "verdure",
+    "falafel", "tofu", "tempeh", "seitan", "veggie burger", "veggieburger",
+    "quinoa", "couscous", "bulgur", "linsen", "linsencurry", "kichererbsen",
+    "chana masala", "dal", "dhal", "palak paneer", "paneer", "saag paneer", "aloo gobi",
+    "chili sin carne", "arrabbiata", "pasta napoli", "napoli", "pomodoro", "pesto",
+    "aglio e olio", "gnocchi al pomodoro", "ravioli ricotta", "tortellini formaggio",
+    "mozzarella", "caprese", "risotto ai funghi", "pilzrisotto", "gemuesecurry",
+    "curry gemuese", "ratatouille", "gemuesepfanne", "wokgemuese",
+    "brokkoli", "blumenkohl", "spinat", "mangold", "spargel", "kuerbis", "aubergine",
+    "zucchini", "paprika", "kartoffelgratin", "ofenkartoffel", "grillgemuese",
+    "kaiserschmarrn", "apfelstrudel", "germknoedel", "marillenknoedel", "topfenknoedel",
+    "omelette", "omelett", "omelet", "eierspeise", "spiegelei", "ruehrei", "eiersalat",
+    "quiche", "zwiebelkuchen", "flammkuchen vegetarisch",
+    "pizza margherita", "pizza verdure", "pizza spinaci", "pizza quattro formaggi", "pizza funghi",
+    "feta", "hirtenkaese", "ziegenkaese", "camembert", "brie", "raclette", "fondue kaese",
+}
+
+
+def _contains_any_keyword(text, keywords):
+    return any(kw in text for kw in keywords)
+
+def classify_food(name, raw_cat=""):
+    name_n = _norm_food_text(name)
+    cat_n = _norm_food_text(raw_cat)
+
+    if _contains_any_keyword(name_n, EXPLICIT_VEGAN_KEYWORDS):
+        return "VG"
+
+    if _contains_any_keyword(name_n, EXPLICIT_VEG_KEYWORDS):
+        return "V"
+
+    if _contains_any_keyword(cat_n, NON_VEG_CATEGORY_KEYWORDS):
+        return ""
+
+    if _contains_any_keyword(name_n, NON_VEG_KEYWORDS):
+        return ""
+
+    if _contains_any_keyword(name_n, VEG_LIKELY_KEYWORDS):
+        return "EV"
+
+    return "EV"
+
+
+def vv_from_name(name, raw_cat=""):
+    return classify_food(name, raw_cat)
 
 def vv_from_cat(raw_cat):
-    key = raw_cat.lower().strip()
+    key = _norm_food_text(raw_cat)
     if key in ("vegan", "vegane"):
         return "VG"
     if key in ("vegetarisch", "vegetarian"):
         return "V"
+    if key in NON_VEG_CATEGORY_KEYWORDS:
+        return ""
     return ""
 
 
@@ -661,7 +769,7 @@ def parse_dom_result(raw_json):
                 continue
 
             if main_dish is None:
-                vv = vv_from_name(name) or cat_vv
+                vv = vv_from_name(name, raw_cat) or cat_vv
                 main_dish = {
                     "kategorie": cat,
                     "name": name,
@@ -681,7 +789,7 @@ def parse_dom_result(raw_json):
                     main_dish["oder"] = name
                     main_dish["oder_prefix"] = "oder" if explicit_oder else "mit"
                     main_dish["oder_preis"] = p["intPrice"]
-                    main_dish["oder_vv"] = vv_from_name(name)
+                    main_dish["oder_vv"] = vv_from_name(name, raw_cat)
                     print(f"    [parse] {main_dish['oder_prefix']}: {name!r} vv={main_dish['oder_vv']!r}")
                 else:
                     print(f"    [parse] skip dup: {name!r}")
@@ -808,7 +916,7 @@ def parse_flat_fallback(lines):
                     if _names_differ(dish["name"], name):
                         dish["oder"] = name
                         dish["oder_prefix"] = "oder"
-                        dish["oder_vv"] = vv_from_name(name)
+                        dish["oder_vv"] = vv_from_name(name, cur_cat)
                     break
         after_oder = False
         oder_name = []
@@ -1251,12 +1359,25 @@ def render_day(dishes, target_date, kw, label, local_dt, is_holiday=None):
             badge_col = None
 
             if it.get("vv"):
-                badge_text = "Vegan" if it["vv"] == "VG" else "Veg."
-                badge_col = C_VG if it["vv"] == "VG" else C_V
-                bb = d.textbbox((0, 0), badge_text, font=fbdg)
-                bw2 = bb[2] - bb[0] + 8
-                bh2 = bb[3] - bb[1] + 4
-                badge_box = (bw2, bh2)
+                if it["vv"] == "VG":
+                    badge_text = "Vegan"
+                    badge_col = C_VG
+                elif it["vv"] == "V":
+                    badge_text = "Veg."
+                    badge_col = C_V
+                elif it["vv"] == "EV":
+                    badge_text = "evtl. Veg."
+                    badge_col = C_V
+                else:
+                    badge_text = ""
+                    badge_col = None
+            
+                if badge_text:
+                    bb = d.textbbox((0, 0), badge_text, font=fbdg)
+                    bw2 = bb[2] - bb[0] + 8
+                    bh2 = bb[3] - bb[1] + 4
+                    badge_box = (bw2, bh2)
+          
 
             extra_lines = []
             if it.get("oder"):
@@ -1527,14 +1648,26 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
             cy = y + PAD
 
             if it.get("vv"):
-                bl = "Vegan" if it["vv"] == "VG" else "Veg."
-                bc = C_VG if it["vv"] == "VG" else C_V
-                b = d.textbbox((0, 0), bl, font=fbdg)
-                bw2 = b[2] - b[0] + 8
-                bh2 = b[3] - b[1] + 4
-                d.rounded_rectangle([(x + PAD, cy), (x + PAD + bw2, cy + bh2)], radius=3, fill=bc)
-                d.text((x + PAD + 4, cy + 2), bl, font=fbdg, fill=WHITE)
-                cy += bh2 + 3
+                if it["vv"] == "VG":
+                    bl = "Vegan"
+                    bc = C_VG
+                elif it["vv"] == "V":
+                    bl = "Veg."
+                    bc = C_V
+                elif it["vv"] == "EV":
+                    bl = "evtl. Veg."
+                    bc = C_V
+                else:
+                    bl = ""
+                    bc = None
+            
+                if bl:
+                    b = d.textbbox((0, 0), bl, font=fbdg)
+                    bw2 = b[2] - b[0] + 8
+                    bh2 = b[3] - b[1] + 4
+                    d.rounded_rectangle([(x + PAD, cy), (x + PAD + bw2, cy + bh2)], radius=3, fill=bc)
+                    d.text((x + PAD + 4, cy + 2), bl, font=fbdg, fill=WHITE)
+                    cy += bh2 + 3
 
             for ln in wrap_text(d, it["name"], fn_uniform, avw, max_lines=20):
                 d.text((x + PAD, cy), ln, font=fn_uniform, fill=TEXT)
