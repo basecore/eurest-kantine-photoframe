@@ -25,7 +25,7 @@ on:
         default: ""
 
   schedule:
-    - cron: "30 11 * * 1-5"
+    - cron: "30 9 * * 1-5"
 
 permissions:
   contents: write
