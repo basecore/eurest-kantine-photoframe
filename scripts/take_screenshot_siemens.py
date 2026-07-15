@@ -6,7 +6,7 @@ Features:
 - Tagesansicht (`DISPLAY_MODE=day`) als Default
 - Wochenansicht (`DISPLAY_MODE=week`) optional
 - Siemens-Farbwelt: Petrol, Schwarz, Weiß, Healthy Orange
-- Feste Kategorien: Suppe, Essen 1, Essen 2, Essen 3
+- Feste Kategorien: Suppe, Essen 1, Essen 2, Essen 3, Aktion
 - Ausgabe kompatibel zu Schaeffler/Aumovio in `docs/images`
 
 Environment variables:
@@ -1341,6 +1341,7 @@ CAT_STUB = {
     "Essen 1": "Essen 1",
     "Essen 2": "Essen 2",
     "Essen 3": "Essen 3",
+    "Aktion": "Aktion",
 }
 
 
@@ -1422,12 +1423,13 @@ def render_week(week_data, kw, label, local_dt, holiday_map, today_date, monday_
 
     avail = H - y - FOOTER_H - LEGEND_H - 4
     rs = int(avail * 0.17)
-    re_ = (avail - rs) // 3
+    re_ = (avail - rs) // 4
     row_h = {
         "Suppe": rs,
         "Essen 1": re_,
         "Essen 2": re_,
-        "Essen 3": avail - rs - 2 * re_,
+        "Essen 3": re_,
+        "Aktion": avail - rs - 3 * re_,
     }
 
     for ri, cat in enumerate(CATS):
