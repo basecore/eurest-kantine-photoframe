@@ -8,9 +8,9 @@
 > Automatische Speiseplan-Screenshots für den **Philips 8FF3WMI Bilderrahmen** (800 × 600 px).  
 > Unterstützte Kantinen:
 >
-> - **SCHAEFFLER Regensburg** (Eurest)
-> - **AUMOVIO Regensburg** (Eurest)
-> - **SIEMENS Regensburg** (CateringPortal)
+> - **[SCHAEFFLER Regensburg](https://eurest.webspeiseplan.de/menu/8949)**
+> - **[AUMOVIO Regensburg](https://eurest.webspeiseplan.de/menu/8950)**
+> - **[SIEMENS Regensburg](https://siemens.cateringportal.io/menu/Regensburg/Mittagessen)**
 
 ---
 
@@ -42,13 +42,13 @@ Der Ablauf ist:
 ### Alle Kantinen (Übersicht)
 ![Übersicht alle Kantinen](docs/images/latest_all_main.jpg)
 
-### SCHAEFFLER Regensburg
+### [SCHAEFFLER Regensburg](https://eurest.webspeiseplan.de/menu/8949)
 ![Aktueller Speiseplan Schaeffler](docs/images/latest_schaeffler.jpg)
 
-### AUMOVIO Regensburg
+### [AUMOVIO Regensburg](https://eurest.webspeiseplan.de/menu/8950)
 ![Aktueller Speiseplan Aumovio](docs/images/latest_aumovio.jpg)
 
-### SIEMENS Regensburg
+### [SIEMENS Regensburg](https://siemens.cateringportal.io/menu/Regensburg/Mittagessen)
 ![Aktueller Speiseplan Siemens](docs/images/latest_siemens.jpg)
 
 ---
@@ -112,6 +112,8 @@ Der Ablauf ist:
   - `Essen 1`
   - `Essen 2`
   - `Essen 3`
+  - `Aktion`
+- **Update:** Für die Siemens-Kantine wird jetzt zusätzlich versucht, auch vegetarische Gerichte zu markieren, wenn im CateringPortal selbst keine eindeutige Kennzeichnung vorhanden ist.
 
 ### Darstellung
 - Vegan-/Vegetarisch-Badges
@@ -244,6 +246,9 @@ Der Bilderrahmen (Philips 8FF3WMI) kann RSS-Feeds mit Bildern abonnieren.
 
 ### SCHAEFFLER Regensburg
 
+**Kantine direkt öffnen:**  
+[https://eurest.webspeiseplan.de/menu/8949](https://eurest.webspeiseplan.de/menu/8949)
+
 **Feed-URL (HTTPS / GitHub Pages):**
 ```text
 https://basecore.github.io/eurest-kantine-photoframe/feed_schaeffler.xml
@@ -263,6 +268,9 @@ https://basecore.github.io/eurest-kantine-photoframe/images/latest_schaeffler.jp
 
 ### AUMOVIO Regensburg
 
+**Kantine direkt öffnen:**  
+[https://eurest.webspeiseplan.de/menu/8950](https://eurest.webspeiseplan.de/menu/8950)
+
 **Feed-URL (HTTPS / GitHub Pages):**
 ```text
 https://basecore.github.io/eurest-kantine-photoframe/feed_aumovio.xml
@@ -281,6 +289,9 @@ https://basecore.github.io/eurest-kantine-photoframe/images/latest_aumovio.jpg
 ---
 
 ### SIEMENS Regensburg
+
+**Kantine direkt öffnen:**  
+[https://siemens.cateringportal.io/menu/Regensburg/Mittagessen](https://siemens.cateringportal.io/menu/Regensburg/Mittagessen)
 
 **Feed-URL (HTTPS / GitHub Pages):**
 ```text
@@ -445,8 +456,10 @@ Besonderheiten:
   - Essen 1
   - Essen 2
   - Essen 3
+  - Aktion
 - Tagesansicht als Standard
 - Wochenansicht optional
+- zusätzlicher Versuch zur vegetarischen Kennzeichnung, wenn das Siemens-System selbst keine Info liefert
 
 ---
 
@@ -497,9 +510,9 @@ docs/images/
 
 Dieses Repository erzeugt automatisch aktuelle Photoframe-Speisepläne für:
 
-- **SCHAEFFLER**
-- **AUMOVIO**
-- **SIEMENS**
+- **[SCHAEFFLER](https://eurest.webspeiseplan.de/menu/8949)**
+- **[AUMOVIO](https://eurest.webspeiseplan.de/menu/8950)**
+- **[SIEMENS](https://siemens.cateringportal.io/menu/Regensburg/Mittagessen)**
 
 mit:
 - Tagesansicht als Standard
