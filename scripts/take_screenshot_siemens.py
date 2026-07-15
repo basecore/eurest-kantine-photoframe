@@ -620,7 +620,7 @@ NON_VEG_KEYWORDS = {
     "wurst", "bratwurst", "currywurst", "weisswurst", "bockwurst", "regensburger",
     "debreciner", "salami", "schinken", "kochschinken", "rohschinken", "speck", "bacon",
     "prosciutto", "jamon", "serrano", "chorizo", "mortadella", "pastrami", "salciccia",
-    "pancetta", "guanciale",
+    "pancetta", "guanciale", "krautwickel"
     "pute", "puten", "putengeschnetzeltes", "truthahn", "turkey",
     "huhn", "huehnchen", "haehnchen", "hendl", "chicken", "pollo", "poulet",
     "ente", "entenbrust", "gans", "gaensebraten", "gefluegel",
