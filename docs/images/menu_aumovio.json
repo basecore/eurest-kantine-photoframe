@@ -6,8 +6,8 @@
   "kw": 29,
   "target_date": "2026-07-15",
   "target_day_label": "Mi 15.07",
-  "generated_at_utc": "2026-07-15T10:46:26.447571Z",
-  "generated_at_local": "2026-07-15T12:45:25.016241+02:00",
+  "generated_at_utc": "2026-07-15T11:14:01.055529Z",
+  "generated_at_local": "2026-07-15T13:12:59.371124+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -21,12 +21,6 @@
       "name": "MANGOLD | geschmort mit Dinkel-Kartoffeln, Karotten & Preiselbeer-Apfel-Dip",
       "price": "4,57 €",
       "vv": "V"
-    },
-    {
-      "category": "Weichs",
-      "name": "BBQ HÄHNCHEN I mit Pommes und Cole slaw",
-      "price": "6,90 €",
-      "vv": ""
     },
     {
       "category": "Brandlberg",
