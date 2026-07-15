@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-15",
-  "target_day_label": "Mi 15.07",
-  "generated_at_utc": "2026-07-15T11:27:32.962599Z",
-  "generated_at_local": "2026-07-15T13:26:11.238793+02:00",
+  "target_date": "2026-07-16",
+  "target_day_label": "Do 16.07",
+  "generated_at_utc": "2026-07-15T11:43:54.387746Z",
+  "generated_at_local": "2026-07-15T13:42:35.171355+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,26 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Spaghetti / Schinkensahnesoße / mit Gemüse",
+      "name": "Kichererbsen-Brokkoli-Curry / Naan Brot",
       "price": "3,20 €",
-      "vv": ""
+      "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Ravioli mit Amarenakirschen/Peccorino / Salbeibutter / Gebratene Pfifferlinge",
-      "price": "6,20 €",
+      "name": "Chicken Crossies / Tomatenreis / Basilikumpesto",
+      "price": "5,80 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Bobotie - Afrikanischer Hackbraten / Gelber Reis / Aprikosen-Apfel-Chutney",
-      "price": "6,80 €",
-      "vv": ""
-    },
-    {
-      "category": "Aktion",
-      "name": "Bayerischer Wurstsalat / Bauernbrot",
-      "price": "5,50 €",
+      "name": "Hähnchen-Döner",
+      "price": "",
       "vv": ""
     }
   ]

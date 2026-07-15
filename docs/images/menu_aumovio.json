@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-15",
-  "target_day_label": "Mi 15.07",
-  "generated_at_utc": "2026-07-15T11:26:11.085316Z",
-  "generated_at_local": "2026-07-15T13:25:08.648337+02:00",
+  "target_date": "2026-07-16",
+  "target_day_label": "Do 16.07",
+  "generated_at_utc": "2026-07-15T11:42:35.019152Z",
+  "generated_at_local": "2026-07-15T13:41:34.060228+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "MANGOLD | geschmort mit Dinkel-Kartoffeln, Karotten & Preiselbeer-Apfel-Dip",
+      "name": "LEMON FUSILLI | Minze, Zitronensauce, Hartkäse",
       "price": "4,57 €",
       "vv": "V"
     },
     {
-      "category": "Brandlberg",
-      "name": "MEATBALLS | Bohnen-Zwiebel Salat, Ajvar, Fladenbrotecke",
-      "price": "6,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Niederwinzer",
-      "name": "CURRYWURST | weiß mit hausgemachter Currysoße und Pommes",
+      "category": "Weichs",
+      "name": "HÄHNCHENBRUST | Aioli Dip, Patata Bravas",
       "price": "6,50 €",
       "vv": ""
     },
     {
-      "category": "Dessert 3",
-      "name": "Grießpudding mit Aprikosen Marmelade",
-      "price": "1,33 €",
+      "category": "Brandlberg",
+      "name": "BAUERNPFANDEL | Hals, Wammerln, Sauerkraut, Röstkartoffeln",
+      "price": "6,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Niederwinzer",
+      "name": "SCHNITZEL WIENER ART | vom Hähnchen mit Zitrone & Kartoffel-Gurkensalat oder Pommes Frites",
+      "price": "6,90 €",
       "vv": ""
     }
   ]

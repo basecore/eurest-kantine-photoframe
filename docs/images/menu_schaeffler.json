@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-15",
-  "target_day_label": "Mi 15.07",
-  "generated_at_utc": "2026-07-15T11:25:08.471627Z",
-  "generated_at_local": "2026-07-15T13:24:05.751110+02:00",
+  "target_date": "2026-07-16",
+  "target_day_label": "Do 16.07",
+  "generated_at_utc": "2026-07-15T11:41:33.892161Z",
+  "generated_at_local": "2026-07-15T13:40:31.098689+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SENSO-JI | Süßkartoffel-Pfannkuchen mit asiatischer BBQ-Sauce & Salat",
+      "name": "BANDNUDELN | Auberginencreme, Tomatensauce, Ricotta-Topping",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "CHILI CON CARNE | vom Rind mit Vollkornreis, Sauerrahm & Jalapenos",
-      "price": "6,50 €",
+      "name": "LOADED FRIES | Pulled Pork, CHILI-Honig, Apfel, Röstzwiebeln",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "PIZZA MANUFAKTUR I Pizza auf Stein frisch gebacken mit Mozzarella, Salami oder Schinken",
-      "price": "7,50 €",
+      "name": "CALAMARI | vom Grill, Wassermelonensalat, Röstbrot",
+      "price": "6,50 €",
       "vv": ""
     }
   ]
