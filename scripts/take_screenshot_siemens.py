@@ -536,9 +536,10 @@ CAT_FLEXIBLE = {
     "vegane": "Essen 2",
     "vegetarisch": "Essen 2",
     "vegetarian": "Essen 2",
+    "aktion": "Aktion",
 }
-_ESSEN_SLOTS = ["Essen 1", "Essen 2", "Essen 3"]
-CATS = ["Suppe", "Essen 1", "Essen 2", "Essen 3"]
+_ESSEN_SLOTS = ["Essen 1", "Essen 2", "Essen 3", "Aktion"]
+CATS = ["Suppe", "Essen 1", "Essen 2", "Essen 3", "Aktion"]
 
 
 def norm_cat(raw, used_cats=None):
@@ -721,6 +722,7 @@ CAT_HEADERS_FB = {
     "Fisch": "Essen 3",
     "Vegan": "Essen 2",
     "Vegetarisch": "Essen 2",
+    "Aktion": "Aktion",
 }
 NOISE_FB = {
     "Learn more", "Got it!", "home", "Home", "view_compact", "Menu", "place", "Stores",
@@ -747,7 +749,7 @@ def parse_flat_fallback(lines):
     seen_cats = set()
     after_oder = False
     oder_name = []
-    slots = ["Suppe", "Essen 1", "Essen 2", "Essen 3"]
+    slots = ["Suppe", "Essen 1", "Essen 2", "Essen 3", "Aktion"]
 
     def next_free(slot):
         try:
@@ -1669,6 +1671,7 @@ def _rgb_to_hex(rgb):
 
 
 SIEMENS_OVERVIEW_INCLUDE = {
+    "aktion",  
     "essen 1",
     "essen 2",
     "essen 3",
