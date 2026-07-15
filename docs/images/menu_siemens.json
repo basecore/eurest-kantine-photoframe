@@ -6,8 +6,8 @@
   "kw": 29,
   "target_date": "2026-07-15",
   "target_day_label": "Mi 15.07",
-  "generated_at_utc": "2026-07-14T12:53:07.921138Z",
-  "generated_at_local": "2026-07-14T14:51:48.749320+02:00",
+  "generated_at_utc": "2026-07-15T10:35:36.029903Z",
+  "generated_at_local": "2026-07-15T12:34:16.824880+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,7 +18,7 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Spaghetti / Soße nach Carbonara Art",
+      "name": "Spaghetti / Schinkensahnesoße / mit Gemüse",
       "price": "3,20 €",
       "vv": ""
     },

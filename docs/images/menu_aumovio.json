@@ -6,8 +6,8 @@
   "kw": 29,
   "target_date": "2026-07-15",
   "target_day_label": "Mi 15.07",
-  "generated_at_utc": "2026-07-14T12:51:48.604898Z",
-  "generated_at_local": "2026-07-14T14:50:46.612340+02:00",
+  "generated_at_utc": "2026-07-15T10:34:16.690269Z",
+  "generated_at_local": "2026-07-15T12:33:15.190755+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -24,7 +24,7 @@
     },
     {
       "category": "Weichs",
-      "name": "BBQ HÄHNCHEN I mit Wedges und Cole slaw",
+      "name": "BBQ HÄHNCHEN I mit Pommes und Cole slaw",
       "price": "6,90 €",
       "vv": ""
     },
@@ -36,8 +36,14 @@
     },
     {
       "category": "Niederwinzer",
-      "name": "CURRYWURST | rot oder weiß mit hausgemachter Currysoße und Pommes",
+      "name": "CURRYWURST | weiß mit hausgemachter Currysoße und Pommes",
       "price": "6,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Dessert 3",
+      "name": "Grießpudding mit Aprikosen Marmelade",
+      "price": "1,33 €",
       "vv": ""
     }
   ]

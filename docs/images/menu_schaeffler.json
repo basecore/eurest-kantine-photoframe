@@ -6,8 +6,8 @@
   "kw": 29,
   "target_date": "2026-07-15",
   "target_day_label": "Mi 15.07",
-  "generated_at_utc": "2026-07-14T12:50:46.446745Z",
-  "generated_at_local": "2026-07-14T14:49:43.912661+02:00",
+  "generated_at_utc": "2026-07-15T10:33:15.038103Z",
+  "generated_at_local": "2026-07-15T12:32:13.175542+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -30,7 +30,7 @@
     },
     {
       "category": "Stadtamhof",
-      "name": "PIZZA MANUFAKTUR I Pizza auf Stein frisch gebacken mit Mozzarella, Champignons, Salami oder Schinken",
+      "name": "PIZZA MANUFAKTUR I Pizza auf Stein frisch gebacken mit Mozzarella, Salami oder Schinken",
       "price": "7,50 €",
       "vv": ""
     }
