@@ -350,6 +350,7 @@ def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme, *, total_dishes=0, prefer
     category = re.sub(r"\s+", " ", category)
     draw.text((x0 + pad, cy), category, font=cat_font, fill=theme["secondary"])
 
+
     badge_text = ""
     badge_color = None
     vv = (dish.get("vv") or "").strip().upper()
@@ -359,10 +360,18 @@ def _draw_dish_card(draw, dish, x0, y0, x1, y1, theme, *, total_dishes=0, prefer
     elif vv == "V":
         badge_text = "Veg."
         badge_color = V_COLOR
-
+    elif vv == "EV":
+        badge_text = "evtl. Veg."
+        badge_color = V_COLOR
+    
     if badge_text:
-        bw, _ = _draw_badge(draw, badge_text, badge_color, x1 - pad - 52, cy - 1)
+        badge_font = lf(9, bold=True)
+        bb = draw.textbbox((0, 0), badge_text, font=badge_font)
+        badge_w = (bb[2] - bb[0]) + 8
+        _draw_badge(draw, badge_text, badge_color, x1 - pad - badge_w, cy - 1)
+    
     cy += _line_h(draw, cat_font)
+    
 
     price = (dish.get("price") or "").strip()
     price_reserved_h = (_line_h(draw, price_font) + 2) if price else 0
@@ -561,7 +570,9 @@ def render_combined(sources_by_name, target_date, label, kw, local_dt):
     for col, txt in [
         (VG_COLOR, "Vegan"),
         (V_COLOR, "Vegetarisch"),
+        (V_COLOR, "evtl. Veg."),
     ]:
+        
         draw.rectangle([(lx, leg_y + 5), (lx + 12, leg_y + 15)], fill=col)
         b = draw.textbbox((0, 0), txt, font=fleg)
         draw.text((lx + 15, leg_y + 4), txt, font=fleg, fill=TEXT)
