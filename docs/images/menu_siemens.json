@@ -6,8 +6,8 @@
   "kw": 29,
   "target_date": "2026-07-15",
   "target_day_label": "Mi 15.07",
-  "generated_at_utc": "2026-07-15T10:35:36.029903Z",
-  "generated_at_local": "2026-07-15T12:34:16.824880+02:00",
+  "generated_at_utc": "2026-07-15T10:47:45.897672Z",
+  "generated_at_local": "2026-07-15T12:46:26.590987+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -32,6 +32,12 @@
       "category": "Essen 3",
       "name": "Bobotie - Afrikanischer Hackbraten / Gelber Reis / Aprikosen-Apfel-Chutney",
       "price": "6,80 €",
+      "vv": ""
+    },
+    {
+      "category": "Aktion",
+      "name": "Bayerischer Wurstsalat / Bauernbrot",
+      "price": "5,50 €",
       "vv": ""
     }
   ]
