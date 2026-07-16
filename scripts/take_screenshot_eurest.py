@@ -8,7 +8,7 @@ Umgebungsvariablen:
   DISPLAY_MODE          day = Tagesansicht (default), week = Wochenansicht
   DISPLAY_DAY           monday|tuesday|wednesday|thursday|friday
                         leer = Automatik:
-                        vor 13:30 heute, ab 13:30 naechster Werktag
+                        vor 13:00 heute, ab 13:00 naechster Werktag
 
 v5.1:
 - DOM-Scraping ueber sichtbare Tages-/Wochenkandidaten
@@ -45,7 +45,7 @@ DISPLAY_MODE = os.environ.get("DISPLAY_MODE", "day").strip().lower()
 DISPLAY_DAY = os.environ.get("DISPLAY_DAY", "").strip().lower()
 
 SWITCH_HOUR_LOCAL = 13
-SWITCH_MINUTE_LOCAL = 30
+SWITCH_MINUTE_LOCAL = 00
 
 LOCATION_LABELS = {
     "8949": "SCHAEFFLER Regensburg",
