@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-16",
-  "target_day_label": "Do 16.07",
-  "generated_at_utc": "2026-07-16T11:21:22.346408Z",
-  "generated_at_local": "2026-07-16T13:20:19.834886+02:00",
+  "target_date": "2026-07-17",
+  "target_day_label": "Fr 17.07",
+  "generated_at_utc": "2026-07-16T13:05:29.516143Z",
+  "generated_at_local": "2026-07-16T15:04:40.330269+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -17,32 +17,26 @@
   },
   "main_dishes": [
     {
-      "category": "Dessert 3",
-      "name": "Vanille Pudding mit Keks",
-      "price": "1,33 €",
-      "vv": ""
-    },
-    {
-      "category": "---",
-      "name": "LEMON FUSILLI | Minze, Zitronensauce, Hartkäse",
+      "category": "Ostenviertel",
+      "name": "BANDNUDELN | Auberginencreme, Tomatensauce, Ricotta-Topping",
       "price": "4,57 €",
       "vv": "V"
     },
     {
-      "category": "---",
-      "name": "HÄHNCHENBRUST | Aioli Dip, Patata Bravas",
+      "category": "Weichs",
+      "name": "CALAMARI | vom Grill, Wassermelonensalat, Röstbrot",
       "price": "6,50 €",
       "vv": ""
     },
     {
-      "category": "---",
-      "name": "BAUERNPFANDEL | Wammerln, Sauerkraut, Röstkartoffeln",
-      "price": "6,50 €",
-      "vv": ""
+      "category": "Brandlberg",
+      "name": "DAMPFNUDEL I mit Vanille Soße",
+      "price": "5,50 €",
+      "vv": "V"
     },
     {
-      "category": "---",
-      "name": "SCHNITZEL WIENER ART | vom Hähnchen mit Zitrone & Kartoffel-Gurkensalat oder Pommes Frites",
+      "category": "Königswiesen",
+      "name": "JÄGERSCHNITZEL I vom Hähnchen mit Champignonrahmsoße und Spätzle",
       "price": "6,90 €",
       "vv": ""
     }

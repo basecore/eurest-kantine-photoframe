@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-16",
-  "target_day_label": "Do 16.07",
-  "generated_at_utc": "2026-07-16T11:22:42.793819Z",
-  "generated_at_local": "2026-07-16T13:21:22.499029+02:00",
+  "target_date": "2026-07-17",
+  "target_day_label": "Fr 17.07",
+  "generated_at_utc": "2026-07-16T13:06:51.635943Z",
+  "generated_at_local": "2026-07-16T15:05:29.667055+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,26 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Kichererbsen-Brokkoli-Curry / Naan Brot",
+      "name": "Milchreis / mit Waldbeerenkompott",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Chicken Crossies / Tomatenreis / Basilikumpesto",
-      "price": "5,80 €",
-      "vv": ""
+      "name": "Krautwickel / Kartoffelpüree / Erbsen-Karotten-Gemüse",
+      "price": "5,50 €",
+      "vv": "EV"
     },
     {
       "category": "Essen 3",
-      "name": "Hähnchen-Döner",
-      "price": "6,50 €",
-      "vv": ""
-    },
-    {
-      "category": "Aktion",
-      "name": "Bayerischer Wurstsalat / Semmel / (solange der Vorrat reicht)",
-      "price": "5,50 €",
+      "name": "Rabas Empanadas, gebacken / Spanische Ofenkartoffeln / Aioli",
+      "price": "5,90 €",
       "vv": ""
     }
   ]

@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W29",
   "kw": 29,
-  "target_date": "2026-07-16",
-  "target_day_label": "Do 16.07",
-  "generated_at_utc": "2026-07-16T11:20:19.664574Z",
-  "generated_at_local": "2026-07-16T13:19:35.877338+02:00",
+  "target_date": "2026-07-17",
+  "target_day_label": "Fr 17.07",
+  "generated_at_utc": "2026-07-16T13:04:40.161346Z",
+  "generated_at_local": "2026-07-16T15:03:49.781862+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,14 @@
   "main_dishes": [
     {
       "category": "---",
-      "name": "BANDNUDELN | Auberginencreme, Tomatensauce, Ricotta-Topping",
+      "name": "MUMBAI-CURRY | Mango-Süßkartoffel, gerösteter Tandoori-Blumenkohl",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "---",
-      "name": "LOADED FRIES | Pulled Pork, CHILI-Honig, Apfel, Röstzwiebeln",
+      "name": "RIGATONI GARNELEN I in Knoblauch gebratene Garnelen, Tomatensauce & Kirschtomaten",
       "price": "6,90 €",
-      "vv": ""
-    },
-    {
-      "category": "---",
-      "name": "CALAMARI | vom Grill, Wassermelonensalat, Röstbrot",
-      "price": "6,50 €",
       "vv": ""
     }
   ]

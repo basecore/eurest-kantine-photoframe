@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>Kantinenvergleich Regensburg – Alle Hauptgerichte</title>
 		<link>http://basecore.bplaced.net</link>
 		<description></description>
-		<pubDate>Thu, 16 Jul 2026 11:22:43 +0000</pubDate>
-		<lastBuildDate>Thu, 16 Jul 2026 11:22:43 +0000</lastBuildDate>
+		<pubDate>Thu, 16 Jul 2026 13:06:51 +0000</pubDate>
+		<lastBuildDate>Thu, 16 Jul 2026 13:06:51 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net</generator>
 		<image>
 			<url>http://basecore.bplaced.net/images/icon.jpg</url>
@@ -19,12 +19,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<link>http://basecore.bplaced.net</link>
 		</image>
 		<item>
-			<title>Alle Hauptgerichte Do 16.07 – Regensburg</title>
+			<title>Alle Hauptgerichte Fr 17.07 – Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">all_main::kantine_2026-W29_2026-07-16_all_main.jpg::2026-07-16T11:22:42.955183Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W29_2026-07-16_all_main.jpg&quot; alt=&quot;ALLE Hauptgerichte Regensburg Speiseplan 2026-W29&quot;/&gt;</description>
-			<pubDate>Thu, 16 Jul 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W29_2026-07-16_all_main.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">all_main::kantine_2026-W29_2026-07-17_all_main.jpg::2026-07-16T13:06:51.788812Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W29_2026-07-17_all_main.jpg&quot; alt=&quot;ALLE Hauptgerichte Regensburg Speiseplan 2026-W29&quot;/&gt;</description>
+			<pubDate>Fri, 17 Jul 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W29_2026-07-17_all_main.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>
