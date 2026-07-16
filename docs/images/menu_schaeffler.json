@@ -6,8 +6,8 @@
   "kw": 29,
   "target_date": "2026-07-16",
   "target_day_label": "Do 16.07",
-  "generated_at_utc": "2026-07-15T12:24:32.030378Z",
-  "generated_at_local": "2026-07-15T14:23:31.047557+02:00",
+  "generated_at_utc": "2026-07-16T11:20:19.664574Z",
+  "generated_at_local": "2026-07-16T13:19:35.877338+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -17,19 +17,19 @@
   },
   "main_dishes": [
     {
-      "category": "Ostenviertel",
+      "category": "---",
       "name": "BANDNUDELN | Auberginencreme, Tomatensauce, Ricotta-Topping",
       "price": "4,57 €",
       "vv": "V"
     },
     {
-      "category": "Kumpfmühl",
+      "category": "---",
       "name": "LOADED FRIES | Pulled Pork, CHILI-Honig, Apfel, Röstzwiebeln",
       "price": "6,90 €",
       "vv": ""
     },
     {
-      "category": "Stadtamhof",
+      "category": "---",
       "name": "CALAMARI | vom Grill, Wassermelonensalat, Röstbrot",
       "price": "6,50 €",
       "vv": ""
