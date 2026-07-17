@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W29",
-  "kw": 29,
-  "target_date": "2026-07-17",
-  "target_day_label": "Fr 17.07",
-  "generated_at_utc": "2026-07-16T13:06:51.635943Z",
-  "generated_at_local": "2026-07-16T15:05:29.667055+02:00",
+  "label": "2026-W30",
+  "kw": 30,
+  "target_date": "2026-07-20",
+  "target_day_label": "Mo 20.07",
+  "generated_at_utc": "2026-07-17T11:10:42.712334Z",
+  "generated_at_local": "2026-07-17T13:09:23.690253+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Milchreis / mit Waldbeerenkompott",
-      "price": "3,20 €",
-      "vv": "EV"
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
+      "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Krautwickel / Kartoffelpüree / Erbsen-Karotten-Gemüse",
-      "price": "5,50 €",
-      "vv": "EV"
+      "name": "Fried Rice / Marinierter Tofu / Gebratener Pak Choi",
+      "price": "5,40 €",
+      "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Rabas Empanadas, gebacken / Spanische Ofenkartoffeln / Aioli",
-      "price": "5,90 €",
-      "vv": ""
+      "name": "Sommerlich gemischter Salat",
+      "price": "4,80 €",
+      "vv": "EV"
     }
   ]
 }
