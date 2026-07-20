@@ -509,8 +509,9 @@ Der Runner läuft als Docker-Container auf HAOS und startet automatisch nach jed
 Gehe im GitHub Repo zu **Settings → Actions → Runners → New self-hosted runner**:
 - OS: **Linux**, Architecture: **x64**
 - Den angezeigten **Token** (beginnt mit `A...`) kopieren – er ist nur kurze Zeit gültig
+```
 
-#### 4b. Runner-Container starten
+#### Runner-Container starten
 
 Im **Home Assistant Terminal Add-on** (oder SSH Add-on):
 
