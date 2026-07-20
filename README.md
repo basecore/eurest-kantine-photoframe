@@ -484,6 +484,63 @@ Zusätzlich wird Cache-Busting über `?v=<timestamp>` an die Bild-URL gehängt.
 
 ---
 
+
+### Self-hosted GitHub Runner auf Home Assistant OS einrichten
+
+Der Runner läuft als Docker-Container auf HAOS und startet automatisch nach jedem Neustart.
+
+#### Runner-Token holen
+
+Gehe im GitHub Repo zu **Settings → Actions → Runners → New self-hosted runner**:
+- OS: **Linux**, Architecture: **x64**
+- Den angezeigten **Token** (beginnt mit `A...`) kopieren – er ist nur kurze Zeit gültig
+
+#### Runner-Container starten
+
+Im **Home Assistant Terminal Add-on** (oder SSH Add-on):
+
+```bash
+### 4. Self-hosted GitHub Runner auf Home Assistant OS einrichten
+
+Der Runner läuft als Docker-Container auf HAOS und startet automatisch nach jedem Neustart.
+
+#### 4a. Runner-Token holen
+
+Gehe im GitHub Repo zu **Settings → Actions → Runners → New self-hosted runner**:
+- OS: **Linux**, Architecture: **x64**
+- Den angezeigten **Token** (beginnt mit `A...`) kopieren – er ist nur kurze Zeit gültig
+
+#### 4b. Runner-Container starten
+
+Im **Home Assistant Terminal Add-on** (oder SSH Add-on):
+
+```bash
+set -e
+
+echo "1/4 Stoppe alten Container..."
+docker rm -f github-runner 2>/dev/null || true
+
+echo "2/4 Starte neuen Runner..."
+docker run -d \
+  --name github-runner \
+  --restart unless-stopped \
+  -e REPO_URL="https://github.com/basecore/kicktipp-photoframe" \
+  -e RUNNER_TOKEN="HIER_NEUEN_KICKTIPP_TOKEN_EINFÜGEN" \
+  -e RUNNER_NAME="haos-runner" \
+  -e LABELS="self-hosted,haos" \
+  -e RUNNER_ALLOW_RUNASROOT="1" \
+  myoung34/github-runner:2.335.1
+
+echo "3/4 Warte kurz..."
+sleep 8
+
+echo "4/4 Zeige Logs..."
+docker logs github-runner --tail 200
+```
+
+> **Wichtig:** `DEIN_TOKEN_HIER` durch den kopierten Token aus Schritt 4a ersetzen.
+
+
 ## Debug / Troubleshooting
 
 Wenn im GitHub-Action-Log zwar `Saved: docs/images/...` erscheint, die Dateien aber nicht im Repository landen, liegt das meist am falschen Working Directory.
