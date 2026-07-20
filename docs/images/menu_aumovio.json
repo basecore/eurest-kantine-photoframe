@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W30",
   "kw": 30,
-  "target_date": "2026-07-20",
-  "target_day_label": "Mo 20.07",
-  "generated_at_utc": "2026-07-20T08:06:03.514740Z",
-  "generated_at_local": "2026-07-20T10:05:02.140338+02:00",
+  "target_date": "2026-07-21",
+  "target_day_label": "Di 21.07",
+  "generated_at_utc": "2026-07-20T13:32:37.716092Z",
+  "generated_at_local": "2026-07-20T15:31:36.591945+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SEMMELKNÖDEL | Schnittlauch-Veloute, gebratene Champignons",
+      "name": "FUSILLI | Mandel-Veloute, Brokkoli",
       "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Weichs",
-      "name": "UDON-NUDELN | Sesam-Hoisin-Sauce, Mushrooms",
-      "price": "6,90 €",
       "vv": "VG"
     },
     {
+      "category": "Weichs",
+      "name": "SALTIMBOCCA | Hähnchen, Salbei, Polenta, Weißweinsauce",
+      "price": "6,90 €",
+      "vv": ""
+    },
+    {
       "category": "Brandlberg",
-      "name": "SIGNATURE CLUB SANDWICH | Ei, Puten-Bacon, Maishähnchen, Pommes frites",
-      "price": "0,00 €",
+      "name": "OFEN-SEELACHS | Salsa verde, Olivenkartoffeln",
+      "price": "8,90 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "SCHWEINENACKENSTEAK | Röstkartoffeln, BBQ-Butter, Romanasalat",
-      "price": "6,50 €",
+      "name": "SCHNITZEL WIENER ART | vom Hähnchen mit Zitrone & Kartoffel-Gurkensalat oder Pommes Frites",
+      "price": "6,90 €",
       "vv": ""
     }
   ]

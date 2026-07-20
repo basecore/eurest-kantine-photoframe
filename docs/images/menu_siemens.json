@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W30",
   "kw": 30,
-  "target_date": "2026-07-20",
-  "target_day_label": "Mo 20.07",
-  "generated_at_utc": "2026-07-20T08:07:23.082999Z",
-  "generated_at_local": "2026-07-20T10:06:03.654129+02:00",
+  "target_date": "2026-07-21",
+  "target_day_label": "Di 21.07",
+  "generated_at_utc": "2026-07-20T13:33:56.745188Z",
+  "generated_at_local": "2026-07-20T15:32:37.871765+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Currywurst / Pommes frites / Currysoße",
-      "price": "3,00 €",
-      "vv": ""
+      "name": "Conchiglie alla Romana / Rucola",
+      "price": "3,20 €",
+      "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Fried Rice / Marinierter Tofu / Gebratener Pak Choi",
-      "price": "5,40 €",
+      "name": "Frühlingsrolle mit Hähnchen / Glasnudelsalat / Asiasoße \"süß-sauer\"",
+      "price": "5,80 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Sommerlich gemischter Salat",
-      "price": "4,80 €",
-      "vv": "EV"
+      "name": "Schweinegeschnetzeltes / Spätzle / mit Schnittlauch",
+      "price": "6,00 €",
+      "vv": ""
     }
   ]
 }
