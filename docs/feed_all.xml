@@ -4,8 +4,8 @@
 		<title>Alle Kantinen Regensburg – Speisepläne</title>
 		<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		<description>Alle aktuellen Kantinen-Speisepläne in einem Feed.</description>
-		<pubDate>Fri, 17 Jul 2026 11:10:42 +0000</pubDate>
-		<lastBuildDate>Fri, 17 Jul 2026 11:10:42 +0000</lastBuildDate>
+		<pubDate>Mon, 20 Jul 2026 08:07:23 +0000</pubDate>
+		<lastBuildDate>Mon, 20 Jul 2026 08:07:23 +0000</lastBuildDate>
 		<generator>https://basecore.github.io/eurest-kantine-photoframe</generator>
 		<image>
 			<url>https://basecore.github.io/eurest-kantine-photoframe/images/icon.jpg</url>
@@ -15,7 +15,7 @@
 		<item>
 			<title>Tagesplan Mo 20.07 – SCHAEFFLER Regensburg</title>
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
-			<guid isPermaLink="false">schaeffler::kantine_2026-W30_2026-07-20_schaeffler.jpg::2026-07-17T11:08:32.391033Z</guid>
+			<guid isPermaLink="false">schaeffler::kantine_2026-W30_2026-07-20_schaeffler.jpg::2026-07-20T08:05:01.983567Z</guid>
 			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W30_2026-07-20_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W30&quot;/&gt;</description>
 			<pubDate>Mon, 20 Jul 2026 06:00:00 +0000</pubDate>
 			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W30_2026-07-20_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
@@ -23,7 +23,7 @@
 		<item>
 			<title>Tagesplan Mo 20.07 – AUMOVIO Regensburg</title>
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
-			<guid isPermaLink="false">aumovio::kantine_2026-W30_2026-07-20_aumovio.jpg::2026-07-17T11:09:23.533952Z</guid>
+			<guid isPermaLink="false">aumovio::kantine_2026-W30_2026-07-20_aumovio.jpg::2026-07-20T08:06:03.514526Z</guid>
 			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W30_2026-07-20_aumovio.jpg&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W30&quot;/&gt;</description>
 			<pubDate>Mon, 20 Jul 2026 06:00:00 +0000</pubDate>
 			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W30_2026-07-20_aumovio.jpg" type="image/jpeg" height="600" width="800"/>
@@ -31,7 +31,7 @@
 		<item>
 			<title>Tagesplan Mo 20.07 – SIEMENS Regensburg</title>
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
-			<guid isPermaLink="false">siemens::kantine_2026-W30_2026-07-20_siemens.jpg::2026-07-17T11:10:42.712123Z</guid>
+			<guid isPermaLink="false">siemens::kantine_2026-W30_2026-07-20_siemens.jpg::2026-07-20T08:07:23.082789Z</guid>
 			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W30_2026-07-20_siemens.jpg&quot; alt=&quot;SIEMENS Regensburg Speiseplan 2026-W30&quot;/&gt;</description>
 			<pubDate>Mon, 20 Jul 2026 06:00:00 +0000</pubDate>
 			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W30_2026-07-20_siemens.jpg" type="image/jpeg" height="600" width="800"/>

@@ -6,8 +6,8 @@
   "kw": 30,
   "target_date": "2026-07-20",
   "target_day_label": "Mo 20.07",
-  "generated_at_utc": "2026-07-17T11:08:32.391331Z",
-  "generated_at_local": "2026-07-17T13:07:41.140449+02:00",
+  "generated_at_utc": "2026-07-20T08:05:01.983746Z",
+  "generated_at_local": "2026-07-20T10:03:59.197339+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -30,7 +30,7 @@
     },
     {
       "category": "Stadtamhof",
-      "name": "VEGANE FILETSTREIFEN | Teriyaki-Style, Pak-Choi, Ingwerreis",
+      "name": "VEGANE FILETSTREIFEN | Teriyaki-Style, Gemüse, Ingwerreis",
       "price": "8,10 €",
       "vv": "VG"
     }
