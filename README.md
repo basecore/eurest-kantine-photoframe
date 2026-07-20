@@ -499,17 +499,15 @@ Gehe im GitHub Repo zu **Settings → Actions → Runners → New self-hosted ru
 
 Im **Home Assistant Terminal Add-on** (oder SSH Add-on):
 
-```bash
-### 4. Self-hosted GitHub Runner auf Home Assistant OS einrichten
+### Self-hosted GitHub Runner auf Home Assistant OS einrichten
 
 Der Runner läuft als Docker-Container auf HAOS und startet automatisch nach jedem Neustart.
 
-#### 4a. Runner-Token holen
+#### Runner-Token holen
 
 Gehe im GitHub Repo zu **Settings → Actions → Runners → New self-hosted runner**:
 - OS: **Linux**, Architecture: **x64**
 - Den angezeigten **Token** (beginnt mit `A...`) kopieren – er ist nur kurze Zeit gültig
-```
 
 #### Runner-Container starten
 
