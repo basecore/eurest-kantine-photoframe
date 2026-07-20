@@ -517,15 +517,15 @@ Im **Home Assistant Terminal Add-on** (oder SSH Add-on):
 set -e
 
 echo "1/4 Stoppe alten Container..."
-docker rm -f github-runner 2>/dev/null || true
+docker rm -f github-runner-eurest 2>/dev/null || true
 
 echo "2/4 Starte neuen Runner..."
 docker run -d \
-  --name github-runner \
+  --name github-runner-eurest \
   --restart unless-stopped \
-  -e REPO_URL="https://github.com/basecore/kicktipp-photoframe" \
-  -e RUNNER_TOKEN="HIER_NEUEN_KICKTIPP_TOKEN_EINFÜGEN" \
-  -e RUNNER_NAME="haos-runner" \
+  -e REPO_URL="https://github.com/basecore/eurest-kantine-photoframe" \
+  -e RUNNER_TOKEN="DEIN_NEUER_TOKEN_HIER" \
+  -e RUNNER_NAME="haos-eurest-1" \
   -e LABELS="self-hosted,haos" \
   -e RUNNER_ALLOW_RUNASROOT="1" \
   myoung34/github-runner:2.335.1
@@ -534,7 +534,7 @@ echo "3/4 Warte kurz..."
 sleep 8
 
 echo "4/4 Zeige Logs..."
-docker logs github-runner --tail 200
+docker logs github-runner-eurest --tail 200
 ```
 
 > **Wichtig:** `DEIN_TOKEN_HIER` durch den kopierten Token aus Schritt 4a ersetzen.
