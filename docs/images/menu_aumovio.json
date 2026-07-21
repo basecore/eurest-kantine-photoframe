@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W30",
   "kw": 30,
-  "target_date": "2026-07-21",
-  "target_day_label": "Di 21.07",
-  "generated_at_utc": "2026-07-20T13:32:37.716092Z",
-  "generated_at_local": "2026-07-20T15:31:36.591945+02:00",
+  "target_date": "2026-07-22",
+  "target_day_label": "Mi 22.07",
+  "generated_at_utc": "2026-07-21T11:27:48.198609Z",
+  "generated_at_local": "2026-07-21T13:26:47.125412+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "FUSILLI | Mandel-Veloute, Brokkoli",
+      "name": "ERDNUSS-KICHERERBSEN-CURRY | Limette, Garam Masala, Kokosreis",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "SALTIMBOCCA | Hähnchen, Salbei, Polenta, Weißweinsauce",
-      "price": "6,90 €",
+      "name": "HÄHNCHENKEULE | Karotten, Rosmarindrillinge, Bratensauce",
+      "price": "6,10 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "OFEN-SEELACHS | Salsa verde, Olivenkartoffeln",
-      "price": "8,90 €",
-      "vv": ""
+      "name": "FALAFEL-WRAP | Curry-Hummus, Bohnensalat",
+      "price": "7,50 €",
+      "vv": "VG"
     },
     {
       "category": "Königswiesen",
-      "name": "SCHNITZEL WIENER ART | vom Hähnchen mit Zitrone & Kartoffel-Gurkensalat oder Pommes Frites",
-      "price": "6,90 €",
+      "name": "CURRYWURST | rot oder weiß mit hausgemachter Currysoße und Pommes",
+      "price": "6,50 €",
       "vv": ""
     }
   ]

@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W30",
   "kw": 30,
-  "target_date": "2026-07-21",
-  "target_day_label": "Di 21.07",
-  "generated_at_utc": "2026-07-20T13:31:36.398675Z",
-  "generated_at_local": "2026-07-20T15:30:33.980574+02:00",
+  "target_date": "2026-07-22",
+  "target_day_label": "Mi 22.07",
+  "generated_at_utc": "2026-07-21T11:26:46.959302Z",
+  "generated_at_local": "2026-07-21T13:25:45.570497+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "AUBERGINE | geschmort, Polenta, Tomatensauce, Frühlingslauch",
+      "name": "SEMMELKNÖDEL | Schnittlauch-Veloute, gebratene Champignons",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "PASTA MANUFAKTUR I mit frischer Pasta, Rinder-Ragout, Grana Padano & Rucola",
-      "price": "7,50 €",
+      "name": "SALTIMBOCCA | Hähnchen, Salbei, Polenta, Weißweinsauce",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "MIE-NUDELN-RAMEN-STYLE | Schweinebauch, Mie-Nudeln, Edamame, Ei",
-      "price": "6,50 €",
+      "name": "PIZZA MANUFAKTUR I Pizza auf Stein frisch gebacken mit Mozzarella, Champignons, Salami oder Schinken",
+      "price": "7,50 €",
       "vv": ""
     }
   ]
