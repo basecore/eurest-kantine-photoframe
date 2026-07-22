@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W30",
   "kw": 30,
-  "target_date": "2026-07-22",
-  "target_day_label": "Mi 22.07",
-  "generated_at_utc": "2026-07-21T11:26:46.959302Z",
-  "generated_at_local": "2026-07-21T13:25:45.570497+02:00",
+  "target_date": "2026-07-23",
+  "target_day_label": "Do 23.07",
+  "generated_at_utc": "2026-07-22T11:27:53.744165Z",
+  "generated_at_local": "2026-07-22T13:27:02.089545+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SEMMELKNÖDEL | Schnittlauch-Veloute, gebratene Champignons",
+      "name": "KARTOFFEL-BLUMENKOHL-AUFLAUF | Emmentaler, Sonnenblumenkerne",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SALTIMBOCCA | Hähnchen, Salbei, Polenta, Weißweinsauce",
-      "price": "6,90 €",
+      "name": "SCHWEINENACKENSTEAK | Röstkartoffeln, BBQ-Butter, Romanasalat",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "PIZZA MANUFAKTUR I Pizza auf Stein frisch gebacken mit Mozzarella, Champignons, Salami oder Schinken",
-      "price": "7,50 €",
+      "name": "THUNFISCHSTEAK | Wasabi-Sesam-Dip, marinierte Gurken, Basmatireis",
+      "price": "11,90 €",
       "vv": ""
     }
   ]

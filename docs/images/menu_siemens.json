@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W30",
   "kw": 30,
-  "target_date": "2026-07-22",
-  "target_day_label": "Mi 22.07",
-  "generated_at_utc": "2026-07-21T11:29:07.152831Z",
-  "generated_at_local": "2026-07-21T13:27:48.343039+02:00",
+  "target_date": "2026-07-23",
+  "target_day_label": "Do 23.07",
+  "generated_at_utc": "2026-07-22T11:30:03.975973Z",
+  "generated_at_local": "2026-07-22T13:28:43.594820+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Quinoa Bowl, Gurke, Edamame",
+      "name": "Gnocchi / Gorgonzola-Birnen-Soße / Radicchio",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Scaloppine al limone / Spaghetti / Mediterranes Gemüse",
-      "price": "5,70 €",
+      "name": "Hähnchen-Cordon bleu / Frittierte Kartoffeln / Zitronenecke",
+      "price": "6,20 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Rindersteak, gebraten / Kartoffel-Gemüse-Pfanne / Rotweinglace / Kräuterbutter",
-      "price": "9,50 €",
+      "name": "Japanischer Ramen / Udon-Nudeln / Thai-Basilikum / Asiatischer Schweinebauch",
+      "price": "6,50 €",
       "vv": ""
     }
   ]
