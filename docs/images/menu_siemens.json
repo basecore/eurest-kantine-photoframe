@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W30",
   "kw": 30,
-  "target_date": "2026-07-23",
-  "target_day_label": "Do 23.07",
-  "generated_at_utc": "2026-07-22T11:30:03.975973Z",
-  "generated_at_local": "2026-07-22T13:28:43.594820+02:00",
+  "target_date": "2026-07-24",
+  "target_day_label": "Fr 24.07",
+  "generated_at_utc": "2026-07-23T11:29:34.262756Z",
+  "generated_at_local": "2026-07-23T13:28:13.181392+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Gnocchi / Gorgonzola-Birnen-Soße / Radicchio",
+      "name": "Pfannkuchen mit Blaubeerfüllung / Vanillesahne",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Hähnchen-Cordon bleu / Frittierte Kartoffeln / Zitronenecke",
-      "price": "6,20 €",
+      "name": "Pizza mit Salami und Zwiebeln",
+      "price": "6,10 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Japanischer Ramen / Udon-Nudeln / Thai-Basilikum / Asiatischer Schweinebauch",
-      "price": "6,50 €",
+      "name": "Seelachsfilet, gebraten / Tagliatelle / Zitronenbuttersoße",
+      "price": "5,90 €",
       "vv": ""
     }
   ]
