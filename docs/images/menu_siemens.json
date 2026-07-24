@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W30",
-  "kw": 30,
-  "target_date": "2026-07-24",
-  "target_day_label": "Fr 24.07",
-  "generated_at_utc": "2026-07-23T11:29:34.262756Z",
-  "generated_at_local": "2026-07-23T13:28:13.181392+02:00",
+  "label": "2026-W31",
+  "kw": 31,
+  "target_date": "2026-07-27",
+  "target_day_label": "Mo 27.07",
+  "generated_at_utc": "2026-07-24T11:22:45.457007Z",
+  "generated_at_local": "2026-07-24T13:21:26.245520+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Pfannkuchen mit Blaubeerfüllung / Vanillesahne",
-      "price": "3,20 €",
-      "vv": "EV"
-    },
-    {
-      "category": "Essen 2",
-      "name": "Pizza mit Salami und Zwiebeln",
-      "price": "6,10 €",
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
       "vv": ""
     },
     {
+      "category": "Essen 2",
+      "name": "Burrata / Cremige Polenta / Ratatouillegemüse",
+      "price": "5,70 €",
+      "vv": "EV"
+    },
+    {
       "category": "Essen 3",
-      "name": "Seelachsfilet, gebraten / Tagliatelle / Zitronenbuttersoße",
-      "price": "5,90 €",
+      "name": "Putenfleisch nach Gyros Art / Tomatenreis / Gurken-Minz-Dip / Fladenbrot",
+      "price": "6,40 €",
       "vv": ""
     }
   ]
