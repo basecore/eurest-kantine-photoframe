@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W31",
   "kw": 31,
-  "target_date": "2026-07-27",
-  "target_day_label": "Mo 27.07",
-  "generated_at_utc": "2026-07-27T08:01:18.049614Z",
-  "generated_at_local": "2026-07-27T10:00:15.040829+02:00",
+  "target_date": "2026-07-28",
+  "target_day_label": "Di 28.07",
+  "generated_at_utc": "2026-07-27T12:44:41.881631Z",
+  "generated_at_local": "2026-07-27T14:43:39.256174+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "DAL PALAK MASALA | Linsen Curry, Naan Brot, Limette",
+      "name": "OFENKARTOFFEL Bunter Quinoa-Sauerrahm, Avocado, Kürbiskerne",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SCHWEINEFILET | Shitake, Sesam, Duftreis, Miso",
-      "price": "6,90 €",
+      "name": "CHIPOTLECHICKEN | Romanasalat, schwarze Bohnen, Limette, Jalapenos,",
+      "price": "7,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "PICCATA MILANESE | vom Hähnchen, Tomaten-Melone-Brotsalat",
-      "price": "9,50 €",
+      "name": "BAO-BUN, Garnele Koriander, Chili, Hoisin, Röstzwiebeln, Koreanischer-Chinakohlsalat",
+      "price": "10,90 €",
       "vv": ""
     }
   ]

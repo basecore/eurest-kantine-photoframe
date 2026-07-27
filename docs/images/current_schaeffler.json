@@ -6,13 +6,13 @@
   "week_offset": 0,
   "label": "2026-W31",
   "kw": 31,
-  "image": "kantine_2026-W31_2026-07-27_schaeffler.jpg",
+  "image": "kantine_2026-W31_2026-07-28_schaeffler.jpg",
   "latest": "latest_schaeffler.jpg",
   "dish_count": 3,
   "is_holiday": "",
-  "generated_at_utc": "2026-07-27T08:01:18.049401Z",
-  "generated_at_local": "2026-07-27T10:00:15.040829+02:00",
-  "target_date": "2026-07-27",
-  "target_day_label": "Mo 27.07",
+  "generated_at_utc": "2026-07-27T12:44:41.881435Z",
+  "generated_at_local": "2026-07-27T14:43:39.256174+02:00",
+  "target_date": "2026-07-28",
+  "target_day_label": "Di 28.07",
   "week_monday": "2026-07-27"
 }
