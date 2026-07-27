@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>Alle Kantinen Regensburg – Speisepläne</title>
 		<link>http://basecore.bplaced.net</link>
 		<description>Alle aktuellen Kantinen-Speisepläne in einem Feed.</description>
-		<pubDate>Fri, 24 Jul 2026 11:22:45 +0000</pubDate>
-		<lastBuildDate>Fri, 24 Jul 2026 11:22:45 +0000</lastBuildDate>
+		<pubDate>Mon, 27 Jul 2026 08:03:39 +0000</pubDate>
+		<lastBuildDate>Mon, 27 Jul 2026 08:03:39 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net</generator>
 		<image>
 			<url>http://basecore.bplaced.net/images/icon.jpg</url>
@@ -21,7 +21,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<item>
 			<title>Tagesplan Mo 27.07 – SCHAEFFLER Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">schaeffler::kantine_2026-W31_2026-07-27_schaeffler.jpg::2026-07-24T11:20:34.362527Z</guid>
+			<guid isPermaLink="false">schaeffler::kantine_2026-W31_2026-07-27_schaeffler.jpg::2026-07-27T08:01:18.049401Z</guid>
 			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W31_2026-07-27_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W31&quot;/&gt;</description>
 			<pubDate>Mon, 27 Jul 2026 06:00:00 +0000</pubDate>
 			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W31_2026-07-27_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
@@ -29,7 +29,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<item>
 			<title>Tagesplan Mo 27.07 – AUMOVIO Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">aumovio::kantine_2026-W31_2026-07-27_aumovio.jpg::2026-07-24T11:21:26.099166Z</guid>
+			<guid isPermaLink="false">aumovio::kantine_2026-W31_2026-07-27_aumovio.jpg::2026-07-27T08:02:19.859310Z</guid>
 			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W31_2026-07-27_aumovio.jpg&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W31&quot;/&gt;</description>
 			<pubDate>Mon, 27 Jul 2026 06:00:00 +0000</pubDate>
 			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W31_2026-07-27_aumovio.jpg" type="image/jpeg" height="600" width="800"/>
@@ -37,7 +37,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<item>
 			<title>Tagesplan Mo 27.07 – SIEMENS Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">siemens::kantine_2026-W31_2026-07-27_siemens.jpg::2026-07-24T11:22:45.456781Z</guid>
+			<guid isPermaLink="false">siemens::kantine_2026-W31_2026-07-27_siemens.jpg::2026-07-27T08:03:39.080060Z</guid>
 			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W31_2026-07-27_siemens.jpg&quot; alt=&quot;SIEMENS Regensburg Speiseplan 2026-W31&quot;/&gt;</description>
 			<pubDate>Mon, 27 Jul 2026 06:00:00 +0000</pubDate>
 			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W31_2026-07-27_siemens.jpg" type="image/jpeg" height="600" width="800"/>

@@ -6,8 +6,8 @@
   "kw": 31,
   "target_date": "2026-07-27",
   "target_day_label": "Mo 27.07",
-  "generated_at_utc": "2026-07-24T11:21:26.099364Z",
-  "generated_at_local": "2026-07-24T13:20:34.529564+02:00",
+  "generated_at_utc": "2026-07-27T08:02:19.859513Z",
+  "generated_at_local": "2026-07-27T10:01:18.222938+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -36,8 +36,14 @@
     },
     {
       "category": "Königswiesen",
-      "name": "HÄHNCHEN | geschnetzeltes Erbsenvollkornreis, Glasierte Möhren",
+      "name": "HÄHNCHEN | geschnetzelt, Erbsenvollkornreis, Glasierte Möhren",
       "price": "6,10 €",
+      "vv": ""
+    },
+    {
+      "category": "Dessert 3",
+      "name": "Schoko Pudding",
+      "price": "1,33 €",
       "vv": ""
     }
   ]
