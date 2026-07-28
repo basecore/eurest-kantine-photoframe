@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W31",
   "kw": 31,
-  "target_date": "2026-07-28",
-  "target_day_label": "Di 28.07",
-  "generated_at_utc": "2026-07-27T12:47:03.955754Z",
-  "generated_at_local": "2026-07-27T14:45:44.122595+02:00",
+  "target_date": "2026-07-29",
+  "target_day_label": "Mi 29.07",
+  "generated_at_utc": "2026-07-28T11:40:21.181049Z",
+  "generated_at_local": "2026-07-28T13:39:00.263780+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Spaghetti Napoli",
+      "name": "Leberkäse, gebraten / Kartoffel-Radieschen-Salat / Bratensoße",
       "price": "3,20 €",
-      "vv": "EV"
-    },
-    {
-      "category": "Essen 2",
-      "name": "Putenschnitzel in der Nusspanade / Süßkartoffelpüree / Brokkoli mit Mandelbutter",
-      "price": "6,30 €",
       "vv": ""
     },
     {
+      "category": "Essen 2",
+      "name": "Appenzeller Käsespätzle / Röstzwiebeln",
+      "price": "5,50 €",
+      "vv": "EV"
+    },
+    {
       "category": "Essen 3",
-      "name": "Schweinebraten / Knödel / Karottengemüse, glasiert",
-      "price": "6,20 €",
+      "name": "Piccata alla milanese vom Schwein / Tomatenspaghetti",
+      "price": "6,10 €",
       "vv": ""
     }
   ]

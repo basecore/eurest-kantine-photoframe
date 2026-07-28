@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W31",
   "kw": 31,
-  "target_date": "2026-07-28",
-  "target_day_label": "Di 28.07",
-  "generated_at_utc": "2026-07-27T12:45:44.004434Z",
-  "generated_at_local": "2026-07-27T14:44:42.017907+02:00",
+  "target_date": "2026-07-29",
+  "target_day_label": "Mi 29.07",
+  "generated_at_utc": "2026-07-28T11:39:00.110811Z",
+  "generated_at_local": "2026-07-28T13:38:05.935791+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,32 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "MINESTRONE | Tomate, weiße Bohnen, Basilkum",
+      "name": "POLENTA | Cremig, Zucchini, Rucola-Frisee-Salat, Balsamico",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "SAITEN-WÜRSTCHEN | Linsen, Spätzle",
-      "price": "5,50 €",
-      "vv": ""
+      "name": "VEGANE BÄLLCHEN | Frühlingssalat, Pastinake, Orangen-Chilivinaigrette",
+      "price": "6,90 €",
+      "vv": "VG"
     },
     {
       "category": "Brandlberg",
-      "name": "FLADENBROTPIZZA | Hummus, Feta, Oliven, Spinat, Kreuzkümmel",
-      "price": "5,50 €",
-      "vv": "V"
-    },
-    {
-      "category": "Königswiesen",
-      "name": "RINDERFRIKADELLE | Kartoffelstampf, Romanesco, Senfkornjus",
-      "price": "7,90 €",
+      "name": "PAELLA | Muschelfleisch, Garnelen, Oliven, Fenchel",
+      "price": "7,50 €",
       "vv": ""
     },
     {
-      "category": "Niederwinzer",
-      "name": "SCHWEINEFILET | Shitake, Sesam, Duftreis, Miso",
-      "price": "6,90 €",
+      "category": "Königswiesen",
+      "name": "SCHWEINSHAXE | Knödel, Sauce, Krautsalat",
+      "price": "7,90 €",
       "vv": ""
     }
   ]
