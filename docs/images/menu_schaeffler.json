@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W31",
   "kw": 31,
-  "target_date": "2026-07-29",
-  "target_day_label": "Mi 29.07",
-  "generated_at_utc": "2026-07-28T11:38:05.772178Z",
-  "generated_at_local": "2026-07-28T13:37:11.041593+02:00",
+  "target_date": "2026-07-30",
+  "target_day_label": "Do 30.07",
+  "generated_at_utc": "2026-07-29T11:42:54.699708Z",
+  "generated_at_local": "2026-07-29T13:41:50.464409+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "QUICHE | Mediterran, Kartoffel, Sommersalat",
+      "name": "POLENTA | Cremig, Zucchini, Rucola-Frisee-Salat, Balsamico",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SCHNITZEL | von Schwein Radieschen-Kartoffelsalat,Preiselbeere",
-      "price": "7,90 €",
+      "name": "PAELLA | Muschelfleisch, Garnelen, Oliven, Fenchel",
+      "price": "7,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "PIZZA KIRSCHTOMATE | Basilikum, Mozzarella",
-      "price": "6,90 €",
-      "vv": "V"
+      "name": "SCHWEINSHAXE | Knödel, Sauce, Krautsalat",
+      "price": "7,90 €",
+      "vv": ""
     }
   ]
 }
