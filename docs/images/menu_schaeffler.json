@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W31",
   "kw": 31,
-  "target_date": "2026-07-30",
-  "target_day_label": "Do 30.07",
-  "generated_at_utc": "2026-07-29T11:42:54.699708Z",
-  "generated_at_local": "2026-07-29T13:41:50.464409+02:00",
+  "target_date": "2026-07-31",
+  "target_day_label": "Fr 31.07",
+  "generated_at_utc": "2026-07-30T11:32:04.017266Z",
+  "generated_at_local": "2026-07-30T13:31:12.640907+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,14 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "POLENTA | Cremig, Zucchini, Rucola-Frisee-Salat, Balsamico",
+      "name": "SPAGHETTI AGLIO E OLIO | Rucola, Knoblauch",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "PAELLA | Muschelfleisch, Garnelen, Oliven, Fenchel",
-      "price": "7,50 €",
-      "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "SCHWEINSHAXE | Knödel, Sauce, Krautsalat",
-      "price": "7,90 €",
+      "name": "GRÜNES CURRY | Hühnerstreifen, Gemüse, Basmatireis",
+      "price": "6,50 €",
       "vv": ""
     }
   ]

@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W31",
   "kw": 31,
-  "target_date": "2026-07-30",
-  "target_day_label": "Do 30.07",
-  "generated_at_utc": "2026-07-29T11:43:45.187452Z",
-  "generated_at_local": "2026-07-29T13:42:54.867690+02:00",
+  "target_date": "2026-07-31",
+  "target_day_label": "Fr 31.07",
+  "generated_at_utc": "2026-07-30T11:32:54.225150Z",
+  "generated_at_local": "2026-07-30T13:32:04.181208+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "QUICHE | Mediterran, Kartoffel, Sommersalat",
+      "name": "DAL PALAK MASALA | Linsen Curry, Naan Brot, Limette",
       "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Weichs",
-      "name": "WALNUSSBOLOGNESE | Orrecciette, Basilikum",
-      "price": "5,90 €",
       "vv": "VG"
     },
     {
-      "category": "Brandlberg",
-      "name": "GRÜNES CURRY | Hühnerstreifen, Gemüse, Basmatireis",
-      "price": "6,50 €",
+      "category": "Weichs",
+      "name": "LOADED-FISCHSEMMEL-SHRIMPS | Ciabatta, Cocktailsauce, Essiggurke",
+      "price": "5,50 €",
       "vv": ""
     },
     {
-      "category": "Königswiesen",
-      "name": "SCHNITZEL | von Schwein Radieschen-Kartoffelsalat,Preiselbeere",
-      "price": "7,90 €",
+      "category": "Brandlberg",
+      "name": "Tagesempfehlung",
+      "price": "",
       "vv": ""
     }
   ]
