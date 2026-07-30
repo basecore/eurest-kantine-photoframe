@@ -123,7 +123,7 @@ jobs:
           OLD_LIST=""
           for f in docs/images/kantine_*.jpg; do
             [ -e "$f" ] || continue
-            FDATE=$(basename "$f" | sed -E 's/^kantine_[0-9]{4}-W[0-9]{2}_([0-9]{4}-[0-9]{2}-[0-9]{2})_.*.jpg$/\u0001/')
+            FDATE=$(basename "$f" | sed -E 's/^kantine_[0-9]{4}-W[0-9]{2}_([0-9]{4}-[0-9]{2}-[0-9]{2})_.*\.jpg$/\1/')
             if [[ "$FDATE" != "$(basename "$f")" && "$FDATE" < "$CUTOFF" ]]; then
               echo "Deleting old file from GitHub: $f (date: $FDATE)"
               git rm -f "$f" || true
@@ -217,14 +217,12 @@ jobs:
           if [[ -n "${OLD_FILES}" ]]; then
             echo "Deleting old files from bplaced: ${OLD_FILES}"
             for fname in ${OLD_FILES}; do
-              printf "delete /www/images/%s
-quit
-" "${fname}" | ncftp -u "$FTP_USER" -p "$BPLACED_PASS" "$FTP_HOST" || true
+              printf "delete /www/images/%s\nquit\n" "${fname}" | ncftp -u "$FTP_USER" -p "$BPLACED_PASS" "$FTP_HOST" || true
             done
           else
             echo "No old files to delete on bplaced."
           fi
-          
+
       - name: Finalize upload result
         id: finalize
         if: always()
@@ -285,8 +283,7 @@ quit
 
             if [[ "${HTTP_STATUS}" == "200" ]]; then
               CONTENT=$(cat /tmp/feed_response.txt 2>/dev/null || echo "")
-              CONTENT_SNIPPET=$(echo "$CONTENT" | head -c 500 | tr '
-' ' ')
+              CONTENT_SNIPPET=$(echo "$CONTENT" | head -c 500 | tr '\n' ' ')
 
               DATE_FOUND=false
               if echo "$CONTENT" | grep -q "${TODAY}"; then
@@ -379,17 +376,17 @@ quit
           SCREENSHOT_SECTION=""
           if [[ -n "${DATED_FILE}" ]]; then
             IMG_URL="http://basecore.bplaced.net/images/${DATED_FILE}"
-            SCREENSHOT_SECTION="<div style="margin-top:24px;"><h3 style="color:#333;margin-bottom:8px;">📸 Aktuelles Kantinenbild (${DATED_FILE})</h3><img src="${IMG_URL}" alt="Kantine Menü" style="max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;"/><p style="font-size:11px;color:#999;margin-top:4px;">Falls das Bild nicht lädt: <a href="${IMG_URL}">direkt öffnen</a></p></div>"
+            SCREENSHOT_SECTION="<div style=\"margin-top:24px;\"><h3 style=\"color:#333;margin-bottom:8px;\">📸 Aktuelles Kantinenbild (${DATED_FILE})</h3><img src=\"${IMG_URL}\" alt=\"Kantine Menü\" style=\"max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;\"/><p style=\"font-size:11px;color:#999;margin-top:4px;\">Falls das Bild nicht lädt: <a href=\"${IMG_URL}\">direkt öffnen</a></p></div>"
           fi
 
           RUNNER_WARNING=""
           if [[ "$UP" != "success" ]]; then
-            RUNNER_WARNING="<div style="background:#fff3cd;border:1px solid #ffeeba;color:#856404;padding:16px;border-radius:6px;margin:20px 0;">
-              <h3 style="margin-top:0;">⚠️ GitHub Runner offline oder nicht gefunden</h3>
+            RUNNER_WARNING="<div style=\"background:#fff3cd;border:1px solid #ffeeba;color:#856404;padding:16px;border-radius:6px;margin:20px 0;\">
+              <h3 style=\"margin-top:0;\">⚠️ GitHub Runner offline oder nicht gefunden</h3>
               <p>Der Self-Hosted Runner für <strong>basecore/eurest-kantine-photoframe</strong> ist aktuell nicht verfügbar.</p>
-              <p><strong>Direkt zum manuellen Prüfen:</strong> <a href="${IMG_URL}">${IMG_URL}</a></p>
+              <p><strong>Direkt zum manuellen Prüfen:</strong> <a href=\"${IMG_URL}\">${IMG_URL}</a></p>
               <p><strong>Zum schnellen Neustart:</strong></p>
-              <pre style="white-space:pre-wrap;background:#f8f9fa;padding:12px;border:1px solid #ddd;border-radius:4px;">docker rm -f github-runner-eurest 2>/dev/null || true
+              <pre style=\"white-space:pre-wrap;background:#f8f9fa;padding:12px;border:1px solid #ddd;border-radius:4px;\">docker rm -f github-runner-eurest 2>/dev/null || true
 
 docker run -d \
   --name github-runner-eurest \
