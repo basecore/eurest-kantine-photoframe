@@ -320,7 +320,7 @@ jobs:
         if: always() && steps.verify.outputs.verify_status != 'ok'
         run: exit 1
 
-  notify:
+    notify:
     runs-on: ubuntu-latest
     needs: [screenshot, upload-haos, verify-bplaced]
     if: always()
@@ -336,7 +336,7 @@ jobs:
           SS="${{ needs.screenshot.outputs.screenshot_outcome }}"
           RSS="${{ needs.screenshot.outputs.rss_outcome }}"
           GH="${{ needs.screenshot.outputs.github_push_outcome }}"
-          UP="${{ needs.upload-haos.outputs.upload_outcome }}"
+          UP="${{ needs.upload-haos.result }}"
           UM="${{ needs.upload-haos.outputs.upload_method }}"
           VB="${{ needs.verify-bplaced.result }}"
           VH="${{ needs.verify-bplaced.outputs.http_status }}"
@@ -360,7 +360,7 @@ jobs:
           if [[ "$UP" == "success" ]]; then
             UPLOAD_NOTE=" (${UM})"
           else
-            UPLOAD_NOTE=" (all upload methods failed)"
+            UPLOAD_NOTE=" (Runner offline oder Upload fehlgeschlagen)"
           fi
 
           if [[ "$SS" == "success" && "$RSS" == "success" && "$GH" == "success" && "$UP" == "success" ]]; then
@@ -376,12 +376,38 @@ jobs:
           SCREENSHOT_SECTION=""
           if [[ -n "${DATED_FILE}" ]]; then
             IMG_URL="http://basecore.bplaced.net/images/${DATED_FILE}"
-            SCREENSHOT_SECTION="<div style=\"margin-top:24px;\"><h3 style=\"color:#333;margin-bottom:8px;\">📸 Aktuelles Kantinenbild (${DATED_FILE})</h3><img src=\"${IMG_URL}\" alt=\"Kantine Menü\" style=\"max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;\"/><p style=\"font-size:11px;color:#999;margin-top:4px;\">Falls das Bild nicht lädt: <a href=\"${IMG_URL}\">direkt öffnen</a></p></div>"
+            SCREENSHOT_SECTION="<div style="margin-top:24px;"><h3 style="color:#333;margin-bottom:8px;">📸 Aktuelles Kantinenbild (${DATED_FILE})</h3><img src="${IMG_URL}" alt="Kantine Menü" style="max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;"/><p style="font-size:11px;color:#999;margin-top:4px;">Falls das Bild nicht lädt: <a href="${IMG_URL}">direkt öffnen</a></p></div>"
           fi
 
-          VERIFY_SECTION=""
-          if [[ "$VB" != "skipped" ]]; then
-            VERIFY_SECTION="<tr><td style=\"padding:8px;border:1px solid #ddd;\">bplaced verify</td><td style=\"padding:8px;border:1px solid #ddd;\">${VB_I}</td></tr><tr><td style=\"padding:8px;border:1px solid #ddd;\">Verify HTTP status</td><td style=\"padding:8px;border:1px solid #ddd;\">${VH}</td></tr>"
+          RUNNER_WARNING=""
+          if [[ "$UP" != "success" ]]; then
+            RUNNER_WARNING="<div style="background:#fff3cd;border:1px solid #ffeeba;color:#856404;padding:16px;border-radius:6px;margin:20px 0;">
+              <h3 style="margin-top:0;">⚠️ GitHub Runner offline oder nicht gefunden</h3>
+              <p>Der Self-Hosted Runner für <strong>basecore/eurest-kantine-photoframe</strong> ist aktuell nicht verfügbar.</p>
+              <p><strong>Direkt zum manuellen Prüfen:</strong> <a href="${IMG_URL}">${IMG_URL}</a></p>
+              <p><strong>Zum schnellen Neustart:</strong></p>
+              <pre style="white-space:pre-wrap;background:#f8f9fa;padding:12px;border:1px solid #ddd;border-radius:4px;">docker rm -f github-runner-eurest 2>/dev/null || true
+
+docker run -d \\
+  --name github-runner-eurest \\
+  --restart unless-stopped \\
+  -e REPO_URL=&quot;https://github.com/basecore/eurest-kantine-photoframe&quot; \\
+  -e ACCESS_TOKEN=&quot;ghp_HIER_DAS_KLASSISCHE_PAT_EINFÜGEN&quot; \\
+  -e RUNNER_NAME=&quot;haos-eurest-1&quot; \\
+  -e LABELS=&quot;self-hosted,haos&quot; \\
+  -e RUNNER_ALLOW_RUNASROOT=&quot;1&quot; \\
+  -e RUNNER_REGISTRATION_RETRIES=&quot;10&quot; \\
+  -e RUNNER_REGISTRATION_RETRY_SLEEP=&quot;30&quot; \\
+  myoung34/github-runner:2.335.1</pre>
+              <p><strong>Neues klassisches PAT erstellen:</strong></p>
+              <ul>
+                <li>GitHub → Settings → Developer Settings → Personal Access Tokens → Tokens (classic)</li>
+                <li>„Generate new token (classic)“ wählen, nicht „Generate new token“</li>
+                <li>Berechtigung: <strong>repo</strong> (Full control of private repositories)</li>
+                <li>„Generate token“ klicken</li>
+                <li>Token kopieren (beginnt mit <code>ghp_</code>)</li>
+              </ul>
+            </div>"
           fi
 
           cat > email_body.html << 'MAILEOF'
@@ -406,9 +432,9 @@ jobs:
                 <tr><td style="padding:8px;border:1px solid #ddd;">GitHub push</td><td style="padding:8px;border:1px solid #ddd;">${GH_I}</td></tr>
                 <tr><td style="padding:8px;border:1px solid #ddd;">Upload to bplaced</td><td style="padding:8px;border:1px solid #ddd;">${UP_I}</td></tr>
                 <tr><td style="padding:8px;border:1px solid #ddd;">Upload method</td><td style="padding:8px;border:1px solid #ddd;">${UM}</td></tr>
-                ${VERIFY_SECTION}
               </table>
               <p><strong>Upload note:</strong>${UPLOAD_NOTE}</p>
+              ${RUNNER_WARNING}
               ${SCREENSHOT_SECTION}
               <p style="font-size:13px;margin-top:20px;"><a href="${REPO_URL}">🔗 View GitHub Actions log</a></p>
             </div></body></html>
