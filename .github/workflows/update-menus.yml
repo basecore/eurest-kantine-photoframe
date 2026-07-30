@@ -224,7 +224,7 @@ quit
           else
             echo "No old files to delete on bplaced."
           fi
-
+          
       - name: Finalize upload result
         id: finalize
         if: always()
