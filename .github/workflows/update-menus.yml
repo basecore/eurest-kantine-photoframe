@@ -332,6 +332,10 @@ jobs:
           RUN_TIME=$(date -u +"%Y-%m-%d %H:%M:%S UTC")
           REPO_URL="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           DATED_FILE="${{ needs.screenshot.outputs.dated_filename }}"
+          IMAGE_URL=""
+          if [[ -n "${DATED_FILE}" ]]; then
+            IMAGE_URL="http://basecore.bplaced.net/images/${DATED_FILE}"
+          fi
 
           SS="${{ needs.screenshot.outputs.screenshot_outcome }}"
           RSS="${{ needs.screenshot.outputs.rss_outcome }}"
@@ -363,6 +367,23 @@ jobs:
             UPLOAD_NOTE=" (all upload methods failed)"
           fi
 
+          RUNNER_SECTION=""
+          if [[ "$UP" != "success" ]]; then
+            RUNNER_SECTION="<div style=\"margin-top:20px;padding:12px;border:1px solid #f0c36d;background:#fff8e1;border-radius:6px;\"><h3 style=\"margin-top:0;\">Runner-Hinweis</h3><p>Wenn der self-hosted Runner <code>haos-eurest-1</code> offline oder nicht gefunden ist, nutze diesen Wiederanlauf-Befehl:</p><pre style=\"white-space:pre-wrap;background:#f8f8f8;padding:12px;border-radius:6px;\">docker rm -f github-runner-eurest 2>/dev/null || true
+
+docker run -d \
+  --name github-runner-eurest \
+  --restart unless-stopped \
+  -e REPO_URL=\"https://github.com/basecore/eurest-kantine-photoframe\" \
+  -e ACCESS_TOKEN=\"ghp_HIER_DAS_KLASSISCHE_PAT_EINFÜGEN\" \
+  -e RUNNER_NAME=\"haos-eurest-1\" \
+  -e LABELS=\"self-hosted,haos\" \
+  -e RUNNER_ALLOW_RUNASROOT=\"1\" \
+  -e RUNNER_REGISTRATION_RETRIES=\"10\" \
+  -e RUNNER_REGISTRATION_RETRY_SLEEP=\"30\" \
+  myoung34/github-runner:2.335.1</pre><p style=\"margin-bottom:0;\">Bitte den Token als <strong>classic PAT</strong> mit <code>repo</code>-Scope in GitHub Secrets hinterlegen und nicht direkt in den Workflow oder die Mail schreiben.</p></div>"
+          fi
+
           if [[ "$SS" == "success" && "$RSS" == "success" && "$GH" == "success" && "$UP" == "success" ]]; then
             SUBJ="✅ OK: Eurest Kantine PhotoFrame update ($RUN_TIME)"
             HC="#2e7d32"
@@ -375,8 +396,7 @@ jobs:
 
           SCREENSHOT_SECTION=""
           if [[ -n "${DATED_FILE}" ]]; then
-            IMG_URL="http://basecore.bplaced.net/images/${DATED_FILE}"
-            SCREENSHOT_SECTION="<div style=\"margin-top:24px;\"><h3 style=\"color:#333;margin-bottom:8px;\">📸 Aktuelles Kantinenbild (${DATED_FILE})</h3><img src=\"${IMG_URL}\" alt=\"Kantine Menü\" style=\"max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;\"/><p style=\"font-size:11px;color:#999;margin-top:4px;\">Falls das Bild nicht lädt: <a href=\"${IMG_URL}\">direkt öffnen</a></p></div>"
+            SCREENSHOT_SECTION="<div style=\"margin-top:24px;\"><h3 style=\"color:#333;margin-bottom:8px;\">📸 Aktuelles Kantinenbild (${DATED_FILE})</h3><p style=\"font-size:13px;color:#333;\">Direktlink: <a href=\"${IMAGE_URL}\">${IMAGE_URL}</a></p><img src=\"${IMAGE_URL}\" alt=\"Kantine Menü\" style=\"max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;\"/><p style=\"font-size:11px;color:#999;margin-top:4px;\">Falls das Bild nicht lädt: <a href=\"${IMAGE_URL}\">direkt öffnen</a></p></div>"
           fi
 
           VERIFY_SECTION=""
@@ -410,6 +430,7 @@ jobs:
               </table>
               <p><strong>Upload note:</strong>${UPLOAD_NOTE}</p>
               ${SCREENSHOT_SECTION}
+              ${RUNNER_SECTION}
               <p style="font-size:13px;margin-top:20px;"><a href="${REPO_URL}">🔗 View GitHub Actions log</a></p>
             </div></body></html>
           MAILEOF2
