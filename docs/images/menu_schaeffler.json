@@ -6,8 +6,8 @@
   "kw": 31,
   "target_date": "2026-07-31",
   "target_day_label": "Fr 31.07",
-  "generated_at_utc": "2026-07-30T11:32:04.017266Z",
-  "generated_at_local": "2026-07-30T13:31:12.640907+02:00",
+  "generated_at_utc": "2026-07-31T10:27:46.108072Z",
+  "generated_at_local": "2026-07-31T12:26:55.287745+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,7 +18,7 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SPAGHETTI AGLIO E OLIO | Rucola, Knoblauch",
+      "name": "PASTA AGLIO E OLIO | Rucola, Knoblauch",
       "price": "4,57 €",
       "vv": "VG"
     },

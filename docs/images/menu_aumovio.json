@@ -6,8 +6,8 @@
   "kw": 31,
   "target_date": "2026-07-31",
   "target_day_label": "Fr 31.07",
-  "generated_at_utc": "2026-07-30T11:32:54.225150Z",
-  "generated_at_local": "2026-07-30T13:32:04.181208+02:00",
+  "generated_at_utc": "2026-07-31T10:28:35.680498Z",
+  "generated_at_local": "2026-07-31T12:27:46.277571+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -24,14 +24,14 @@
     },
     {
       "category": "Weichs",
-      "name": "LOADED-FISCHSEMMEL-SHRIMPS | Ciabatta, Cocktailsauce, Essiggurke",
+      "name": "DAMPFNUDEL I Vanillesauce",
       "price": "5,50 €",
-      "vv": ""
+      "vv": "V"
     },
     {
       "category": "Brandlberg",
-      "name": "Tagesempfehlung",
-      "price": "",
+      "name": "HÄHNCHENGESCHNETZELTES I Spätzle",
+      "price": "6,50 €",
       "vv": ""
     }
   ]
