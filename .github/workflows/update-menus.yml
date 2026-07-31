@@ -369,19 +369,28 @@ jobs:
 
           RUNNER_SECTION=""
           if [[ "$UP" != "success" ]]; then
-            RUNNER_SECTION="<div style=\"margin-top:20px;padding:12px;border:1px solid #f0c36d;background:#fff8e1;border-radius:6px;\"><h3 style=\"margin-top:0;\">Runner-Hinweis</h3><p>Wenn der self-hosted Runner <code>haos-eurest-1</code> offline oder nicht gefunden ist, nutze diesen Wiederanlauf-Befehl:</p><pre style=\"white-space:pre-wrap;background:#f8f8f8;padding:12px;border-radius:6px;\">docker rm -f github-runner-eurest 2>/dev/null || true
+            cat > runner_section.html <<'EOF'
+<div style="margin-top:20px;padding:12px;border:1px solid #f0c36d;background:#fff8e1;border-radius:6px;">
+  <h3 style="margin-top:0;">Runner-Hinweis</h3>
+  <p>Wenn der self-hosted Runner <code>haos-eurest-1</code> offline oder nicht gefunden ist, nutze diesen Wiederanlauf-Befehl:</p>
+  <pre style="white-space:pre-wrap;background:#f8f8f8;padding:12px;border-radius:6px;">docker rm -f github-runner-eurest 2>/dev/null || true
 
 docker run -d \
   --name github-runner-eurest \
   --restart unless-stopped \
-  -e REPO_URL=\"https://github.com/basecore/eurest-kantine-photoframe\" \
-  -e ACCESS_TOKEN=\"ghp_HIER_DAS_KLASSISCHE_PAT_EINFÜGEN\" \
-  -e RUNNER_NAME=\"haos-eurest-1\" \
-  -e LABELS=\"self-hosted,haos\" \
-  -e RUNNER_ALLOW_RUNASROOT=\"1\" \
-  -e RUNNER_REGISTRATION_RETRIES=\"10\" \
-  -e RUNNER_REGISTRATION_RETRY_SLEEP=\"30\" \
-  myoung34/github-runner:2.335.1</pre><p style=\"margin-bottom:0;\">Bitte den Token als <strong>classic PAT</strong> mit <code>repo</code>-Scope in GitHub Secrets hinterlegen und nicht direkt in den Workflow oder die Mail schreiben.</p></div>"
+  -e REPO_URL="https://github.com/basecore/eurest-kantine-photoframe" \
+  -e ACCESS_TOKEN="ghp_HIER_DAS_KLASSISCHE_PAT_EINFÜGEN" \
+  -e RUNNER_NAME="haos-eurest-1" \
+  -e LABELS="self-hosted,haos" \
+  -e RUNNER_ALLOW_RUNASROOT="1" \
+  -e RUNNER_REGISTRATION_RETRIES="10" \
+  -e RUNNER_REGISTRATION_RETRY_SLEEP="30" \
+  myoung34/github-runner:2.335.1</pre>
+  <p style="margin-bottom:0;">Bitte den Token als <strong>classic PAT</strong> mit <code>repo</code>-Scope in GitHub Secrets hinterlegen und nicht direkt in den Workflow oder die Mail schreiben.</p>
+</div>
+EOF
+            RUNNER_SECTION="$(cat runner_section.html)"
+            rm -f runner_section.html
           fi
 
           if [[ "$SS" == "success" && "$RSS" == "success" && "$GH" == "success" && "$UP" == "success" ]]; then
