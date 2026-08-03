@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W32",
   "kw": 32,
-  "target_date": "2026-08-03",
-  "target_day_label": "Mo 03.08",
-  "generated_at_utc": "2026-08-03T07:04:04.605467Z",
-  "generated_at_local": "2026-08-03T09:03:03.541547+02:00",
+  "target_date": "2026-08-04",
+  "target_day_label": "Di 04.08",
+  "generated_at_utc": "2026-08-03T12:42:30.339641Z",
+  "generated_at_local": "2026-08-03T14:41:28.753349+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,27 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "FLAMMKUCHEN | Tomatenschmand, Hirtenkäse, Basilikum",
+      "name": "THAI PENNE | Tofu, Lauchzwiebeln, Koriander",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "HÄHNCHENKEULE | Letscho, Vollkorneis",
-      "price": "5,90 €",
+      "name": "CURRYWURST | Klassik, Pommes Frites",
+      "price": "6,10 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "TACO | Soja-Hack, Mango-Chili, Paprika, Beilagensalat",
-      "price": "6,50 €",
-      "vv": "VG"
+      "name": "CRISPY CHICKEN BURGER | Eisberg, Sweet Chili Mayo, Chips",
+      "price": "9,90 €",
+      "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "LINGUINE FRUTTI di MARE | Meeresfrüchte, Weißwein, Knoblauch, Knoblauch",
-      "price": "5,90 €",
-      "vv": ""
+      "name": "SPINATKNÖDEL | Tomaten Sugo, brauner Butter, Grana Padano",
+      "price": "6,90 €",
+      "vv": "V"
     }
   ]
 }
