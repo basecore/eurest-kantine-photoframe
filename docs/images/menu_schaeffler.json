@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W31",
-  "kw": 31,
-  "target_date": "2026-07-31",
-  "target_day_label": "Fr 31.07",
-  "generated_at_utc": "2026-07-31T10:27:46.108072Z",
-  "generated_at_local": "2026-07-31T12:26:55.287745+02:00",
+  "label": "2026-W32",
+  "kw": 32,
+  "target_date": "2026-08-03",
+  "target_day_label": "Mo 03.08",
+  "generated_at_utc": "2026-08-03T07:03:03.378950Z",
+  "generated_at_local": "2026-08-03T09:02:02.059248+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,15 +18,21 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PASTA AGLIO E OLIO | Rucola, Knoblauch",
+      "name": "QUICHE Kartoffel, Lauch, Käse, Trauben-Zwiebel-Chutney",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "GRÜNES CURRY | Hühnerstreifen, Gemüse, Basmatireis",
-      "price": "6,50 €",
+      "name": "PEANUT CHILI NOODLES | Ente, Reisnudeln,Karotten, Brokkoli",
+      "price": "9,90 €",
       "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "KEBAB VEGAN | Rotkraut, Weißkraut, Langkornreis, Sojajoghurt, Fladenbrot",
+      "price": "7,50 €",
+      "vv": "VG"
     }
   ]
 }

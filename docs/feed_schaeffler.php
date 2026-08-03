@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>SCHAEFFLER Regensburg – Speiseplan</title>
 		<link>http://basecore.bplaced.net</link>
 		<description></description>
-		<pubDate>Fri, 31 Jul 2026 10:29:55 +0000</pubDate>
-		<lastBuildDate>Fri, 31 Jul 2026 10:29:55 +0000</lastBuildDate>
+		<pubDate>Mon, 03 Aug 2026 07:05:23 +0000</pubDate>
+		<lastBuildDate>Mon, 03 Aug 2026 07:05:23 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net</generator>
 		<image>
 			<url>http://basecore.bplaced.net/images/icon.jpg</url>
@@ -19,12 +19,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<link>http://basecore.bplaced.net</link>
 		</image>
 		<item>
-			<title>Tagesplan Fr 31.07 – SCHAEFFLER Regensburg</title>
+			<title>Tagesplan Mo 03.08 – SCHAEFFLER Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">schaeffler::kantine_2026-W31_2026-07-31_schaeffler.jpg::2026-07-31T10:27:46.107860Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W31_2026-07-31_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W31&quot;/&gt;</description>
-			<pubDate>Fri, 31 Jul 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W31_2026-07-31_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">schaeffler::kantine_2026-W32_2026-08-03_schaeffler.jpg::2026-08-03T07:03:03.378627Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W32_2026-08-03_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W32&quot;/&gt;</description>
+			<pubDate>Mon, 03 Aug 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W32_2026-08-03_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>
