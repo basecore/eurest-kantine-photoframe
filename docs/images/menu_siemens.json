@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W32",
   "kw": 32,
-  "target_date": "2026-08-05",
-  "target_day_label": "Mi 05.08",
-  "generated_at_utc": "2026-08-04T11:40:38.824203Z",
-  "generated_at_local": "2026-08-04T13:39:18.851452+02:00",
+  "target_date": "2026-08-06",
+  "target_day_label": "Do 06.08",
+  "generated_at_utc": "2026-08-05T11:37:38.905023Z",
+  "generated_at_local": "2026-08-05T13:36:19.430570+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Schupfnudeln mit Gemüse",
+      "name": "Orecchiette alla vesuviana",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Schweinegeschnetzeltes \"Asia\" / Basmatireis",
-      "price": "6,00 €",
+      "name": "Schweinekammsteak, gebraten / Kartoffelwedges / Barbecuesoße",
+      "price": "5,70 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Rinderbraten / Balsamico-Glace / Knödel / Fingermöhren",
-      "price": "6,60 €",
-      "vv": ""
+      "name": "Schaschlikpfanne / von der Pute / Gemüsereis nach kreolischer Art",
+      "price": "6,10 €",
+      "vv": "EV"
     }
   ]
 }

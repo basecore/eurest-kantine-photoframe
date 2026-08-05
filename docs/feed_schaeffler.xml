@@ -4,8 +4,8 @@
 		<title>SCHAEFFLER Regensburg – Speiseplan</title>
 		<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		<description></description>
-		<pubDate>Tue, 04 Aug 2026 11:40:39 +0000</pubDate>
-		<lastBuildDate>Tue, 04 Aug 2026 11:40:39 +0000</lastBuildDate>
+		<pubDate>Wed, 05 Aug 2026 11:37:39 +0000</pubDate>
+		<lastBuildDate>Wed, 05 Aug 2026 11:37:39 +0000</lastBuildDate>
 		<generator>https://basecore.github.io/eurest-kantine-photoframe</generator>
 		<image>
 			<url>https://basecore.github.io/eurest-kantine-photoframe/images/icon.jpg</url>
@@ -13,12 +13,12 @@
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		</image>
 		<item>
-			<title>Tagesplan Mi 05.08 – SCHAEFFLER Regensburg</title>
+			<title>Tagesplan Do 06.08 – SCHAEFFLER Regensburg</title>
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
-			<guid isPermaLink="false">schaeffler::kantine_2026-W32_2026-08-05_schaeffler.jpg::2026-08-04T11:38:16.773166Z</guid>
-			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W32_2026-08-05_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W32&quot;/&gt;</description>
-			<pubDate>Wed, 05 Aug 2026 06:00:00 +0000</pubDate>
-			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W32_2026-08-05_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">schaeffler::kantine_2026-W32_2026-08-06_schaeffler.jpg::2026-08-05T11:35:36.719683Z</guid>
+			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W32_2026-08-06_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W32&quot;/&gt;</description>
+			<pubDate>Thu, 06 Aug 2026 06:00:00 +0000</pubDate>
+			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W32_2026-08-06_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>

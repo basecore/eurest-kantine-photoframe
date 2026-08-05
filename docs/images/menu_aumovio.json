@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W32",
   "kw": 32,
-  "target_date": "2026-08-05",
-  "target_day_label": "Mi 05.08",
-  "generated_at_utc": "2026-08-04T11:39:18.733433Z",
-  "generated_at_local": "2026-08-04T13:38:16.901062+02:00",
+  "target_date": "2026-08-06",
+  "target_day_label": "Do 06.08",
+  "generated_at_utc": "2026-08-05T11:36:19.288824Z",
+  "generated_at_local": "2026-08-05T13:35:36.886191+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,27 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "TELLERRÖSTI | Zucchinisalat, Dill-Sauerrahm-Balkankäse",
+      "name": "PASTA | Pesto Rosso, Ruccola, Hartkäse",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "HACKBRATEN | Pilzrahmsauce, Lauchspätzle",
-      "price": "5,90 €",
+      "name": "HÄHNCHENSCHNITZEL | Rahmsauce, Pommes frites",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "KARTOFFEL-BULGURKÖFTE | gebackenen Tomaten, Gigantes-Bohnen",
-      "price": "5,90 €",
-      "vv": "VG"
+      "name": "HONEY GARLIC PORC WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
+      "price": "6,90 €",
+      "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "SALAT VITAL | Balsamico Dressing, mariniertem Reis Tomate, Gurke, Karotte, Hähnchenbrust",
-      "price": "7,50 €",
-      "vv": ""
+      "name": "CHILIPOPPERS SALAT | Honig-Sriracha-Mayo, Mais-Bohnen-Reis, Chilicheese Nuggets",
+      "price": "6,90 €",
+      "vv": "V"
     }
   ]
 }
