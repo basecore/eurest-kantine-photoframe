@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W32",
   "kw": 32,
-  "target_date": "2026-08-06",
-  "target_day_label": "Do 06.08",
-  "generated_at_utc": "2026-08-06T09:15:14.595049Z",
-  "generated_at_local": "2026-08-06T11:14:32.370701+02:00",
+  "target_date": "2026-08-07",
+  "target_day_label": "Fr 07.08",
+  "generated_at_utc": "2026-08-06T11:40:05.638448Z",
+  "generated_at_local": "2026-08-06T13:39:16.453339+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -17,34 +17,22 @@
   },
   "main_dishes": [
     {
-      "category": "Suppe 2",
-      "name": "Kartoffel Suppe",
-      "price": "1,51 €",
-      "vv": "V"
-    },
-    {
       "category": "Ostenviertel",
-      "name": "PASTA | Pesto Rosso, Rucola, Hartkäse",
+      "name": "QUICHE Kartoffel, Lauch, Käse, Trauben-Zwiebel-Chutney",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "HÄHNCHENSCHNITZEL | Rahmsauce, Pommes frites",
-      "price": "6,50 €",
+      "name": "PIZZA SPECIALE | Champignons, Schinken, Salami",
+      "price": "7,50 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "HONEY GARLIC PORK WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
-      "price": "6,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Königswiesen",
-      "name": "CHILIPOPPERS SALAT | Honig-Sriracha-Mayo, Mais-Bohnen-Reis, Chilicheese Nuggets",
-      "price": "6,90 €",
-      "vv": "V"
+      "name": "KOH TAO | Kokosmilchreis-Vegan, Mango, Kokoschips",
+      "price": "4,90 €",
+      "vv": "VG"
     }
   ]
 }

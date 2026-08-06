@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W32",
   "kw": 32,
-  "target_date": "2026-08-06",
-  "target_day_label": "Do 06.08",
-  "generated_at_utc": "2026-08-06T09:14:32.235405Z",
-  "generated_at_local": "2026-08-06T11:13:49.971550+02:00",
+  "target_date": "2026-08-07",
+  "target_day_label": "Fr 07.08",
+  "generated_at_utc": "2026-08-06T11:39:16.278918Z",
+  "generated_at_local": "2026-08-06T13:38:25.842943+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,14 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "KARTOFFEL-BROKKLI-AUFLAUF | Kartoffel, Gouda, Sonnenblumenkerne, Beilagensalat",
+      "name": "THAI PENNE | Tofu, Lauchzwiebeln, Koriander",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HONEY GARLIC PORK WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
-      "price": "6,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "PFEFFERSTEAK | vom Rind, Blattspinat, Röstkartoffeln",
-      "price": "15,50 €",
+      "name": "HÄHNCHENSCHNITZEL | Rahmsauce, Pommes frites",
+      "price": "6,50 €",
       "vv": ""
     }
   ]
