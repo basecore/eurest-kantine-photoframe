@@ -6,8 +6,8 @@
   "kw": 32,
   "target_date": "2026-08-06",
   "target_day_label": "Do 06.08",
-  "generated_at_utc": "2026-08-05T11:36:19.288824Z",
-  "generated_at_local": "2026-08-05T13:35:36.886191+02:00",
+  "generated_at_utc": "2026-08-06T09:15:14.595049Z",
+  "generated_at_local": "2026-08-06T11:14:32.370701+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -17,8 +17,14 @@
   },
   "main_dishes": [
     {
+      "category": "Suppe 2",
+      "name": "Kartoffel Suppe",
+      "price": "1,51 €",
+      "vv": "V"
+    },
+    {
       "category": "Ostenviertel",
-      "name": "PASTA | Pesto Rosso, Ruccola, Hartkäse",
+      "name": "PASTA | Pesto Rosso, Rucola, Hartkäse",
       "price": "4,57 €",
       "vv": "V"
     },
@@ -30,7 +36,7 @@
     },
     {
       "category": "Brandlberg",
-      "name": "HONEY GARLIC PORC WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
+      "name": "HONEY GARLIC PORK WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
       "price": "6,90 €",
       "vv": ""
     },

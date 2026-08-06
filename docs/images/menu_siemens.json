@@ -6,8 +6,8 @@
   "kw": 32,
   "target_date": "2026-08-06",
   "target_day_label": "Do 06.08",
-  "generated_at_utc": "2026-08-05T11:37:38.905023Z",
-  "generated_at_local": "2026-08-05T13:36:19.430570+02:00",
+  "generated_at_utc": "2026-08-06T09:16:33.671058Z",
+  "generated_at_local": "2026-08-06T11:15:14.715547+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,7 +18,7 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Orecchiette alla vesuviana",
+      "name": "Pasta alla Vesuviana",
       "price": "3,20 €",
       "vv": "EV"
     },
@@ -32,7 +32,7 @@
       "category": "Essen 3",
       "name": "Schaschlikpfanne / von der Pute / Gemüsereis nach kreolischer Art",
       "price": "6,10 €",
-      "vv": "EV"
+      "vv": ""
     }
   ]
 }

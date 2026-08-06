@@ -6,8 +6,8 @@
   "kw": 32,
   "target_date": "2026-08-06",
   "target_day_label": "Do 06.08",
-  "generated_at_utc": "2026-08-05T11:35:36.719893Z",
-  "generated_at_local": "2026-08-05T13:34:53.780765+02:00",
+  "generated_at_utc": "2026-08-06T09:14:32.235405Z",
+  "generated_at_local": "2026-08-06T11:13:49.971550+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -24,7 +24,7 @@
     },
     {
       "category": "Kumpfmühl",
-      "name": "HONEY GARLIC PORC WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
+      "name": "HONEY GARLIC PORK WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
       "price": "6,90 €",
       "vv": ""
     },
