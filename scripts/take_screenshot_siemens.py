@@ -633,7 +633,7 @@ NON_VEG_KEYWORDS = {
     "thunfisch", "tunfisch", "matjes", "hering", "makrele", "sardine", "sardinen",
     "calamari", "tintenfisch", "pulpo", "oktopus", "garnele", "garnelen", "shrimp",
     "scampi", "muscheln", "miesmuscheln", "meerestiere", "meeresfruechte", "seafood",
-    "paella valenciana", "paella marinera", "krautwickel", "pute", "puten",
+    "paella valenciana", "paella marinera", "krautwickel", "pute", "puten", "schaschlik", "schaschlikpfanne",
 }
 
 VEG_LIKELY_KEYWORDS = {
