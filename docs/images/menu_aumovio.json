@@ -2,12 +2,12 @@
   "location_name": "aumovio",
   "location_label": "AUMOVIO Regensburg",
   "display_mode": "day",
-  "label": "2026-W32",
-  "kw": 32,
-  "target_date": "2026-08-07",
-  "target_day_label": "Fr 07.08",
-  "generated_at_utc": "2026-08-07T10:25:25.927136Z",
-  "generated_at_local": "2026-08-07T12:24:35.842492+02:00",
+  "label": "2026-W33",
+  "kw": 33,
+  "target_date": "2026-08-10",
+  "target_day_label": "Mo 10.08",
+  "generated_at_utc": "2026-08-10T10:42:26.184706Z",
+  "generated_at_local": "2026-08-10T12:41:36.451168+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -17,32 +17,26 @@
   },
   "main_dishes": [
     {
-      "category": "Suppe 2",
-      "name": "Kartoffel Suppe",
-      "price": "1,51 €",
-      "vv": "V"
-    },
-    {
       "category": "Ostenviertel",
-      "name": "QUICHE Kartoffel, Lauch, Käse, Trauben-Zwiebel-Chutney",
+      "name": "VEGANE MAULTASCHEN | Erbsennage, Mandelcrunch",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "PIZZA SPECIALE | Champignons, Schinken, Salami",
+      "name": "CAPRESE SALAT | Basilikumpesto, Rucola, Ciabatta",
+      "price": "6,10 €",
+      "vv": "V"
+    },
+    {
+      "category": "Brandlberg",
+      "name": "LAMMHACKSTEAK | Ajvar-Käse-Dip, Pilawreis, Granatapfel",
       "price": "7,50 €",
       "vv": ""
     },
     {
-      "category": "Brandlberg",
-      "name": "KOH TAO | Kokosmilchreis-Vegan, Mango, Kokoschips",
-      "price": "4,90 €",
-      "vv": "VG"
-    },
-    {
       "category": "Königswiesen",
-      "name": "HÄHNCHENKEULE I mit Asia Gemüse, Reis, Chili Mayonnaise",
+      "name": "SCHWEINERÜCKENSTEAK | Kräuterbutter, Pommes Frites",
       "price": "5,90 €",
       "vv": ""
     }

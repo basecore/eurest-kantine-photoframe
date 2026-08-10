@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W32",
-  "kw": 32,
-  "target_date": "2026-08-07",
-  "target_day_label": "Fr 07.08",
-  "generated_at_utc": "2026-08-07T10:26:45.545337Z",
-  "generated_at_local": "2026-08-07T12:25:26.081443+02:00",
+  "label": "2026-W33",
+  "kw": 33,
+  "target_date": "2026-08-10",
+  "target_day_label": "Mo 10.08",
+  "generated_at_utc": "2026-08-10T10:43:46.380327Z",
+  "generated_at_local": "2026-08-10T12:42:26.276970+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Apfelküchle mit Zimtzucker / Vanillesoße",
-      "price": "3,20 €",
-      "vv": "EV"
-    },
-    {
-      "category": "Essen 2",
-      "name": "Regensburger Gröstl",
-      "price": "5,80 €",
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
       "vv": ""
     },
     {
+      "category": "Essen 2",
+      "name": "Samosas mit vegetarischer Füllung / Wokgemüse / Curryreis",
+      "price": "5,80 €",
+      "vv": "V"
+    },
+    {
       "category": "Essen 3",
-      "name": "Fish'n Chips / Mayonnaise",
-      "price": "6,00 €",
+      "name": "Pfeffer-Senf-Braten / Knöpfli / Karottengemüse, glasiert",
+      "price": "6,20 €",
       "vv": ""
     }
   ]

@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W32",
-  "kw": 32,
-  "target_date": "2026-08-07",
-  "target_day_label": "Fr 07.08",
-  "generated_at_utc": "2026-08-07T10:24:35.667666Z",
-  "generated_at_local": "2026-08-07T12:23:44.825350+02:00",
+  "label": "2026-W33",
+  "kw": 33,
+  "target_date": "2026-08-10",
+  "target_day_label": "Mo 10.08",
+  "generated_at_utc": "2026-08-10T10:41:36.347690Z",
+  "generated_at_local": "2026-08-10T12:40:46.437205+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,14 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "THAI PENNE | Tofu, Lauchzwiebeln, Koriander",
+      "name": "GEMÜSEFRIKADELLE | Tomatensauce, Langkornreis",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HÄHNCHENSCHNITZEL | Rahmsauce, Pommes frites",
+      "name": "BAMI GORENG | Bratnudeln, Hähnchen, Gemüse",
       "price": "6,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "OFFENKARTOFFEL | Avocado, Rinderstreifen, Chimichurri, Traube",
+      "price": "10,50 €",
       "vv": ""
     }
   ]
