@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W33",
   "kw": 33,
-  "target_date": "2026-08-10",
-  "target_day_label": "Mo 10.08",
-  "generated_at_utc": "2026-08-10T10:41:36.347690Z",
-  "generated_at_local": "2026-08-10T12:40:46.437205+02:00",
+  "target_date": "2026-08-11",
+  "target_day_label": "Di 11.08",
+  "generated_at_utc": "2026-08-11T10:45:29.614243Z",
+  "generated_at_local": "2026-08-11T12:44:47.463104+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "GEMÜSEFRIKADELLE | Tomatensauce, Langkornreis",
+      "name": "SELLERIE SCHNITZEL | Tomatensauce, Langkornreis",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "BAMI GORENG | Bratnudeln, Hähnchen, Gemüse",
-      "price": "6,50 €",
+      "name": "TANDOORI-CHICKEN | Naan Brot, Karotten-Rosinensalat",
+      "price": "8,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "OFFENKARTOFFEL | Avocado, Rinderstreifen, Chimichurri, Traube",
-      "price": "10,50 €",
+      "name": "SCHWEINEFETZEN | Karotte, Sourcream, Meerrettich",
+      "price": "8,50 €",
       "vv": ""
     }
   ]
