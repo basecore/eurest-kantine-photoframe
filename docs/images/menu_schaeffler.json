@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W33",
   "kw": 33,
-  "target_date": "2026-08-11",
-  "target_day_label": "Di 11.08",
-  "generated_at_utc": "2026-08-11T10:45:29.614243Z",
-  "generated_at_local": "2026-08-11T12:44:47.463104+02:00",
+  "target_date": "2026-08-12",
+  "target_day_label": "Mi 12.08",
+  "generated_at_utc": "2026-08-12T10:32:53.502344Z",
+  "generated_at_local": "2026-08-12T12:32:02.708985+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SELLERIE SCHNITZEL | Tomatensauce, Langkornreis",
+      "name": "QUINOA BOWL | geschmorte Karotte, Rucola, Cranberries, Vollkornreis",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "TANDOORI-CHICKEN | Naan Brot, Karotten-Rosinensalat",
-      "price": "8,50 €",
+      "name": "LAMMHACKSTEAK | Ajvar-Käse-Dip, Pilawreis, Granatapfel",
+      "price": "7,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "SCHWEINEFETZEN | Karotte, Sourcream, Meerrettich",
-      "price": "8,50 €",
+      "name": "PIZZA PROSCIUTTO | Schinken, Käse, Rucola",
+      "price": "7,50 €",
       "vv": ""
     }
   ]
