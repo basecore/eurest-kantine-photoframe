@@ -4,8 +4,8 @@
 		<title>AUMOVIO Regensburg – Speiseplan</title>
 		<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		<description></description>
-		<pubDate>Wed, 12 Aug 2026 10:35:02 +0000</pubDate>
-		<lastBuildDate>Wed, 12 Aug 2026 10:35:02 +0000</lastBuildDate>
+		<pubDate>Thu, 13 Aug 2026 10:36:24 +0000</pubDate>
+		<lastBuildDate>Thu, 13 Aug 2026 10:36:24 +0000</lastBuildDate>
 		<generator>https://basecore.github.io/eurest-kantine-photoframe</generator>
 		<image>
 			<url>https://basecore.github.io/eurest-kantine-photoframe/images/icon.jpg</url>
@@ -13,12 +13,12 @@
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		</image>
 		<item>
-			<title>Tagesplan Mi 12.08 – AUMOVIO Regensburg</title>
+			<title>Tagesplan Do 13.08 – AUMOVIO Regensburg</title>
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
-			<guid isPermaLink="false">aumovio::kantine_2026-W33_2026-08-12_aumovio.jpg::2026-08-12T10:33:42.897772Z</guid>
-			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W33_2026-08-12_aumovio.jpg&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W33&quot;/&gt;</description>
-			<pubDate>Wed, 12 Aug 2026 06:00:00 +0000</pubDate>
-			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W33_2026-08-12_aumovio.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">aumovio::kantine_2026-W33_2026-08-13_aumovio.jpg::2026-08-13T10:35:01.840686Z</guid>
+			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W33_2026-08-13_aumovio.jpg&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W33&quot;/&gt;</description>
+			<pubDate>Thu, 13 Aug 2026 06:00:00 +0000</pubDate>
+			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W33_2026-08-13_aumovio.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>

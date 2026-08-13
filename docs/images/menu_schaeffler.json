@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W33",
   "kw": 33,
-  "target_date": "2026-08-12",
-  "target_day_label": "Mi 12.08",
-  "generated_at_utc": "2026-08-12T10:32:53.502344Z",
-  "generated_at_local": "2026-08-12T12:32:02.708985+02:00",
+  "target_date": "2026-08-13",
+  "target_day_label": "Do 13.08",
+  "generated_at_utc": "2026-08-13T10:34:12.641650Z",
+  "generated_at_local": "2026-08-13T12:33:22.732626+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "QUINOA BOWL | geschmorte Karotte, Rucola, Cranberries, Vollkornreis",
+      "name": "KOHLRABICURRY | Blattspinat, gerösteten Kichererbsen, Ingwerreis",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "LAMMHACKSTEAK | Ajvar-Käse-Dip, Pilawreis, Granatapfel",
-      "price": "7,50 €",
+      "name": "SCHWEINESCHNITZEL | Bratkartoffeln, Spiegelei",
+      "price": "7,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "PIZZA PROSCIUTTO | Schinken, Käse, Rucola",
-      "price": "7,50 €",
-      "vv": ""
+      "name": "CAPRESE SALAT | Basilikumpesto, Rucola, Ciabatta",
+      "price": "6,10 €",
+      "vv": "V"
     }
   ]
 }

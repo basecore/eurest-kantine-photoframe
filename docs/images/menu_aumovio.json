@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W33",
   "kw": 33,
-  "target_date": "2026-08-12",
-  "target_day_label": "Mi 12.08",
-  "generated_at_utc": "2026-08-12T10:33:42.897943Z",
-  "generated_at_local": "2026-08-12T12:32:53.650454+02:00",
+  "target_date": "2026-08-13",
+  "target_day_label": "Do 13.08",
+  "generated_at_utc": "2026-08-13T10:35:01.840817Z",
+  "generated_at_local": "2026-08-13T12:34:12.754681+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "KOHLRABICURRY | Blattspinat, gerösteten Kichererbsen, Ingwerreis",
+      "name": "QUESADILLA | Bohnen-Tomaten- Zwiebelsalat, Koriander",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "FRÜHLINGSROLLEN | Glasnudel-Chinakohl-Mangosalat",
-      "price": "8,50 €",
+      "name": "RAW BUDDHA BOWL | Rotkohl, Brokkoli, Radieschen, Himbeerdressing",
+      "price": "5,50 €",
       "vv": "VG"
     },
     {
       "category": "Brandlberg",
-      "name": "PUTENSTEAK | Orientalische-Tomaten-Sauce, Bulgur",
-      "price": "6,50 €",
+      "name": "PENNE I mit Frutti",
+      "price": "",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "FISH & CHIPS | Steakhouse Pommes, Zitronen-Aioli",
-      "price": "6,90 €",
+      "name": "RINDERFETZEN | Karotte, Sourcream, Meerrettich",
+      "price": "8,50 €",
       "vv": ""
     }
   ]

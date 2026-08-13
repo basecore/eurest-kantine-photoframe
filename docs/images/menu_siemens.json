@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W33",
   "kw": 33,
-  "target_date": "2026-08-12",
-  "target_day_label": "Mi 12.08",
-  "generated_at_utc": "2026-08-12T10:35:02.405867Z",
-  "generated_at_local": "2026-08-12T12:33:43.031227+02:00",
+  "target_date": "2026-08-13",
+  "target_day_label": "Do 13.08",
+  "generated_at_utc": "2026-08-13T10:36:24.687510Z",
+  "generated_at_local": "2026-08-13T12:35:01.939604+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,26 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Schinkennudeln / Tomatensoße",
+      "name": "Schupfnudeln mit Gemüse / Tomaten-Basilikum-Soße",
       "price": "3,20 €",
-      "vv": ""
-    },
-    {
-      "category": "Essen 2",
-      "name": "Auberginencurry / mit Kichererbsen / Eingelegte rote Zwiebeln / Ingwer-Jasminreis",
-      "price": "5,50 €",
       "vv": "EV"
     },
     {
+      "category": "Essen 2",
+      "name": "Rinderhackbällchen / nach toskanischer Art / Gemüsereis / mit Schnittlauch",
+      "price": "5,90 €",
+      "vv": ""
+    },
+    {
       "category": "Essen 3",
-      "name": "Schaschlikpfanne / mit Paprika / Kartoffelwedges",
-      "price": "5,80 €",
+      "name": "Hähnchenroulade, gefüllt / Romanesco / Nudeln",
+      "price": "6,70 €",
+      "vv": ""
+    },
+    {
+      "category": "Aktion",
+      "name": "Schinkennudeln mit Ei",
+      "price": "3,20 €",
       "vv": ""
     }
   ]
