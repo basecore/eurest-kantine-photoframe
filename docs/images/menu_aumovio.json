@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W33",
   "kw": 33,
-  "target_date": "2026-08-13",
-  "target_day_label": "Do 13.08",
-  "generated_at_utc": "2026-08-13T10:35:01.840817Z",
-  "generated_at_local": "2026-08-13T12:34:12.754681+02:00",
+  "target_date": "2026-08-14",
+  "target_day_label": "Fr 14.08",
+  "generated_at_utc": "2026-08-14T10:31:42.149892Z",
+  "generated_at_local": "2026-08-14T12:30:53.313916+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "QUESADILLA | Bohnen-Tomaten- Zwiebelsalat, Koriander",
+      "name": "DIM SUM RED-CURRY | Kokosnussmilch, Kürbiskernöl, Kokos Chips",
       "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Weichs",
-      "name": "RAW BUDDHA BOWL | Rotkohl, Brokkoli, Radieschen, Himbeerdressing",
-      "price": "5,50 €",
       "vv": "VG"
     },
     {
-      "category": "Brandlberg",
-      "name": "PENNE I mit Frutti",
-      "price": "",
+      "category": "Weichs",
+      "name": "CURRYWURST I mit Currysauce und Pommes Frites oder Röstkartoffeln",
+      "price": "6,10 €",
       "vv": ""
     },
     {
-      "category": "Königswiesen",
-      "name": "RINDERFETZEN | Karotte, Sourcream, Meerrettich",
-      "price": "8,50 €",
+      "category": "Brandlberg",
+      "name": "SPAGHETTI SALMONE I mit Lachs Kokos Sauce",
+      "price": "5,90 €",
       "vv": ""
     }
   ]

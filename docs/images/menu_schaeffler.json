@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W33",
   "kw": 33,
-  "target_date": "2026-08-13",
-  "target_day_label": "Do 13.08",
-  "generated_at_utc": "2026-08-13T10:34:12.641650Z",
-  "generated_at_local": "2026-08-13T12:33:22.732626+02:00",
+  "target_date": "2026-08-14",
+  "target_day_label": "Fr 14.08",
+  "generated_at_utc": "2026-08-14T10:30:53.154045Z",
+  "generated_at_local": "2026-08-14T12:30:02.814382+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,15 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "KOHLRABICURRY | Blattspinat, gerösteten Kichererbsen, Ingwerreis",
+      "name": "DIM SUM RED-CURRY | Kokosnussmilch, Kürbiskernöl, Kokos Chips",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SCHWEINESCHNITZEL | Bratkartoffeln, Spiegelei",
-      "price": "7,90 €",
+      "name": "TINTENFISCHRINGE | Steakhouse Pommes, Zitronen-Aioli",
+      "price": "6,90 €",
       "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "CAPRESE SALAT | Basilikumpesto, Rucola, Ciabatta",
-      "price": "6,10 €",
-      "vv": "V"
     }
   ]
 }
