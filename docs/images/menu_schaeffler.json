@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W33",
-  "kw": 33,
-  "target_date": "2026-08-14",
-  "target_day_label": "Fr 14.08",
-  "generated_at_utc": "2026-08-14T10:30:53.154045Z",
-  "generated_at_local": "2026-08-14T12:30:02.814382+02:00",
+  "label": "2026-W34",
+  "kw": 34,
+  "target_date": "2026-08-17",
+  "target_day_label": "Mo 17.08",
+  "generated_at_utc": "2026-08-17T10:03:36.092456Z",
+  "generated_at_local": "2026-08-17T12:02:45.527810+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,14 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "DIM SUM RED-CURRY | Kokosnussmilch, Kürbiskernöl, Kokos Chips",
+      "name": "OFENKARTOFFEL | Süß-Saure-Gurken, Schmand, Feta, Oliven, Dill, Chili",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "TINTENFISCHRINGE | Steakhouse Pommes, Zitronen-Aioli",
-      "price": "6,90 €",
+      "name": "HÄHNCHENBRUST | Salbeigemüse, Orecchiette",
+      "price": "6,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "SCHWEINE-GESCHNETZELTES | Dijon-Senfsauce, Brokkoli, Perlgraupen",
+      "price": "7,90 €",
       "vv": ""
     }
   ]

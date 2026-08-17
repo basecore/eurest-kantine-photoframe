@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W33",
-  "kw": 33,
-  "target_date": "2026-08-14",
-  "target_day_label": "Fr 14.08",
-  "generated_at_utc": "2026-08-14T10:33:01.476238Z",
-  "generated_at_local": "2026-08-14T12:31:42.291563+02:00",
+  "label": "2026-W34",
+  "kw": 34,
+  "target_date": "2026-08-17",
+  "target_day_label": "Mo 17.08",
+  "generated_at_utc": "2026-08-17T10:05:44.241624Z",
+  "generated_at_local": "2026-08-17T12:04:25.512850+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Germknödel mit Mohnzucker / Vanillesoße",
-      "price": "3,20 €",
-      "vv": "EV"
-    },
-    {
-      "category": "Essen 2",
-      "name": "Pizza mit Salami, Champignons",
-      "price": "6,20 €",
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
       "vv": ""
     },
     {
+      "category": "Essen 2",
+      "name": "Orientalischer Bulgur",
+      "price": "4,80 €",
+      "vv": "EV"
+    },
+    {
       "category": "Essen 3",
-      "name": "Kibbelinge im Backteig / Kartoffelsalat / Tatarsoße",
-      "price": "5,90 €",
+      "name": "Schweinegeschnetzeltes \"Vietnam\" / Duftreis mit Gewürzen",
+      "price": "6,00 €",
       "vv": ""
     }
   ]
