@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-17",
-  "target_day_label": "Mo 17.08",
-  "generated_at_utc": "2026-08-17T10:05:44.241624Z",
-  "generated_at_local": "2026-08-17T12:04:25.512850+02:00",
+  "target_date": "2026-08-18",
+  "target_day_label": "Di 18.08",
+  "generated_at_utc": "2026-08-18T09:58:00.778711Z",
+  "generated_at_local": "2026-08-18T11:56:41.810421+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Currywurst / Pommes frites / Currysoße",
-      "price": "3,00 €",
-      "vv": ""
-    },
-    {
-      "category": "Essen 2",
-      "name": "Orientalischer Bulgur",
-      "price": "4,80 €",
+      "name": "Penne all'arrabbiata",
+      "price": "3,20 €",
       "vv": "EV"
     },
     {
+      "category": "Essen 2",
+      "name": "Bunter Kartoffelsalat / Putenschnitzel, gebacken",
+      "price": "5,50 €",
+      "vv": ""
+    },
+    {
       "category": "Essen 3",
-      "name": "Schweinegeschnetzeltes \"Vietnam\" / Duftreis mit Gewürzen",
-      "price": "6,00 €",
+      "name": "Cevapcici / Djuvecreis / Joghurtdip",
+      "price": "5,80 €",
       "vv": ""
     }
   ]

@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>Alle Kantinen Regensburg – Speisepläne</title>
 		<link>http://basecore.bplaced.net</link>
 		<description>Alle aktuellen Kantinen-Speisepläne in einem Feed.</description>
-		<pubDate>Mon, 17 Aug 2026 10:05:44 +0000</pubDate>
-		<lastBuildDate>Mon, 17 Aug 2026 10:05:44 +0000</lastBuildDate>
+		<pubDate>Tue, 18 Aug 2026 09:58:00 +0000</pubDate>
+		<lastBuildDate>Tue, 18 Aug 2026 09:58:00 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net</generator>
 		<image>
 			<url>http://basecore.bplaced.net/images/icon.jpg</url>
@@ -19,28 +19,28 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<link>http://basecore.bplaced.net</link>
 		</image>
 		<item>
-			<title>Tagesplan Mo 17.08 – SCHAEFFLER Regensburg</title>
+			<title>Tagesplan Di 18.08 – SCHAEFFLER Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">schaeffler::kantine_2026-W34_2026-08-17_schaeffler.jpg::2026-08-17T10:03:36.092255Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-17_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W34&quot;/&gt;</description>
-			<pubDate>Mon, 17 Aug 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-17_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">schaeffler::kantine_2026-W34_2026-08-18_schaeffler.jpg::2026-08-18T09:55:59.212341Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-18_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W34&quot;/&gt;</description>
+			<pubDate>Tue, 18 Aug 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-18_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 		<item>
-			<title>Tagesplan Mo 17.08 – AUMOVIO Regensburg</title>
+			<title>Tagesplan Di 18.08 – AUMOVIO Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">aumovio::kantine_2026-W34_2026-08-17_aumovio.jpg::2026-08-17T10:04:25.367515Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-17_aumovio.jpg&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W34&quot;/&gt;</description>
-			<pubDate>Mon, 17 Aug 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-17_aumovio.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">aumovio::kantine_2026-W34_2026-08-18_aumovio.jpg::2026-08-18T09:56:41.654125Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-18_aumovio.jpg&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W34&quot;/&gt;</description>
+			<pubDate>Tue, 18 Aug 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-18_aumovio.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 		<item>
-			<title>Tagesplan Mo 17.08 – SIEMENS Regensburg</title>
+			<title>Tagesplan Di 18.08 – SIEMENS Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">siemens::kantine_2026-W34_2026-08-17_siemens.jpg::2026-08-17T10:05:44.241404Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-17_siemens.jpg&quot; alt=&quot;SIEMENS Regensburg Speiseplan 2026-W34&quot;/&gt;</description>
-			<pubDate>Mon, 17 Aug 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-17_siemens.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">siemens::kantine_2026-W34_2026-08-18_siemens.jpg::2026-08-18T09:58:00.778482Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-18_siemens.jpg&quot; alt=&quot;SIEMENS Regensburg Speiseplan 2026-W34&quot;/&gt;</description>
+			<pubDate>Tue, 18 Aug 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-18_siemens.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>

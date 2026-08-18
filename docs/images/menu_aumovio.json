@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-17",
-  "target_day_label": "Mo 17.08",
-  "generated_at_utc": "2026-08-17T10:04:25.367731Z",
-  "generated_at_local": "2026-08-17T12:03:36.255154+02:00",
+  "target_date": "2026-08-18",
+  "target_day_label": "Di 18.08",
+  "generated_at_utc": "2026-08-18T09:56:41.654342Z",
+  "generated_at_local": "2026-08-18T11:55:59.386761+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,32 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "KOHLRABICURRY | Blattspinat, geröstete Kichererbsen, Ingwerreis",
+      "name": "COUSCOUS | Lauch, Salat, Erbsen, Joghurt, Granatapfelkerne",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "GLASNUDELSALAT | Tofu, Mango, Rettich, Koriander",
-      "price": "7,90 €",
-      "vv": "VG"
+      "name": "LAUCH-KARTOFFEL-FRITTATA | Artischocken, Schmand, Rucola, Zitrone",
+      "price": "6,90 €",
+      "vv": "V"
     },
     {
       "category": "Brandlberg",
-      "name": "HÄHNCHENBRUST | tomatisiertes Paprikagemüse, Orecchiette",
+      "name": "KRUSTENBRATEN | von der Schweineschulter, Jus, Knödel, Krautsalat",
       "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "SCHWEINE-GESCHNETZELTES | Dijon-Senfsauce, Brokkoli, Perlgraupen",
-      "price": "7,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Dessert 3",
-      "name": "Vanille Pudding mit Schoko",
-      "price": "1,33 €",
+      "name": "ENTE | Schupfnudeln, Balsamico-Perlzwiebeln, Gurken-Dillsalat",
+      "price": "9,00 €",
       "vv": ""
     }
   ]

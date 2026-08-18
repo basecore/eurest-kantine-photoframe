@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-17",
-  "target_day_label": "Mo 17.08",
-  "generated_at_utc": "2026-08-17T10:03:36.092456Z",
-  "generated_at_local": "2026-08-17T12:02:45.527810+02:00",
+  "target_date": "2026-08-18",
+  "target_day_label": "Di 18.08",
+  "generated_at_utc": "2026-08-18T09:55:59.212648Z",
+  "generated_at_local": "2026-08-18T11:55:16.403662+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "OFENKARTOFFEL | Süß-Saure-Gurken, Schmand, Feta, Oliven, Dill, Chili",
+      "name": "CHILI SIN CARNE | Fenchelsalat, Mais, Chili-Öl, Brötchen",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HÄHNCHENBRUST | Salbeigemüse, Orecchiette",
-      "price": "6,50 €",
+      "name": "CRISPY HÄHNCHENSCHNITZEL | Gurkensalat, Bratkartoffeln",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "SCHWEINE-GESCHNETZELTES | Dijon-Senfsauce, Brokkoli, Perlgraupen",
-      "price": "7,90 €",
+      "name": "SCHWEINEFLEISCH SZECHUAN STYLE | Zuckerschoten, Zwiebeln, Reis",
+      "price": "6,90 €",
       "vv": ""
     }
   ]
