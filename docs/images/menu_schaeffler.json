@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-18",
-  "target_day_label": "Di 18.08",
-  "generated_at_utc": "2026-08-18T09:55:59.212648Z",
-  "generated_at_local": "2026-08-18T11:55:16.403662+02:00",
+  "target_date": "2026-08-19",
+  "target_day_label": "Mi 19.08",
+  "generated_at_utc": "2026-08-19T09:56:15.533336Z",
+  "generated_at_local": "2026-08-19T11:55:24.077005+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "CHILI SIN CARNE | Fenchelsalat, Mais, Chili-Öl, Brötchen",
+      "name": "COUSCOUS | Lauch, Kopfsalat, Erbsen, Joghurt, Granatapfelkerne",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "CRISPY HÄHNCHENSCHNITZEL | Gurkensalat, Bratkartoffeln",
-      "price": "6,90 €",
-      "vv": ""
+      "name": "STEAKHOUSE SALAD | Austernpilze, Caesar Dressing, Röstbrot, Grana Padano",
+      "price": "8,50 €",
+      "vv": "V"
     },
     {
       "category": "Stadtamhof",
-      "name": "SCHWEINEFLEISCH SZECHUAN STYLE | Zuckerschoten, Zwiebeln, Reis",
-      "price": "6,90 €",
+      "name": "SCHWEINEBRATEN | Jus, Knödel, Krautsalat",
+      "price": "6,50 €",
       "vv": ""
     }
   ]

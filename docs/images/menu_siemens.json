@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-18",
-  "target_day_label": "Di 18.08",
-  "generated_at_utc": "2026-08-18T09:58:00.778711Z",
-  "generated_at_local": "2026-08-18T11:56:41.810421+02:00",
+  "target_date": "2026-08-19",
+  "target_day_label": "Mi 19.08",
+  "generated_at_utc": "2026-08-19T09:58:24.194675Z",
+  "generated_at_local": "2026-08-19T11:57:05.360820+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Penne all'arrabbiata",
+      "name": "Nudeln",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Bunter Kartoffelsalat / Putenschnitzel, gebacken",
-      "price": "5,50 €",
+      "name": "Afrikanisches Curry mit Schweinefleisch / Drillinge",
+      "price": "5,80 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Cevapcici / Djuvecreis / Joghurtdip",
-      "price": "5,80 €",
+      "name": "Putengeschnetzeltes nach Gyros Art / Tzatziki / Kartoffelwedges / wahlweise dazu / Fladenbrot",
+      "price": "6,40 €",
       "vv": ""
     }
   ]

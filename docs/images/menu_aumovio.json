@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-18",
-  "target_day_label": "Di 18.08",
-  "generated_at_utc": "2026-08-18T09:56:41.654342Z",
-  "generated_at_local": "2026-08-18T11:55:59.386761+02:00",
+  "target_date": "2026-08-19",
+  "target_day_label": "Mi 19.08",
+  "generated_at_utc": "2026-08-19T09:57:05.205088Z",
+  "generated_at_local": "2026-08-19T11:56:15.701769+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "COUSCOUS | Lauch, Salat, Erbsen, Joghurt, Granatapfelkerne",
+      "name": "PENNE SORRENTINA | al Forno, Mozzarella, Hartkäse, Rucola",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "LAUCH-KARTOFFEL-FRITTATA | Artischocken, Schmand, Rucola, Zitrone",
+      "name": "SÜßKARTOFFELBURGER | BBQ-Chinakohl, Jalapenos, Pommes frites",
       "price": "6,90 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Brandlberg",
-      "name": "KRUSTENBRATEN | von der Schweineschulter, Jus, Knödel, Krautsalat",
-      "price": "6,50 €",
+      "name": "SCHWEINERÜCKEN | Karottensalat, Polenta, Kräuterbutter",
+      "price": "5,90 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "ENTE | Schupfnudeln, Balsamico-Perlzwiebeln, Gurken-Dillsalat",
-      "price": "9,00 €",
+      "name": "MAISHÄHNCHEN SUPREME | Spargel-Ricotta-Risotto​",
+      "price": "9,50 €",
       "vv": ""
     }
   ]
