@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-19",
-  "target_day_label": "Mi 19.08",
-  "generated_at_utc": "2026-08-19T09:57:05.205088Z",
-  "generated_at_local": "2026-08-19T11:56:15.701769+02:00",
+  "target_date": "2026-08-20",
+  "target_day_label": "Do 20.08",
+  "generated_at_utc": "2026-08-20T09:57:50.302500Z",
+  "generated_at_local": "2026-08-20T11:57:00.461945+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PENNE SORRENTINA | al Forno, Mozzarella, Hartkäse, Rucola",
+      "name": "CHILI SIN CARNE | Fenchelsalat, Mais, Chili-Öl, Brötchen",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "SÜßKARTOFFELBURGER | BBQ-Chinakohl, Jalapenos, Pommes frites",
-      "price": "6,90 €",
+      "name": "WORLD BOWL | Kidney-Bohnen, Hirse, Mango-Chili, Salsa, Rote Bete, Rucola",
+      "price": "5,90 €",
       "vv": "VG"
     },
     {
       "category": "Brandlberg",
-      "name": "SCHWEINERÜCKEN | Karottensalat, Polenta, Kräuterbutter",
-      "price": "5,90 €",
+      "name": "HÄHNCHENSCHNITZEL | Gurkensalat, Bratkartoffeln",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "MAISHÄHNCHEN SUPREME | Spargel-Ricotta-Risotto​",
-      "price": "9,50 €",
+      "name": "SCHWEINEFILET SZECHUAN STYLE | Zuckerschoten, Zwiebeln, Reis",
+      "price": "6,90 €",
       "vv": ""
     }
   ]

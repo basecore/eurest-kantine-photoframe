@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-19",
-  "target_day_label": "Mi 19.08",
-  "generated_at_utc": "2026-08-19T09:56:15.533336Z",
-  "generated_at_local": "2026-08-19T11:55:24.077005+02:00",
+  "target_date": "2026-08-20",
+  "target_day_label": "Do 20.08",
+  "generated_at_utc": "2026-08-20T09:57:00.299118Z",
+  "generated_at_local": "2026-08-20T11:56:08.741572+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "COUSCOUS | Lauch, Kopfsalat, Erbsen, Joghurt, Granatapfelkerne",
+      "name": "PENNE SORRENTINA | al Forno, Mozzarella, Hartkäse, Rucola",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "STEAKHOUSE SALAD | Austernpilze, Caesar Dressing, Röstbrot, Grana Padano",
-      "price": "8,50 €",
-      "vv": "V"
+      "name": "SCHWEINERÜCKEN | Karottensalat, Polenta, Kräuterbutter",
+      "price": "5,90 €",
+      "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "SCHWEINEBRATEN | Jus, Knödel, Krautsalat",
-      "price": "6,50 €",
+      "name": "STEAKHOUSE SALAD | Rinderstreifen, Caesar Dressing, Röstbrot, Grana Padano",
+      "price": "9,90 €",
       "vv": ""
     }
   ]

@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-19",
-  "target_day_label": "Mi 19.08",
-  "generated_at_utc": "2026-08-19T09:58:24.194675Z",
-  "generated_at_local": "2026-08-19T11:57:05.360820+02:00",
+  "target_date": "2026-08-20",
+  "target_day_label": "Do 20.08",
+  "generated_at_utc": "2026-08-20T09:59:09.366533Z",
+  "generated_at_local": "2026-08-20T11:57:50.448468+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Nudeln",
+      "name": "Gnocchi mit Tomaten",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Afrikanisches Curry mit Schweinefleisch / Drillinge",
-      "price": "5,80 €",
+      "name": "Chili con carne / Baguette",
+      "price": "5,50 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Putengeschnetzeltes nach Gyros Art / Tzatziki / Kartoffelwedges / wahlweise dazu / Fladenbrot",
-      "price": "6,40 €",
+      "name": "Putengeschnetzeltes / Soße nach Stroganoff Art / Kräuterreis / Gemüse",
+      "price": "6,50 €",
       "vv": ""
     }
   ]
