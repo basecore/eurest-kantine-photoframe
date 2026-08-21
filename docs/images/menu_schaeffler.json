@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W34",
   "kw": 34,
-  "target_date": "2026-08-20",
-  "target_day_label": "Do 20.08",
-  "generated_at_utc": "2026-08-20T09:57:00.299118Z",
-  "generated_at_local": "2026-08-20T11:56:08.741572+02:00",
+  "target_date": "2026-08-21",
+  "target_day_label": "Fr 21.08",
+  "generated_at_utc": "2026-08-21T09:57:49.457160Z",
+  "generated_at_local": "2026-08-21T11:56:59.424446+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,14 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PENNE SORRENTINA | al Forno, Mozzarella, Hartkäse, Rucola",
+      "name": "ZWIEBELKUCHEN | Käse, Schmand, Romana",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SCHWEINERÜCKEN | Karottensalat, Polenta, Kräuterbutter",
-      "price": "5,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "STEAKHOUSE SALAD | Rinderstreifen, Caesar Dressing, Röstbrot, Grana Padano",
-      "price": "9,90 €",
+      "name": "PIZZA REGINA | Champignon, Schinken",
+      "price": "7,50 €",
       "vv": ""
     }
   ]

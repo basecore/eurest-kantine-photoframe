@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>SIEMENS Regensburg – Speiseplan</title>
 		<link>http://basecore.bplaced.net</link>
 		<description></description>
-		<pubDate>Thu, 20 Aug 2026 09:59:09 +0000</pubDate>
-		<lastBuildDate>Thu, 20 Aug 2026 09:59:09 +0000</lastBuildDate>
+		<pubDate>Fri, 21 Aug 2026 09:59:58 +0000</pubDate>
+		<lastBuildDate>Fri, 21 Aug 2026 09:59:58 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net</generator>
 		<image>
 			<url>http://basecore.bplaced.net/images/icon.jpg</url>
@@ -19,12 +19,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<link>http://basecore.bplaced.net</link>
 		</image>
 		<item>
-			<title>Tagesplan Do 20.08 – SIEMENS Regensburg</title>
+			<title>Tagesplan Fr 21.08 – SIEMENS Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">siemens::kantine_2026-W34_2026-08-20_siemens.jpg::2026-08-20T09:59:09.366273Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-20_siemens.jpg&quot; alt=&quot;SIEMENS Regensburg Speiseplan 2026-W34&quot;/&gt;</description>
-			<pubDate>Thu, 20 Aug 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-20_siemens.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">siemens::kantine_2026-W34_2026-08-21_siemens.jpg::2026-08-21T09:59:57.849981Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-21_siemens.jpg&quot; alt=&quot;SIEMENS Regensburg Speiseplan 2026-W34&quot;/&gt;</description>
+			<pubDate>Fri, 21 Aug 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W34_2026-08-21_siemens.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>
