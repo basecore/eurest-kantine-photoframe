@@ -2,12 +2,12 @@
   "location_name": "aumovio",
   "location_label": "AUMOVIO Regensburg",
   "display_mode": "day",
-  "label": "2026-W34",
-  "kw": 34,
-  "target_date": "2026-08-21",
-  "target_day_label": "Fr 21.08",
-  "generated_at_utc": "2026-08-21T09:58:38.869984Z",
-  "generated_at_local": "2026-08-21T11:57:49.617288+02:00",
+  "label": "2026-W35",
+  "kw": 35,
+  "target_date": "2026-08-24",
+  "target_day_label": "Mo 24.08",
+  "generated_at_utc": "2026-08-24T10:10:12.328840Z",
+  "generated_at_local": "2026-08-24T12:09:22.203663+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,33 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "ZWIEBELKUCHEN | Käse, Schmand, Salat",
+      "name": "LEMON FUSILLI | Minze, Zitronensauce, Hartkäse",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "FISCHSTÄBCHEN | Rahmspinat, Salzkartoffeln",
-      "price": "5,90 €",
+      "name": "DORADE | gebraten, Karottenauflauf, Majoran, grober Senf",
+      "price": "9,50 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "CURRYWURST I mit Currysauce und Pommes Frites",
-      "price": "6,10 €",
+      "name": "BEEF BOWL | Bohnensalat, Lollo Bionda, Nachos, rote Trauben",
+      "price": "9,10 €",
       "vv": ""
+    },
+    {
+      "category": "Königswiesen",
+      "name": "BAUERNPFANDEL | Hals, Wammerln, Sauerkraut, Salzkartoffeln",
+      "price": "6,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Niederwinzer",
+      "name": "Add on I Maiskolben mit Kräuterbutter",
+      "price": "2,60 €",
+      "vv": "V"
     }
   ]
 }

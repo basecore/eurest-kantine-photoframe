@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W34",
-  "kw": 34,
-  "target_date": "2026-08-21",
-  "target_day_label": "Fr 21.08",
-  "generated_at_utc": "2026-08-21T09:57:49.457160Z",
-  "generated_at_local": "2026-08-21T11:56:59.424446+02:00",
+  "label": "2026-W35",
+  "kw": 35,
+  "target_date": "2026-08-24",
+  "target_day_label": "Mo 24.08",
+  "generated_at_utc": "2026-08-24T10:09:22.065732Z",
+  "generated_at_local": "2026-08-24T12:08:31.888742+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,14 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "ZWIEBELKUCHEN | Käse, Schmand, Romana",
+      "name": "LEMON FUSILLI | Minze, Zitronensauce, Hartkäse",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "PIZZA REGINA | Champignon, Schinken",
-      "price": "7,50 €",
+      "name": "CEVAPCICI | Langkornreis, Krautsalat, Ajvar-Joghurt-Dip",
+      "price": "6,10 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "DORADE | gebraten, Karottenauflauf, Majoran, grober Senf",
+      "price": "9,50 €",
       "vv": ""
     }
   ]

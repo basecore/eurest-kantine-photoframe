@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W34",
-  "kw": 34,
-  "target_date": "2026-08-21",
-  "target_day_label": "Fr 21.08",
-  "generated_at_utc": "2026-08-21T09:59:57.850195Z",
-  "generated_at_local": "2026-08-21T11:58:39.013558+02:00",
+  "label": "2026-W35",
+  "kw": 35,
+  "target_date": "2026-08-24",
+  "target_day_label": "Mo 24.08",
+  "generated_at_utc": "2026-08-24T10:11:31.458526Z",
+  "generated_at_local": "2026-08-24T12:10:12.454212+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,19 +18,19 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Pfannkuchen mit Blaubeerfüllung / Vanillesoße",
-      "price": "3,20 €",
-      "vv": "EV"
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
+      "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Pasta al forno / mit Rucola",
-      "price": "5,90 €",
-      "vv": "EV"
+      "name": "Vegetarische Maultaschen / Kartoffel-Feld-Salat / Schmelzzwiebeln",
+      "price": "5,30 €",
+      "vv": "V"
     },
     {
       "category": "Essen 3",
-      "name": "Kartoffelsalat / Schellfischfilet, gebacken / Remouladensoße",
+      "name": "Schweinebauch, gebraten / Knödel / Sauerkraut",
       "price": "6,00 €",
       "vv": ""
     }
