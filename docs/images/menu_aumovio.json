@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-24",
-  "target_day_label": "Mo 24.08",
-  "generated_at_utc": "2026-08-24T10:10:12.328840Z",
-  "generated_at_local": "2026-08-24T12:09:22.203663+02:00",
+  "target_date": "2026-08-25",
+  "target_day_label": "Di 25.08",
+  "generated_at_utc": "2026-08-25T09:58:50.907103Z",
+  "generated_at_local": "2026-08-25T11:58:01.401517+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "LEMON FUSILLI | Minze, Zitronensauce, Hartkäse",
+      "name": "MAULTASCHEN | vegetarisch, Brühe, Lauch",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "DORADE | gebraten, Karottenauflauf, Majoran, grober Senf",
-      "price": "9,50 €",
-      "vv": ""
+      "name": "ROMANASALAT | Melone, Quinoa, karamellisierte Karotte",
+      "price": "5,10 €",
+      "vv": "VG"
     },
     {
       "category": "Brandlberg",
-      "name": "BEEF BOWL | Bohnensalat, Lollo Bionda, Nachos, rote Trauben",
-      "price": "9,10 €",
+      "name": "MEATBALLS | Bohnen-Zwiebel-Salat, Ajvar, Fladenbrotecke",
+      "price": "6,10 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "BAUERNPFANDEL | Hals, Wammerln, Sauerkraut, Salzkartoffeln",
-      "price": "6,50 €",
+      "name": "PUTENGRILL-STEAK | Paprika, Zwiebel, Zoodles, Sour Cream",
+      "price": "10,50 €",
       "vv": ""
     },
     {

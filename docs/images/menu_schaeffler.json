@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-24",
-  "target_day_label": "Mo 24.08",
-  "generated_at_utc": "2026-08-24T10:09:22.065732Z",
-  "generated_at_local": "2026-08-24T12:08:31.888742+02:00",
+  "target_date": "2026-08-25",
+  "target_day_label": "Di 25.08",
+  "generated_at_utc": "2026-08-25T09:58:01.228575Z",
+  "generated_at_local": "2026-08-25T11:57:11.601551+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "LEMON FUSILLI | Minze, Zitronensauce, Hartkäse",
+      "name": "BANDNUDELN | Auberginencreme, Tomatensauce, Ricotta-Topping",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "CEVAPCICI | Langkornreis, Krautsalat, Ajvar-Joghurt-Dip",
-      "price": "6,10 €",
+      "name": "SCHWEINESCHNITZEL | Bratensauce, Brokkoli, Spätzle",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "DORADE | gebraten, Karottenauflauf, Majoran, grober Senf",
-      "price": "9,50 €",
+      "name": "TÜRKISCH FÜR GENIEßER I SÜßKARTOFFEL KUMPIR | Gouda, Tomate, Gurke, Mais, Balkankäse",
+      "price": "5,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Reinhausen",
+      "name": "Add On AYRAN",
+      "price": "1,10 €",
       "vv": ""
     }
   ]

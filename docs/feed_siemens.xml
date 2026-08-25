@@ -4,8 +4,8 @@
 		<title>SIEMENS Regensburg – Speiseplan</title>
 		<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		<description></description>
-		<pubDate>Mon, 24 Aug 2026 10:11:31 +0000</pubDate>
-		<lastBuildDate>Mon, 24 Aug 2026 10:11:31 +0000</lastBuildDate>
+		<pubDate>Tue, 25 Aug 2026 10:00:09 +0000</pubDate>
+		<lastBuildDate>Tue, 25 Aug 2026 10:00:09 +0000</lastBuildDate>
 		<generator>https://basecore.github.io/eurest-kantine-photoframe</generator>
 		<image>
 			<url>https://basecore.github.io/eurest-kantine-photoframe/images/icon.jpg</url>
@@ -13,12 +13,12 @@
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		</image>
 		<item>
-			<title>Tagesplan Mo 24.08 – SIEMENS Regensburg</title>
+			<title>Tagesplan Di 25.08 – SIEMENS Regensburg</title>
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
-			<guid isPermaLink="false">siemens::kantine_2026-W35_2026-08-24_siemens.jpg::2026-08-24T10:11:31.458320Z</guid>
-			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W35_2026-08-24_siemens.jpg&quot; alt=&quot;SIEMENS Regensburg Speiseplan 2026-W35&quot;/&gt;</description>
-			<pubDate>Mon, 24 Aug 2026 06:00:00 +0000</pubDate>
-			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W35_2026-08-24_siemens.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">siemens::kantine_2026-W35_2026-08-25_siemens.jpg::2026-08-25T10:00:09.567710Z</guid>
+			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W35_2026-08-25_siemens.jpg&quot; alt=&quot;SIEMENS Regensburg Speiseplan 2026-W35&quot;/&gt;</description>
+			<pubDate>Tue, 25 Aug 2026 06:00:00 +0000</pubDate>
+			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W35_2026-08-25_siemens.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>
