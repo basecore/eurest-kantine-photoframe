@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-25",
-  "target_day_label": "Di 25.08",
-  "generated_at_utc": "2026-08-25T10:00:09.567977Z",
-  "generated_at_local": "2026-08-25T11:58:51.068240+02:00",
+  "target_date": "2026-08-26",
+  "target_day_label": "Mi 26.08",
+  "generated_at_utc": "2026-08-26T10:06:18.903783Z",
+  "generated_at_local": "2026-08-26T12:05:00.043966+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Gemüsepaella / Joghurtdip",
+      "name": "Ravioli mit Pestofüllung",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Schweinesteak, gegrillt / Rosmarin-Drillinge / Gurkensalat mit Joghurt",
-      "price": "5,80 €",
+      "name": "Hähnchen-Cordon bleu / Frittierte Kartoffeln / Zitronenecke",
+      "price": "6,20 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Gnocchi sale Nero / Garnelen / Weißweinsoße",
-      "price": "6,60 €",
+      "name": "Rinderbraten / Gemüsesahnesoße / Serviettenknödel / Preiselbeeren",
+      "price": "6,70 €",
       "vv": ""
     }
   ]

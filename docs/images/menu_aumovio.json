@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-25",
-  "target_day_label": "Di 25.08",
-  "generated_at_utc": "2026-08-25T09:58:50.907103Z",
-  "generated_at_local": "2026-08-25T11:58:01.401517+02:00",
+  "target_date": "2026-08-26",
+  "target_day_label": "Mi 26.08",
+  "generated_at_utc": "2026-08-26T10:04:59.926038Z",
+  "generated_at_local": "2026-08-26T12:04:09.886480+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,33 +18,33 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "MAULTASCHEN | vegetarisch, Brühe, Lauch",
+      "name": "RISOTTO | Mascarpone, Rucola, Orange",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "ROMANASALAT | Melone, Quinoa, karamellisierte Karotte",
-      "price": "5,10 €",
-      "vv": "VG"
+      "name": "MUMBAI-CURRY | Süßkartoffel, Tandoori-Blumenkohl, Basmatireis",
+      "price": "4,57 €",
+      "vv": "V"
     },
     {
       "category": "Brandlberg",
-      "name": "MEATBALLS | Bohnen-Zwiebel-Salat, Ajvar, Fladenbrotecke",
-      "price": "6,10 €",
+      "name": "LOADED FRIES | Pulled Pork, Chili-Honig, Apfel, Röstzwiebeln",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "PUTENGRILL-STEAK | Paprika, Zwiebel, Zoodles, Sour Cream",
-      "price": "10,50 €",
+      "name": "TÜRKISCH FÜR GENIEßER I RINDER-KÖFTE TELLER | Tomaten-Bulgur, Salat, Minzjoghurt",
+      "price": "7,90 €",
       "vv": ""
     },
     {
       "category": "Niederwinzer",
-      "name": "Add on I Maiskolben mit Kräuterbutter",
-      "price": "2,60 €",
-      "vv": "V"
+      "name": "Add On AYRAN",
+      "price": "1,10 €",
+      "vv": ""
     }
   ]
 }

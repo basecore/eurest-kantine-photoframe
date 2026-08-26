@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-25",
-  "target_day_label": "Di 25.08",
-  "generated_at_utc": "2026-08-25T09:58:01.228575Z",
-  "generated_at_local": "2026-08-25T11:57:11.601551+02:00",
+  "target_date": "2026-08-26",
+  "target_day_label": "Mi 26.08",
+  "generated_at_utc": "2026-08-26T10:04:09.753072Z",
+  "generated_at_local": "2026-08-26T12:03:19.550667+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "BANDNUDELN | Auberginencreme, Tomatensauce, Ricotta-Topping",
+      "name": "BAGUETTE | Bergkäse, Schmand, Rote Zwiebeln, Senf-Dip, Salat",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SCHWEINESCHNITZEL | Bratensauce, Brokkoli, Spätzle",
-      "price": "6,50 €",
+      "name": "MEATBALLS | Bohnen-Zwiebel-Salat, Ajvar, Fladenbrotecke",
+      "price": "6,10 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "TÜRKISCH FÜR GENIEßER I SÜßKARTOFFEL KUMPIR | Gouda, Tomate, Gurke, Mais, Balkankäse",
-      "price": "5,50 €",
-      "vv": ""
-    },
-    {
-      "category": "Reinhausen",
-      "name": "Add On AYRAN",
-      "price": "1,10 €",
+      "name": "RINDERSTEAK | Kräuterbutter, Speckbohnen, Süßkartoffelstampf",
+      "price": "12,90 €",
       "vv": ""
     }
   ]
