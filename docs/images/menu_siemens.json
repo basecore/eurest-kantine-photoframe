@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-27",
-  "target_day_label": "Do 27.08",
-  "generated_at_utc": "2026-08-27T14:14:46.814828Z",
-  "generated_at_local": "2026-08-27T16:13:27.914145+02:00",
+  "target_date": "2026-08-28",
+  "target_day_label": "Fr 28.08",
+  "generated_at_utc": "2026-08-27T16:18:48.044360Z",
+  "generated_at_local": "2026-08-27T18:17:29.436065+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Aloo Bhaji / Fladenbrot",
+      "name": "Wiener Apfelstrudel / Vanillesoße",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Rinderhackbällchen / Kartoffelpüree / Rahmsoße / Preiselbeeren",
-      "price": "5,90 €",
+      "name": "Putenbraten / Kartoffelknödel / Gemüse",
+      "price": "6,00 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Ente, asiatisch mariniert / Jasminreis / Gebratener Pak Choi / Hoisin Soße",
-      "price": "8,80 €",
+      "name": "Rabas Empanadas, gebacken / Spanische Ofenkartoffeln / Aioli",
+      "price": "5,90 €",
       "vv": ""
     }
   ]

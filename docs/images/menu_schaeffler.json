@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-27",
-  "target_day_label": "Do 27.08",
-  "generated_at_utc": "2026-08-27T14:12:38.263786Z",
-  "generated_at_local": "2026-08-27T16:11:48.397774+02:00",
+  "target_date": "2026-08-28",
+  "target_day_label": "Fr 28.08",
+  "generated_at_utc": "2026-08-27T16:16:39.351358Z",
+  "generated_at_local": "2026-08-27T18:15:48.730647+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,14 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "MUMBAI-CURRY | Süßkartoffel, Tandoori-Blumenkohl, Basmatireis leicht pikant",
+      "name": "MIE-NUDELN RAMEN-STYLE | Tofu, Spinat, Mais",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "LOADED FRIES | Pulled Pork, Chili-Honig, Apfel, Röstzwiebeln",
-      "price": "6,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "TÜRKISCH FÜR GENIEßER I RINDER-KÖFTE TELLER | Tomaten-Bulgur, Salat, Minzjoghurt",
-      "price": "7,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Reinhausen",
-      "name": "Add On AYRAN",
-      "price": "1,10 €",
+      "name": "PICCATA MILANESE I vom Hähnchen mit Nudeln, Tomatensauce, Hartkäse",
+      "price": "7,50 €",
       "vv": ""
     }
   ]

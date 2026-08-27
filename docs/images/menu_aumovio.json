@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-27",
-  "target_day_label": "Do 27.08",
-  "generated_at_utc": "2026-08-27T14:13:27.765477Z",
-  "generated_at_local": "2026-08-27T16:12:38.431707+02:00",
+  "target_date": "2026-08-28",
+  "target_day_label": "Fr 28.08",
+  "generated_at_utc": "2026-08-27T16:17:29.316613Z",
+  "generated_at_local": "2026-08-27T18:16:39.483427+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,14 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "BANDNUDELN | Auberginencreme, Tomatensauce",
+      "name": "MIE-NUDELN RAMEN-STYLE | Tofu, Spinat, Mais",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "HÄHNCHENBRUST | Aioli Dip, Patata Bravas",
-      "price": "5,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Brandlberg",
-      "name": "SCHWEINESCHNITZEL | Bratensauce, Brokkoli, Spätzle",
-      "price": "6,50 €",
-      "vv": ""
-    },
-    {
-      "category": "Niederwinzer",
-      "name": "Add On AYRAN",
-      "price": "1,10 €",
+      "name": "MATJESFILET | Apfel-Zwiebel-Schmand, Dill, Salzkartoffeln",
+      "price": "6,90 €",
       "vv": ""
     }
   ]
