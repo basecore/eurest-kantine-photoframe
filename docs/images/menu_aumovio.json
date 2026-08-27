@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W35",
   "kw": 35,
-  "target_date": "2026-08-26",
-  "target_day_label": "Mi 26.08",
-  "generated_at_utc": "2026-08-26T10:04:59.926038Z",
-  "generated_at_local": "2026-08-26T12:04:09.886480+02:00",
+  "target_date": "2026-08-27",
+  "target_day_label": "Do 27.08",
+  "generated_at_utc": "2026-08-27T14:13:27.765477Z",
+  "generated_at_local": "2026-08-27T16:12:38.431707+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "RISOTTO | Mascarpone, Rucola, Orange",
+      "name": "BANDNUDELN | Auberginencreme, Tomatensauce",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "MUMBAI-CURRY | Süßkartoffel, Tandoori-Blumenkohl, Basmatireis",
-      "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Brandlberg",
-      "name": "LOADED FRIES | Pulled Pork, Chili-Honig, Apfel, Röstzwiebeln",
-      "price": "6,90 €",
+      "name": "HÄHNCHENBRUST | Aioli Dip, Patata Bravas",
+      "price": "5,90 €",
       "vv": ""
     },
     {
-      "category": "Königswiesen",
-      "name": "TÜRKISCH FÜR GENIEßER I RINDER-KÖFTE TELLER | Tomaten-Bulgur, Salat, Minzjoghurt",
-      "price": "7,90 €",
+      "category": "Brandlberg",
+      "name": "SCHWEINESCHNITZEL | Bratensauce, Brokkoli, Spätzle",
+      "price": "6,50 €",
       "vv": ""
     },
     {
