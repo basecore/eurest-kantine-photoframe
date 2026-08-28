@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W35",
-  "kw": 35,
-  "target_date": "2026-08-28",
-  "target_day_label": "Fr 28.08",
-  "generated_at_utc": "2026-08-27T19:55:14.593701Z",
-  "generated_at_local": "2026-08-27T21:54:23.019687+02:00",
+  "label": "2026-W36",
+  "kw": 36,
+  "target_date": "2026-08-31",
+  "target_day_label": "Mo 31.08",
+  "generated_at_utc": "2026-08-28T20:58:24.630391Z",
+  "generated_at_local": "2026-08-28T22:57:33.597631+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,14 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "MIE-NUDELN RAMEN-STYLE | Tofu, Spinat, Mais",
+      "name": "SEMMELKNÖDEL | Schnittlauch-Veloute, gebratene Champignons",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "PICCATA MILANESE I vom Hähnchen mit Nudeln, Tomatensauce, Hartkäse",
+      "name": "PIZZA PESCE | Frutti di Mare, Knoblauch, Oregano",
       "price": "7,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "SCHWEINERÜCKEN | Rahmkohlrabi, Kroketten",
+      "price": "5,10 €",
       "vv": ""
     }
   ]
