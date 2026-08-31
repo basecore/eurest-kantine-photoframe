@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-08-31",
-  "target_day_label": "Mo 31.08",
-  "generated_at_utc": "2026-08-28T20:59:15.668021Z",
-  "generated_at_local": "2026-08-28T22:58:24.803070+02:00",
+  "target_date": "2026-09-01",
+  "target_day_label": "Di 01.09",
+  "generated_at_utc": "2026-08-31T17:09:48.640746Z",
+  "generated_at_local": "2026-08-31T19:08:59.539428+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SEMMELKNÖDEL | Schnittlauch-Veloute, gebratene Champignons",
+      "name": "FUSILLI | Mandel-Veloute, Brokkoli",
       "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Weichs",
-      "name": "VEGANE FILETSTREIFEN | Teriyaki-Style, Pak-Choi, Basmatireis",
-      "price": "8,90 €",
       "vv": "VG"
     },
     {
+      "category": "Weichs",
+      "name": "BURGER VEGGI | Knusperpatty, Mayo, Sweet-Chili, Salat, Farmersalat",
+      "price": "6,50 €",
+      "vv": "V"
+    },
+    {
       "category": "Brandlberg",
-      "name": "HÄHNCHENKEULE | Karotten, Rosmarindrillinge, Bratensauce",
-      "price": "5,50 €",
+      "name": "MIE-NUDELN-RAMEN-STYLE | Schweinebauch, Mie-Nudeln, Edamame, Ei",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "PIZZA PESCE | Frutti di Mare, Knoblauch, Oregano",
-      "price": "7,50 €",
+      "name": "ATHENA-SALAT | Putengyros, Hirtenkäse, Joghurtdressing, Gurke",
+      "price": "8,90 €",
       "vv": ""
     }
   ]

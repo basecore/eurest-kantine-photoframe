@@ -55,7 +55,7 @@
   },
   {
     "idx": 6,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=menu&location=null&languagetype=null&_=1787950706640",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=menu&location=null&languagetype=null&_=1788196141228",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -64,12 +64,12 @@
   },
   {
     "idx": 7,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dataRevision&location=&languagetype=&_=1787950706641",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dataRevision&location=&languagetype=&_=1788196141229",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
     "score": 18,
-    "body_excerpt": "{\"success\":true,\"content\":{\"global\":104565,\"activemodulsmobile\":1622,\"adresse\":557,\"allergene\":1759,\"appqrzugang\":164,\"auslastungsanzeige\":63,\"bonusaktion\":4,\"bonuscode\":4,\"device\":1,\"ernaehrungsampel\":1,\"gerichtfeedback\":147,\"gerichtkategorie\":1824,\"gerichtmerkmal\":124,\"ifeedbacksettings\":178,\"impressum\":42,\"ipadgdw\":4,\"ipadgericht\":4,\"kontakt\":567,\"land\":1,\"languagetype\":1,\"meetandeatsettings\":1,\"mobileeinstellungen\":17,\"modul\":1,\"news\":3665,\"orderconfiguration\":1,\"outlet\":12167,\"rezept\":1,\"rezeptkategorie\":1,\"speiseplan\":1,\"speiseplanadvanced\":17995,\"speiseplanadvancedgericht\":36504,\"speiseplankategorie\":1,\"speiseplanmasterdata\":46,\"standort\":259,\"tischreservierungsettings\":3,\"weblink\":156,\"zusatzinformationen\":801537,\"zusatzstoffe\":694,\"forceSynch\":4}}"
+    "body_excerpt": "{\"success\":true,\"content\":{\"global\":104731,\"activemodulsmobile\":1622,\"adresse\":558,\"allergene\":1771,\"appqrzugang\":164,\"auslastungsanzeige\":63,\"bonusaktion\":4,\"bonuscode\":4,\"device\":1,\"ernaehrungsampel\":1,\"gerichtfeedback\":147,\"gerichtkategorie\":1831,\"gerichtmerkmal\":124,\"ifeedbacksettings\":178,\"impressum\":42,\"ipadgdw\":4,\"ipadgericht\":4,\"kontakt\":568,\"land\":1,\"languagetype\":1,\"meetandeatsettings\":1,\"mobileeinstellungen\":17,\"modul\":1,\"news\":3667,\"orderconfiguration\":1,\"outlet\":12186,\"rezept\":1,\"rezeptkategorie\":1,\"speiseplan\":1,\"speiseplanadvanced\":18031,\"speiseplanadvancedgericht\":36552,\"speiseplankategorie\":1,\"speiseplanmasterdata\":46,\"standort\":260,\"tischreservierungsettings\":3,\"weblink\":156,\"zusatzinformationen\":801599,\"zusatzstoffe\":698,\"forceSynch\":4}}"
   },
   {
     "idx": 8,
@@ -82,7 +82,7 @@
   },
   {
     "idx": 9,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imageScalingTypes&location=&languagetype=&_=1787950706642",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imageScalingTypes&location=&languagetype=&_=1788196141230",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -91,7 +91,7 @@
   },
   {
     "idx": 10,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mobilesettings&location=&languagetype=&_=1787950706644",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mobilesettings&location=&languagetype=&_=1788196141232",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -100,7 +100,7 @@
   },
   {
     "idx": 11,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=language&location=&languagetype=&_=1787950706646",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=language&location=&languagetype=&_=1788196141234",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -109,16 +109,7 @@
   },
   {
     "idx": 12,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settingsGlobal&location=&languagetype=&platform=5&_=1787950706648",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 2,
-    "body_excerpt": "{\"success\":true,\"content\":[{\"name\":\"SHARE_MAIL_SEND_FORMAT_HTML\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_SHOW_OUTLET_SELECTION_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_DEFAULT_NAVIGATION_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"LOCATION_SELECTION\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"SHOW_POSITIONFINDER_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON_CICOLOR\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_SHOW_SINGLE_OUTLET\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"CONTACT_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"LEGAL_SHOW_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"VOTE_SHOW_WINNER_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WORKLOAD_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DATETIMEPICKER_FORECAST\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"21\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_MAX_NUMBER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"CAROUSEL_SLIDE_INTERVAL_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"fa-star\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_TEXT_MAX_INPUT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"200\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_PUBLIC_MODE_TIMEOUT_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"60\",\"organizationalUnitId\":null}]},{\"name\":\"APP_START_DASHBOARD_FAVOUTLET_CHECK\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_TIMESLOT_WARN_TIME_MINUTES\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"10\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_SHOW_NONORDERABLE_MENUS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"OUTLET_SHOW_ROUTE_EXTERN\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_RADIUS_DEFAULT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"30\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_IN_RADIUS_ONLY\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER_OPTION1\",\"type\":\"GLOBAL\",\"settings\":[{\"val"
-  },
-  {
-    "idx": 13,
-    "url": "https://eurest.webspeiseplan.de/translation.json?_=1787950706643",
+    "url": "https://eurest.webspeiseplan.de/translation.json?_=1788196141231",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -126,8 +117,17 @@
     "body_excerpt": "{\n  \"success\": \"true\",\n  \"content\":\n  [\n    {\n      \"translation_key\": \"gui_label_allergens_filter\",\n      \"lang_key\": \"1\",\n      \"value\": \"ALLERGENFILTER\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_filter\",\n      \"lang_key\": \"2\",\n      \"value\": \"ALLERGENS FILTER\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_popup_close\",\n      \"lang_key\": \"1\",\n      \"value\": \"SCHLIESSEN\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_popup_close\",\n      \"lang_key\": \"2\",\n      \"value\": \"CLOSE\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_reset\",\n      \"lang_key\": \"1\",\n      \"value\": \"ZURÜCKSETZEN\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_reset\",\n      \"lang_key\": \"2\",\n      \"value\": \"RESET\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_active\",\n      \"lang_key\": \"1\",\n      \"value\": \"aktiv\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_active\",\n      \"lang_key\": \"2\",\n      \"value\": \"active\"\n    },\n    {\n      \"translation_key\": \"gui_label_monday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Montag\"\n    },\n    {\n      \"translation_key\": \"gui_label_monday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Monday\"\n    },\n    {\n      \"translation_key\": \"gui_label_tuesday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Dienstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_tuesday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Tuesday\"\n    },\n    {\n      \"translation_key\": \"gui_label_wednesday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Mittwoch\"\n    },\n    {\n      \"translation_key\": \"gui_label_wednesday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Wednesday\"\n    },\n    {\n      \"translation_key\": \"gui_label_thursday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Donnerstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_thursday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Thursday\"\n    },\n    {\n      \"translation_key\": \"gui_label_friday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Freitag\"\n    },\n    {\n      \"translation_key\": \"gui_label_friday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Friday\"\n    },\n    {\n      \"translation_key\": \"gui_label_saturday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Samstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_saturday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Saturday\"\n    },\n    {\n      \"translation_key\": \"gui_label_sunday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Sonntag\"\n    },\n    {\n      \"translation_key\": \"gui_label_sunday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Sunday\"\n    },\n    {\n      \"translation_key\": \"gui_label_information\",\n      \"lang_key\": \"1\",\n      \"value\": \"Information\"\n    },\n    {\n      \"translation_key\": \"gui_label_information\",\n      \"lang_key\": \"2\",\n      \"value\": \"Information\"\n    },\n    {\n      \"translation_key\": \"gui_label_price\",\n      \"lang_key\": \"1\",\n      \"value\": \"Preis\"\n    },\n    {\n      \"translation_key\": \"gui_label_price\",\n      \"lang_key\": \"2\",\n      \"value\": \"Price\"\n    },\n    {\n      \"translation_key\": \"gui_label_guest_price\",\n      \"lan"
   },
   {
+    "idx": 13,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settingsGlobal&location=&languagetype=&platform=5&_=1788196141236",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":[{\"name\":\"SHARE_MAIL_SEND_FORMAT_HTML\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_SHOW_OUTLET_SELECTION_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_DEFAULT_NAVIGATION_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"LOCATION_SELECTION\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"SHOW_POSITIONFINDER_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON_CICOLOR\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_SHOW_SINGLE_OUTLET\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"CONTACT_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"LEGAL_SHOW_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"VOTE_SHOW_WINNER_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WORKLOAD_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DATETIMEPICKER_FORECAST\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"21\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_MAX_NUMBER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"CAROUSEL_SLIDE_INTERVAL_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"fa-star\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_TEXT_MAX_INPUT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"200\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_PUBLIC_MODE_TIMEOUT_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"60\",\"organizationalUnitId\":null}]},{\"name\":\"APP_START_DASHBOARD_FAVOUTLET_CHECK\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_TIMESLOT_WARN_TIME_MINUTES\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"10\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_SHOW_NONORDERABLE_MENUS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"OUTLET_SHOW_ROUTE_EXTERN\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_RADIUS_DEFAULT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"30\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_IN_RADIUS_ONLY\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER_OPTION1\",\"type\":\"GLOBAL\",\"settings\":[{\"val"
+  },
+  {
     "idx": 14,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=location&location=&languagetype=&_=1787950706645",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=location&location=&languagetype=&_=1788196141233",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -136,7 +136,7 @@
   },
   {
     "idx": 15,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=outlet&location=&languagetype=&_=1787950706647",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=outlet&location=&languagetype=&_=1788196141235",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -181,25 +181,16 @@
   },
   {
     "idx": 20,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dataRevision&location=8950&languagetype=2&_=1787950706649",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dataRevision&location=8950&languagetype=2&_=1788196141237",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
     "score": 18,
-    "body_excerpt": "{\"success\":true,\"content\":{\"global\":104565,\"activemodulsmobile\":1622,\"adresse\":557,\"allergene\":1759,\"appqrzugang\":164,\"auslastungsanzeige\":63,\"bonusaktion\":4,\"bonuscode\":4,\"device\":1,\"ernaehrungsampel\":1,\"gerichtfeedback\":147,\"gerichtkategorie\":1824,\"gerichtmerkmal\":124,\"ifeedbacksettings\":178,\"impressum\":42,\"ipadgdw\":4,\"ipadgericht\":4,\"kontakt\":567,\"land\":1,\"languagetype\":1,\"meetandeatsettings\":1,\"mobileeinstellungen\":17,\"modul\":1,\"news\":3665,\"orderconfiguration\":1,\"outlet\":12167,\"rezept\":1,\"rezeptkategorie\":1,\"speiseplan\":1,\"speiseplanadvanced\":17995,\"speiseplanadvancedgericht\":36504,\"speiseplankategorie\":1,\"speiseplanmasterdata\":46,\"standort\":259,\"tischreservierungsettings\":3,\"weblink\":156,\"zusatzinformationen\":801537,\"zusatzstoffe\":694,\"forceSynch\":4}}"
+    "body_excerpt": "{\"success\":true,\"content\":{\"global\":104731,\"activemodulsmobile\":1622,\"adresse\":558,\"allergene\":1771,\"appqrzugang\":164,\"auslastungsanzeige\":63,\"bonusaktion\":4,\"bonuscode\":4,\"device\":1,\"ernaehrungsampel\":1,\"gerichtfeedback\":147,\"gerichtkategorie\":1831,\"gerichtmerkmal\":124,\"ifeedbacksettings\":178,\"impressum\":42,\"ipadgdw\":4,\"ipadgericht\":4,\"kontakt\":568,\"land\":1,\"languagetype\":1,\"meetandeatsettings\":1,\"mobileeinstellungen\":17,\"modul\":1,\"news\":3667,\"orderconfiguration\":1,\"outlet\":12186,\"rezept\":1,\"rezeptkategorie\":1,\"speiseplan\":1,\"speiseplanadvanced\":18031,\"speiseplanadvancedgericht\":36552,\"speiseplankategorie\":1,\"speiseplanmasterdata\":46,\"standort\":260,\"tischreservierungsettings\":3,\"weblink\":156,\"zusatzinformationen\":801599,\"zusatzstoffe\":698,\"forceSynch\":4}}"
   },
   {
     "idx": 21,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imageScalingTypes&location=8950&languagetype=2&_=1787950706650",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 2,
-    "body_excerpt": "{\"success\":true,\"content\":[{\"id\":1,\"landscapeWidth\":600,\"name\":\"small\",\"portraitHeight\":1024,\"prefix\":\"small_\"},{\"id\":2,\"landscapeWidth\":800,\"name\":\"medium\",\"portraitHeight\":1280,\"prefix\":\"medium_\"},{\"id\":3,\"landscapeWidth\":1080,\"name\":\"large\",\"portraitHeight\":1920,\"prefix\":\"large_\"},{\"id\":4,\"landscapeWidth\":1080,\"name\":\"Max Bildformat Bilder ohne Scaling Definition\",\"portraitHeight\":1920,\"prefix\":\"\"},{\"id\":5,\"landscapeWidth\":1920,\"name\":\"Bildformat large Webspeiseplan\",\"portraitHeight\":1080,\"prefix\":\"wsp_large_\"},{\"id\":6,\"landscapeWidth\":2048,\"name\":\"Bildformat 2k Webspeiseplan\",\"portraitHeight\":1536,\"prefix\":\"wsp_2k_\"},{\"id\":7,\"landscapeWidth\":3840,\"name\":\"Bildformat UHD Webspeiseplan\",\"portraitHeight\":2160,\"prefix\":\"wsp_uhd_\"},{\"id\":8,\"landscapeWidth\":3872,\"name\":\"Bildformat DS\",\"portraitHeight\":2576,\"prefix\":\"ds_\"}]}"
-  },
-  {
-    "idx": 22,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imprint&location=8950&languagetype=2&_=1787950706653",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imprint&location=8950&languagetype=2&_=1788196141241",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -207,8 +198,17 @@
     "body_excerpt": "{\"success\":true,\"content\":null}"
   },
   {
+    "idx": 22,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imageScalingTypes&location=8950&languagetype=2&_=1788196141238",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":[{\"id\":1,\"landscapeWidth\":600,\"name\":\"small\",\"portraitHeight\":1024,\"prefix\":\"small_\"},{\"id\":2,\"landscapeWidth\":800,\"name\":\"medium\",\"portraitHeight\":1280,\"prefix\":\"medium_\"},{\"id\":3,\"landscapeWidth\":1080,\"name\":\"large\",\"portraitHeight\":1920,\"prefix\":\"large_\"},{\"id\":4,\"landscapeWidth\":1080,\"name\":\"Max Bildformat Bilder ohne Scaling Definition\",\"portraitHeight\":1920,\"prefix\":\"\"},{\"id\":5,\"landscapeWidth\":1920,\"name\":\"Bildformat large Webspeiseplan\",\"portraitHeight\":1080,\"prefix\":\"wsp_large_\"},{\"id\":6,\"landscapeWidth\":2048,\"name\":\"Bildformat 2k Webspeiseplan\",\"portraitHeight\":1536,\"prefix\":\"wsp_2k_\"},{\"id\":7,\"landscapeWidth\":3840,\"name\":\"Bildformat UHD Webspeiseplan\",\"portraitHeight\":2160,\"prefix\":\"wsp_uhd_\"},{\"id\":8,\"landscapeWidth\":3872,\"name\":\"Bildformat DS\",\"portraitHeight\":2576,\"prefix\":\"ds_\"}]}"
+  },
+  {
     "idx": 23,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mobilesettings&location=8950&languagetype=2&_=1787950706652",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mobilesettings&location=8950&languagetype=2&_=1788196141240",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -217,7 +217,7 @@
   },
   {
     "idx": 24,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=moduls&location=8950&languagetype=2&platform=5&_=1787950706654",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=moduls&location=8950&languagetype=2&platform=5&_=1788196141242",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -226,7 +226,7 @@
   },
   {
     "idx": 25,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=language&location=8950&languagetype=2&_=1787950706656",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=language&location=8950&languagetype=2&_=1788196141244",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -235,7 +235,7 @@
   },
   {
     "idx": 26,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settings&location=8950&languagetype=2&platform=5&_=1787950706658",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settings&location=8950&languagetype=2&platform=5&_=1788196141246",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -244,16 +244,7 @@
   },
   {
     "idx": 27,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settingsGlobal&location=8950&languagetype=2&platform=5&_=1787950706659",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 2,
-    "body_excerpt": "{\"success\":true,\"content\":[{\"name\":\"SHARE_MAIL_SEND_FORMAT_HTML\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_SHOW_OUTLET_SELECTION_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_DEFAULT_NAVIGATION_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"LOCATION_SELECTION\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"SHOW_POSITIONFINDER_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON_CICOLOR\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_SHOW_SINGLE_OUTLET\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"CONTACT_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"LEGAL_SHOW_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"VOTE_SHOW_WINNER_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WORKLOAD_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DATETIMEPICKER_FORECAST\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"21\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_MAX_NUMBER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"CAROUSEL_SLIDE_INTERVAL_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"fa-star\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_TEXT_MAX_INPUT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"200\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_PUBLIC_MODE_TIMEOUT_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"60\",\"organizationalUnitId\":null}]},{\"name\":\"APP_START_DASHBOARD_FAVOUTLET_CHECK\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_TIMESLOT_WARN_TIME_MINUTES\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"10\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_SHOW_NONORDERABLE_MENUS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"OUTLET_SHOW_ROUTE_EXTERN\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_RADIUS_DEFAULT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"30\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_IN_RADIUS_ONLY\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER_OPTION1\",\"type\":\"GLOBAL\",\"settings\":[{\"val"
-  },
-  {
-    "idx": 28,
-    "url": "https://eurest.webspeiseplan.de/translation.json?_=1787950706651",
+    "url": "https://eurest.webspeiseplan.de/translation.json?_=1788196141239",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -261,8 +252,17 @@
     "body_excerpt": "{\n  \"success\": \"true\",\n  \"content\":\n  [\n    {\n      \"translation_key\": \"gui_label_allergens_filter\",\n      \"lang_key\": \"1\",\n      \"value\": \"ALLERGENFILTER\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_filter\",\n      \"lang_key\": \"2\",\n      \"value\": \"ALLERGENS FILTER\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_popup_close\",\n      \"lang_key\": \"1\",\n      \"value\": \"SCHLIESSEN\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_popup_close\",\n      \"lang_key\": \"2\",\n      \"value\": \"CLOSE\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_reset\",\n      \"lang_key\": \"1\",\n      \"value\": \"ZURÜCKSETZEN\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_reset\",\n      \"lang_key\": \"2\",\n      \"value\": \"RESET\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_active\",\n      \"lang_key\": \"1\",\n      \"value\": \"aktiv\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_active\",\n      \"lang_key\": \"2\",\n      \"value\": \"active\"\n    },\n    {\n      \"translation_key\": \"gui_label_monday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Montag\"\n    },\n    {\n      \"translation_key\": \"gui_label_monday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Monday\"\n    },\n    {\n      \"translation_key\": \"gui_label_tuesday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Dienstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_tuesday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Tuesday\"\n    },\n    {\n      \"translation_key\": \"gui_label_wednesday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Mittwoch\"\n    },\n    {\n      \"translation_key\": \"gui_label_wednesday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Wednesday\"\n    },\n    {\n      \"translation_key\": \"gui_label_thursday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Donnerstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_thursday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Thursday\"\n    },\n    {\n      \"translation_key\": \"gui_label_friday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Freitag\"\n    },\n    {\n      \"translation_key\": \"gui_label_friday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Friday\"\n    },\n    {\n      \"translation_key\": \"gui_label_saturday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Samstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_saturday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Saturday\"\n    },\n    {\n      \"translation_key\": \"gui_label_sunday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Sonntag\"\n    },\n    {\n      \"translation_key\": \"gui_label_sunday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Sunday\"\n    },\n    {\n      \"translation_key\": \"gui_label_information\",\n      \"lang_key\": \"1\",\n      \"value\": \"Information\"\n    },\n    {\n      \"translation_key\": \"gui_label_information\",\n      \"lang_key\": \"2\",\n      \"value\": \"Information\"\n    },\n    {\n      \"translation_key\": \"gui_label_price\",\n      \"lang_key\": \"1\",\n      \"value\": \"Preis\"\n    },\n    {\n      \"translation_key\": \"gui_label_price\",\n      \"lang_key\": \"2\",\n      \"value\": \"Price\"\n    },\n    {\n      \"translation_key\": \"gui_label_guest_price\",\n      \"lan"
   },
   {
+    "idx": 28,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settingsGlobal&location=8950&languagetype=2&platform=5&_=1788196141247",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":[{\"name\":\"SHARE_MAIL_SEND_FORMAT_HTML\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_SHOW_OUTLET_SELECTION_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_DEFAULT_NAVIGATION_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"LOCATION_SELECTION\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"SHOW_POSITIONFINDER_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON_CICOLOR\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_SHOW_SINGLE_OUTLET\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"CONTACT_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"LEGAL_SHOW_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"VOTE_SHOW_WINNER_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WORKLOAD_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DATETIMEPICKER_FORECAST\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"21\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_MAX_NUMBER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"CAROUSEL_SLIDE_INTERVAL_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"fa-star\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_TEXT_MAX_INPUT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"200\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_PUBLIC_MODE_TIMEOUT_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"60\",\"organizationalUnitId\":null}]},{\"name\":\"APP_START_DASHBOARD_FAVOUTLET_CHECK\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_TIMESLOT_WARN_TIME_MINUTES\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"10\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_SHOW_NONORDERABLE_MENUS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"OUTLET_SHOW_ROUTE_EXTERN\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_RADIUS_DEFAULT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"30\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_IN_RADIUS_ONLY\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER_OPTION1\",\"type\":\"GLOBAL\",\"settings\":[{\"val"
+  },
+  {
     "idx": 29,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=location&location=8950&languagetype=2&_=1787950706655",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=location&location=8950&languagetype=2&_=1788196141243",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -271,7 +271,7 @@
   },
   {
     "idx": 30,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=outlet&location=8950&languagetype=2&_=1787950706657",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=outlet&location=8950&languagetype=2&_=1788196141245",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -280,16 +280,16 @@
   },
   {
     "idx": 31,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dataRevision&location=8950&languagetype=1&_=1787950706660",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dataRevision&location=8950&languagetype=1&_=1788196141248",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
     "score": 18,
-    "body_excerpt": "{\"success\":true,\"content\":{\"global\":104565,\"activemodulsmobile\":1622,\"adresse\":557,\"allergene\":1759,\"appqrzugang\":164,\"auslastungsanzeige\":63,\"bonusaktion\":4,\"bonuscode\":4,\"device\":1,\"ernaehrungsampel\":1,\"gerichtfeedback\":147,\"gerichtkategorie\":1824,\"gerichtmerkmal\":124,\"ifeedbacksettings\":178,\"impressum\":42,\"ipadgdw\":4,\"ipadgericht\":4,\"kontakt\":567,\"land\":1,\"languagetype\":1,\"meetandeatsettings\":1,\"mobileeinstellungen\":17,\"modul\":1,\"news\":3665,\"orderconfiguration\":1,\"outlet\":12167,\"rezept\":1,\"rezeptkategorie\":1,\"speiseplan\":1,\"speiseplanadvanced\":17995,\"speiseplanadvancedgericht\":36504,\"speiseplankategorie\":1,\"speiseplanmasterdata\":46,\"standort\":259,\"tischreservierungsettings\":3,\"weblink\":156,\"zusatzinformationen\":801537,\"zusatzstoffe\":694,\"forceSynch\":4}}"
+    "body_excerpt": "{\"success\":true,\"content\":{\"global\":104731,\"activemodulsmobile\":1622,\"adresse\":558,\"allergene\":1771,\"appqrzugang\":164,\"auslastungsanzeige\":63,\"bonusaktion\":4,\"bonuscode\":4,\"device\":1,\"ernaehrungsampel\":1,\"gerichtfeedback\":147,\"gerichtkategorie\":1831,\"gerichtmerkmal\":124,\"ifeedbacksettings\":178,\"impressum\":42,\"ipadgdw\":4,\"ipadgericht\":4,\"kontakt\":568,\"land\":1,\"languagetype\":1,\"meetandeatsettings\":1,\"mobileeinstellungen\":17,\"modul\":1,\"news\":3667,\"orderconfiguration\":1,\"outlet\":12186,\"rezept\":1,\"rezeptkategorie\":1,\"speiseplan\":1,\"speiseplanadvanced\":18031,\"speiseplanadvancedgericht\":36552,\"speiseplankategorie\":1,\"speiseplanmasterdata\":46,\"standort\":260,\"tischreservierungsettings\":3,\"weblink\":156,\"zusatzinformationen\":801599,\"zusatzstoffe\":698,\"forceSynch\":4}}"
   },
   {
     "idx": 32,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imageScalingTypes&location=8950&languagetype=1&_=1787950706661",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imageScalingTypes&location=8950&languagetype=1&_=1788196141249",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -298,16 +298,7 @@
   },
   {
     "idx": 33,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mobilesettings&location=8950&languagetype=1&_=1787950706663",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 10,
-    "body_excerpt": "{\"success\":true,\"content\":{\"id\":1,\"newsZeitraumInTagen\":30,\"speiseplanAdvancedFutureWeeks\":2,\"impressumKonkaappsRichtext\":\"<div><h2>Entwickler Impressum<\\/h2><h3>menio GmbH<\\/h3><div>Alexanderstra\\u00dfe 3<\\/div><div>30159 Hannover<\\/div><div>eMail: hello@menio.com<\\/div><div>&nbsp;<\\/div><div>Bildnachweis<\\/div><div>\\u00a9 Adobe Stock<\\/div><div><br><\\/div><div>\\r\\n<p><b>Barrierefreiheit und Inklusion in unserer App<\\/b><\\/p>\\r\\n<p>Die Entwicklung unserer App erfolgt mit einem grunds\\u00e4tzlichen \\r\\nVerst\\u00e4ndnis f\\u00fcr die unterschiedlichen Bed\\u00fcrfnisse aller Menschen \\u2013 \\r\\ninsbesondere auch f\\u00fcr Menschen mit Behinderungen. Dabei verfolgen wir \\r\\ndas Ziel, unsere L\\u00f6sungen so zug\\u00e4nglich wie m\\u00f6glich zu gestalten, \\r\\nunabh\\u00e4ngig von individuellen Einschr\\u00e4nkungen.<\\/p><p>Bereits heute ber\\u00fccksichtigen wir bei der Konzeption und Umsetzung\\u00a0\\r\\nverschiedene Ma\\u00dfnahmen zur Verbesserung der Bedienbarkeit. Dazu geh\\u00f6ren \\r\\nu.\\u202fa. kontrastreiche Darstellungen, skalierbare Schriftgr\\u00f6\\u00dfen und eine \\r\\nm\\u00f6glichst klare Navigationsstruktur. Unsere langfristige Zielsetzung ist\\r\\n\\u00a0eine bestm\\u00f6gliche Integration verf\\u00fcgbarer Systemfunktionen zur \\r\\nUnterst\\u00fctzung der Barrierefreiheit.<\\/p><p>Wir verstehen Barrierefreiheit nicht nur als technische Anforderung, \\r\\nsondern als Ausdruck von Respekt, Teilhabe und Nutzerfreundlichkeit f\\u00fcr \\r\\nalle. Zugleich ist uns bewusst, dass Barrierefreiheit auch rechtliche \\r\\nRelevanz besitzt \\u2013 daher achten wir auf eine kontinuierliche Pr\\u00fcfung und\\r\\n\\u00a0Optimierung im Rahmen unserer technischen und organisatorischen \\r\\nM\\u00f6glichkeiten.<\\/p><p>Die Umsetzung erfolgt schrittweise und ressourcenschonend, wobei \\r\\nEvaluierungen idealerweise durch Dritte erfolgen, die nicht direkt an \\r\\nder Entwicklung beteiligt sind.<\\/p><br><\\/div><\\/div>\",\"useZugangscode\":true,\"trackingActive\":true,\"trackingPackageSize\":5,\"trackingUserSetable\":false,\"erforderteAppStoreVersion\":\"3.50.1\",\"appstoreLink\":\"https:\\/\\/apps.apple.com\\/us\\/app\\/eurest-de\\/id1579700740\",\"iphoneReason\":\"Eine neue Versionen der App steht zur Verf\\u00fcgung. Bitte laden Sie sich die neue App aus dem App Store.\",\"erforderteGoogleplayStoreVersion\":\"3.50.1\",\"googlePlaystoreLink\":\"https:\\/\\/play.google.com\\/store\\/apps\\/details?id=de.konkaapps.mittagstisch.eurest\",\"androidReason\":\"Eine neue Versionen der App steht zur Verf\\u00fcgung. Bitte laden Sie sich die neue App aus dem Play Store.\",\"refreshTimerSeconds\":300,\"teaserAppVersion\":null,\"teasertText\":null,\"checkJailbreak\":false,\"pushActive\":false,\"resourcesBaseURL\":\"https:\\/\\/eurest.konkaapps.de\\/\\/kms-resources\\/\",\"permaLink\":\"https:\\/\\/eurest.konkaapps.de\\/kms-mt-link\\/x\\/6450681c14d585c5d79410897c786aa1\"}}"
-  },
-  {
-    "idx": 34,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imprint&location=8950&languagetype=1&_=1787950706664",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imprint&location=8950&languagetype=1&_=1788196141252",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -315,8 +306,17 @@
     "body_excerpt": "{\"success\":true,\"content\":null}"
   },
   {
+    "idx": 34,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mobilesettings&location=8950&languagetype=1&_=1788196141251",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 10,
+    "body_excerpt": "{\"success\":true,\"content\":{\"id\":1,\"newsZeitraumInTagen\":30,\"speiseplanAdvancedFutureWeeks\":2,\"impressumKonkaappsRichtext\":\"<div><h2>Entwickler Impressum<\\/h2><h3>menio GmbH<\\/h3><div>Alexanderstra\\u00dfe 3<\\/div><div>30159 Hannover<\\/div><div>eMail: hello@menio.com<\\/div><div>&nbsp;<\\/div><div>Bildnachweis<\\/div><div>\\u00a9 Adobe Stock<\\/div><div><br><\\/div><div>\\r\\n<p><b>Barrierefreiheit und Inklusion in unserer App<\\/b><\\/p>\\r\\n<p>Die Entwicklung unserer App erfolgt mit einem grunds\\u00e4tzlichen \\r\\nVerst\\u00e4ndnis f\\u00fcr die unterschiedlichen Bed\\u00fcrfnisse aller Menschen \\u2013 \\r\\ninsbesondere auch f\\u00fcr Menschen mit Behinderungen. Dabei verfolgen wir \\r\\ndas Ziel, unsere L\\u00f6sungen so zug\\u00e4nglich wie m\\u00f6glich zu gestalten, \\r\\nunabh\\u00e4ngig von individuellen Einschr\\u00e4nkungen.<\\/p><p>Bereits heute ber\\u00fccksichtigen wir bei der Konzeption und Umsetzung\\u00a0\\r\\nverschiedene Ma\\u00dfnahmen zur Verbesserung der Bedienbarkeit. Dazu geh\\u00f6ren \\r\\nu.\\u202fa. kontrastreiche Darstellungen, skalierbare Schriftgr\\u00f6\\u00dfen und eine \\r\\nm\\u00f6glichst klare Navigationsstruktur. Unsere langfristige Zielsetzung ist\\r\\n\\u00a0eine bestm\\u00f6gliche Integration verf\\u00fcgbarer Systemfunktionen zur \\r\\nUnterst\\u00fctzung der Barrierefreiheit.<\\/p><p>Wir verstehen Barrierefreiheit nicht nur als technische Anforderung, \\r\\nsondern als Ausdruck von Respekt, Teilhabe und Nutzerfreundlichkeit f\\u00fcr \\r\\nalle. Zugleich ist uns bewusst, dass Barrierefreiheit auch rechtliche \\r\\nRelevanz besitzt \\u2013 daher achten wir auf eine kontinuierliche Pr\\u00fcfung und\\r\\n\\u00a0Optimierung im Rahmen unserer technischen und organisatorischen \\r\\nM\\u00f6glichkeiten.<\\/p><p>Die Umsetzung erfolgt schrittweise und ressourcenschonend, wobei \\r\\nEvaluierungen idealerweise durch Dritte erfolgen, die nicht direkt an \\r\\nder Entwicklung beteiligt sind.<\\/p><br><\\/div><\\/div>\",\"useZugangscode\":true,\"trackingActive\":true,\"trackingPackageSize\":5,\"trackingUserSetable\":false,\"erforderteAppStoreVersion\":\"3.50.1\",\"appstoreLink\":\"https:\\/\\/apps.apple.com\\/us\\/app\\/eurest-de\\/id1579700740\",\"iphoneReason\":\"Eine neue Versionen der App steht zur Verf\\u00fcgung. Bitte laden Sie sich die neue App aus dem App Store.\",\"erforderteGoogleplayStoreVersion\":\"3.50.1\",\"googlePlaystoreLink\":\"https:\\/\\/play.google.com\\/store\\/apps\\/details?id=de.konkaapps.mittagstisch.eurest\",\"androidReason\":\"Eine neue Versionen der App steht zur Verf\\u00fcgung. Bitte laden Sie sich die neue App aus dem Play Store.\",\"refreshTimerSeconds\":300,\"teaserAppVersion\":null,\"teasertText\":null,\"checkJailbreak\":false,\"pushActive\":false,\"resourcesBaseURL\":\"https:\\/\\/eurest.konkaapps.de\\/\\/kms-resources\\/\",\"permaLink\":\"https:\\/\\/eurest.konkaapps.de\\/kms-mt-link\\/x\\/6450681c14d585c5d79410897c786aa1\"}}"
+  },
+  {
     "idx": 35,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=language&location=8950&languagetype=1&_=1787950706667",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=language&location=8950&languagetype=1&_=1788196141255",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -325,7 +325,7 @@
   },
   {
     "idx": 36,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=moduls&location=8950&languagetype=1&platform=5&_=1787950706665",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=moduls&location=8950&languagetype=1&platform=5&_=1788196141253",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -334,7 +334,7 @@
   },
   {
     "idx": 37,
-    "url": "https://eurest.webspeiseplan.de/translation.json?_=1787950706662",
+    "url": "https://eurest.webspeiseplan.de/translation.json?_=1788196141250",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -343,7 +343,7 @@
   },
   {
     "idx": 38,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settings&location=8950&languagetype=1&platform=5&_=1787950706669",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settings&location=8950&languagetype=1&platform=5&_=1788196141257",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -352,7 +352,7 @@
   },
   {
     "idx": 39,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settingsGlobal&location=8950&languagetype=1&platform=5&_=1787950706670",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settingsGlobal&location=8950&languagetype=1&platform=5&_=1788196141258",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -361,7 +361,7 @@
   },
   {
     "idx": 40,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=location&location=8950&languagetype=1&_=1787950706666",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=location&location=8950&languagetype=1&_=1788196141254",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -370,7 +370,7 @@
   },
   {
     "idx": 41,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=outlet&location=8950&languagetype=1&_=1787950706668",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=outlet&location=8950&languagetype=1&_=1788196141256",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -397,16 +397,7 @@
   },
   {
     "idx": 44,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dataRevision&location=8950&languagetype=1&_=1787950706672",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 18,
-    "body_excerpt": "{\"success\":true,\"content\":{\"global\":104565,\"activemodulsmobile\":1622,\"adresse\":557,\"allergene\":1759,\"appqrzugang\":164,\"auslastungsanzeige\":63,\"bonusaktion\":4,\"bonuscode\":4,\"device\":1,\"ernaehrungsampel\":1,\"gerichtfeedback\":147,\"gerichtkategorie\":1824,\"gerichtmerkmal\":124,\"ifeedbacksettings\":178,\"impressum\":42,\"ipadgdw\":4,\"ipadgericht\":4,\"kontakt\":567,\"land\":1,\"languagetype\":1,\"meetandeatsettings\":1,\"mobileeinstellungen\":17,\"modul\":1,\"news\":3665,\"orderconfiguration\":1,\"outlet\":12167,\"rezept\":1,\"rezeptkategorie\":1,\"speiseplan\":1,\"speiseplanadvanced\":17995,\"speiseplanadvancedgericht\":36504,\"speiseplankategorie\":1,\"speiseplanmasterdata\":46,\"standort\":259,\"tischreservierungsettings\":3,\"weblink\":156,\"zusatzinformationen\":801537,\"zusatzstoffe\":694,\"forceSynch\":4}}"
-  },
-  {
-    "idx": 45,
-    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=2&data%5Bid%5D=64&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1787950706671",
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=2&data%5Bid%5D=64&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1788196141259",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -414,17 +405,26 @@
     "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/outlet\\/wsp_large_OUTLET_LOGO_Eurest_quer_grau_neu.png\"}"
   },
   {
+    "idx": 45,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dataRevision&location=8950&languagetype=1&_=1788196141260",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 18,
+    "body_excerpt": "{\"success\":true,\"content\":{\"global\":104731,\"activemodulsmobile\":1622,\"adresse\":558,\"allergene\":1771,\"appqrzugang\":164,\"auslastungsanzeige\":63,\"bonusaktion\":4,\"bonuscode\":4,\"device\":1,\"ernaehrungsampel\":1,\"gerichtfeedback\":147,\"gerichtkategorie\":1831,\"gerichtmerkmal\":124,\"ifeedbacksettings\":178,\"impressum\":42,\"ipadgdw\":4,\"ipadgericht\":4,\"kontakt\":568,\"land\":1,\"languagetype\":1,\"meetandeatsettings\":1,\"mobileeinstellungen\":17,\"modul\":1,\"news\":3667,\"orderconfiguration\":1,\"outlet\":12186,\"rezept\":1,\"rezeptkategorie\":1,\"speiseplan\":1,\"speiseplanadvanced\":18031,\"speiseplanadvancedgericht\":36552,\"speiseplankategorie\":1,\"speiseplanmasterdata\":46,\"standort\":260,\"tischreservierungsettings\":3,\"weblink\":156,\"zusatzinformationen\":801599,\"zusatzstoffe\":698,\"forceSynch\":4}}"
+  },
+  {
     "idx": 46,
-    "url": "https://eurest.webspeiseplan.de/index.php?request=dailyUsageTracking&token=55ed21609e26bbf68ba2b19390bf7961&data=%7B%22timestampTracking%22%3A%222026-08-28T00%3A00%3A00.000Z%22%2C%22favLocationID%22%3A8950%2C%22favOutletID%22%3A64%2C%22appVersion%22%3A%222.41.0%22%2C%22osVersion%22%3A151%2C%22deviceType%22%3A%22linux%22%2C%22allergenIDs%22%3A%5B%5D%2C%22additiveIDs%22%3A%5B%5D%2C%22dishFeatureIDs%22%3A%5B%5D%2C%22dashboardWidgetIDs%22%3A%5B%5D%2C%22isFeatureFilterExpandable%22%3Afalse%2C%22isDietplanFilterActive%22%3Afalse%2C%22navigationType%22%3A1%2C%22platformTypeID%22%3A5%2C%22trackingTypeID%22%3A36%2C%22languageTypeID%22%3A1%7D",
+    "url": "https://eurest.webspeiseplan.de/index.php?request=dailyUsageTracking&token=55ed21609e26bbf68ba2b19390bf7961&data=%7B%22timestampTracking%22%3A%222026-08-31T00%3A00%3A00.000Z%22%2C%22favLocationID%22%3A8950%2C%22favOutletID%22%3A64%2C%22appVersion%22%3A%222.41.0%22%2C%22osVersion%22%3A151%2C%22deviceType%22%3A%22linux%22%2C%22allergenIDs%22%3A%5B%5D%2C%22additiveIDs%22%3A%5B%5D%2C%22dishFeatureIDs%22%3A%5B%5D%2C%22dashboardWidgetIDs%22%3A%5B%5D%2C%22isFeatureFilterExpandable%22%3Afalse%2C%22isDietplanFilterActive%22%3Afalse%2C%22navigationType%22%3A1%2C%22platformTypeID%22%3A5%2C%22trackingTypeID%22%3A36%2C%22languageTypeID%22%3A1%7D",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
     "score": 3,
-    "body_excerpt": "{\"success\":true,\"content\":{\"timestampTracking\":\"2026-08-28T00:00:00.000Z\",\"favLocationID\":8950,\"favOutletID\":64,\"appVersion\":\"2.41.0\",\"osVersion\":\"151\",\"deviceType\":\"linux\",\"isFeatureFilterExpandable\":false,\"isDietplanFilterActive\":false,\"navigationType\":\"1\",\"platformTypeID\":5,\"trackingTypeID\":36,\"languageTypeID\":1}}"
+    "body_excerpt": "{\"success\":true,\"content\":{\"timestampTracking\":\"2026-08-31T00:00:00.000Z\",\"favLocationID\":8950,\"favOutletID\":64,\"appVersion\":\"2.41.0\",\"osVersion\":\"151\",\"deviceType\":\"linux\",\"isFeatureFilterExpandable\":false,\"isDietplanFilterActive\":false,\"navigationType\":\"1\",\"platformTypeID\":5,\"trackingTypeID\":36,\"languageTypeID\":1}}"
   },
   {
     "idx": 47,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=moduls&location=8950&languagetype=1&platform=5&_=1787950706673",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=moduls&location=8950&languagetype=1&platform=5&_=1788196141261",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -433,7 +433,7 @@
   },
   {
     "idx": 48,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imageScalingTypes&location=8950&languagetype=1&_=1787950706674",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imageScalingTypes&location=8950&languagetype=1&_=1788196141262",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -442,7 +442,7 @@
   },
   {
     "idx": 49,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mobilesettings&location=8950&languagetype=1&_=1787950706677",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mobilesettings&location=8950&languagetype=1&_=1788196141265",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -451,7 +451,7 @@
   },
   {
     "idx": 50,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imprint&location=8950&languagetype=1&_=1787950706678",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=imprint&location=8950&languagetype=1&_=1788196141266",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -460,25 +460,16 @@
   },
   {
     "idx": 51,
-    "url": "https://eurest.webspeiseplan.de/translation.json?_=1787950706675",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 2,
-    "body_excerpt": "{\n  \"success\": \"true\",\n  \"content\":\n  [\n    {\n      \"translation_key\": \"gui_label_allergens_filter\",\n      \"lang_key\": \"1\",\n      \"value\": \"ALLERGENFILTER\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_filter\",\n      \"lang_key\": \"2\",\n      \"value\": \"ALLERGENS FILTER\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_popup_close\",\n      \"lang_key\": \"1\",\n      \"value\": \"SCHLIESSEN\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_popup_close\",\n      \"lang_key\": \"2\",\n      \"value\": \"CLOSE\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_reset\",\n      \"lang_key\": \"1\",\n      \"value\": \"ZURÜCKSETZEN\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_reset\",\n      \"lang_key\": \"2\",\n      \"value\": \"RESET\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_active\",\n      \"lang_key\": \"1\",\n      \"value\": \"aktiv\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_active\",\n      \"lang_key\": \"2\",\n      \"value\": \"active\"\n    },\n    {\n      \"translation_key\": \"gui_label_monday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Montag\"\n    },\n    {\n      \"translation_key\": \"gui_label_monday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Monday\"\n    },\n    {\n      \"translation_key\": \"gui_label_tuesday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Dienstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_tuesday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Tuesday\"\n    },\n    {\n      \"translation_key\": \"gui_label_wednesday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Mittwoch\"\n    },\n    {\n      \"translation_key\": \"gui_label_wednesday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Wednesday\"\n    },\n    {\n      \"translation_key\": \"gui_label_thursday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Donnerstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_thursday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Thursday\"\n    },\n    {\n      \"translation_key\": \"gui_label_friday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Freitag\"\n    },\n    {\n      \"translation_key\": \"gui_label_friday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Friday\"\n    },\n    {\n      \"translation_key\": \"gui_label_saturday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Samstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_saturday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Saturday\"\n    },\n    {\n      \"translation_key\": \"gui_label_sunday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Sonntag\"\n    },\n    {\n      \"translation_key\": \"gui_label_sunday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Sunday\"\n    },\n    {\n      \"translation_key\": \"gui_label_information\",\n      \"lang_key\": \"1\",\n      \"value\": \"Information\"\n    },\n    {\n      \"translation_key\": \"gui_label_information\",\n      \"lang_key\": \"2\",\n      \"value\": \"Information\"\n    },\n    {\n      \"translation_key\": \"gui_label_price\",\n      \"lang_key\": \"1\",\n      \"value\": \"Preis\"\n    },\n    {\n      \"translation_key\": \"gui_label_price\",\n      \"lang_key\": \"2\",\n      \"value\": \"Price\"\n    },\n    {\n      \"translation_key\": \"gui_label_guest_price\",\n      \"lan"
-  },
-  {
-    "idx": 52,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=menu&location=8950&languagetype=1&_=1787950706676",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=menu&location=8950&languagetype=1&_=1788196141264",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
     "score": 64,
-    "body_excerpt": "{\"success\":true,\"content\":[{\"speiseplanAdvanced\":{\"id\":7762,\"aktiv\":true,\"gueltigTaeglich\":false,\"showWeekend\":false,\"exportInactiveContent\":false,\"titel\":\"Speiseplan KW35\",\"anzeigename\":\"Speiseplan KW35\",\"gueltigVon\":\"2026-08-24T00:00:00+02:00\",\"gueltigBis\":\"2026-08-28T23:59:59+02:00\",\"reihenfolgeInApp\":1,\"speiseplanLayoutTypeID\":null,\"vendingMachineID\":null,\"orderConfigurationID\":null,\"pickupTimeID\":null,\"outletID\":64,\"timestampLog\":\"2026-08-28T09:51:52\",\"benutzerID\":689,\"orderInfo\":{\"orderAllowed\":false,\"preOrderAllowed\":false,\"instantOrderAllowed\":false,\"shippingAllowed\":false,\"deliveryAssortment\":false,\"instantOrderMinimumOrderValue\":null,\"preOrderMinimumOrderValue\":null,\"shippingOrderMinimumOrderValue\":null,\"shippingCostFlatrate\":null,\"shippingCostThreshold\":null,\"postalCodeVerification\":false,\"reusableProvider\":false,\"reusableProviderId\":null,\"allowedOrderProcesses\":[],\"scan2go\":false},\"locationInfo\":{\"id\":8950,\"name\":\"AUMOVIO Regensburg (1553)\"},\"holidayInfo\":[],\"pickupTimeInfo\":[]},\"speiseplanGerichtData\":[{\"speiseplanAdvancedGericht\":{\"id\":242053,\"aktiv\":true,\"datum\":\"2026-08-24T00:00:00+02:00\",\"gerichtkategorieID\":1093,\"reihenfolgeInGerichtkategorie\":1,\"gerichtname\":\"LEMON FUSILLI | Minze, Zitronensauce, Hartk\\u00e4se \",\"zusatzinformationenID\":241583,\"speiseplanAdvancedID\":7762,\"timestampLog\":\"2026-08-24T09:13:49\",\"benutzerID\":689},\"zusatzinformationen\":{\"id\":241583,\"gerichtnameAlternative\":\"LEMON FUSILLI | mint, lemon sauce, hard cheese \",\"mitarbeiterpreisDecimal2\":4.57,\"gaestepreisDecimal2\":null,\"ernaehrungsampelID\":null,\"nwkjInteger\":417,\"nwkcalInteger\":99,\"nwfettDecimal1\":4.0735,\"nwfettsaeurenDecimal1\":1.8041,\"nwkohlehydrateDecimal1\":11.8532,\"nwzuckerDecimal1\":0.7957,\"nweiweissDecimal1\":3.4747,\"nwsalzDecimal1\":0.4328,\"nwbeDecimal2\":null,\"allowFeedback\":true,\"gerichtImage\":null,\"lieferanteninfo\":null,\"lieferanteninfoLink\":null,\"edFaktorDecimal1\":null,\"plu\":\"MID762542\",\"price3Decimal2\":null,\"price4Decimal2\":null,\"contingent\":null,\"taxRateDecimal2\":null,\"ingredientList\":null,\"sustainability\":{\"co2\":null,\"nutriscore\":null,\"gesoca\":null,\"trafficLight\":null}},\"allergeneIds\":\"858,861,863,864\",\"zusatzstoffeIds\":\"411\",\"gerichtmerkmaleIds\":\"1\"},{\"speiseplanAdvancedGericht\":{\"id\":242055,\"aktiv\":true,\"datum\":\"2026-08-24T00:00:00+02:00\",\"gerichtkategorieID\":1095,\"reihenfolgeInGerichtkategorie\":1,\"gerichtname\":\"BEEF BOWL | Bohnensalat, Lollo Bionda, Nachos, rote Trauben \",\"zusatzinformationenID\":241585,\"speiseplanAdvancedID\":7762,\"timestampLog\":\"2026-08-24T09:14:03\",\"benutzerID\":689},\"zusatzinformationen\":{\"id\":241585,\"gerichtnameAlternative\":\"BEEF BOWL | bean salad, Lollo bionda, nachos, red grapes \",\"mitarbeiterpreisDecimal2\":9.1,\"gaestepreisDecimal2\":null,\"ernaehrungsampelID\":null,\"nwkjInteger\":640,\"nwkcalInteger\":152,\"nwfettDecimal1\":5.0733,\"nwfettsaeurenDecimal1\":1.1508,\"nwkohlehydrateDecimal1\":21.1878,\"nwzuckerDecimal1\":5.9227,\"nweiweissDecimal1\":7.2329,\"nwsalzDecimal1\":0.9595,\"nwbeDecimal2\":null,\"allowFeedback\":true,\"gerichtImage\":null,\"l"
+    "body_excerpt": "{\"success\":true,\"content\":[{\"speiseplanAdvanced\":{\"id\":7824,\"aktiv\":true,\"gueltigTaeglich\":false,\"showWeekend\":false,\"exportInactiveContent\":false,\"titel\":\"Speiseplan KW36\",\"anzeigename\":\"Speiseplan KW36\",\"gueltigVon\":\"2026-08-31T00:00:00+02:00\",\"gueltigBis\":\"2026-09-04T23:59:59+02:00\",\"reihenfolgeInApp\":1,\"speiseplanLayoutTypeID\":null,\"vendingMachineID\":null,\"orderConfigurationID\":null,\"pickupTimeID\":null,\"outletID\":64,\"timestampLog\":\"2026-08-31T11:38:36\",\"benutzerID\":709,\"orderInfo\":{\"orderAllowed\":false,\"preOrderAllowed\":false,\"instantOrderAllowed\":false,\"shippingAllowed\":false,\"deliveryAssortment\":false,\"instantOrderMinimumOrderValue\":null,\"preOrderMinimumOrderValue\":null,\"shippingOrderMinimumOrderValue\":null,\"shippingCostFlatrate\":null,\"shippingCostThreshold\":null,\"postalCodeVerification\":false,\"reusableProvider\":false,\"reusableProviderId\":null,\"allowedOrderProcesses\":[],\"scan2go\":false},\"locationInfo\":{\"id\":8950,\"name\":\"AUMOVIO Regensburg (1553)\"},\"holidayInfo\":[],\"pickupTimeInfo\":[]},\"speiseplanGerichtData\":[{\"speiseplanAdvancedGericht\":{\"id\":244166,\"aktiv\":true,\"datum\":\"2026-08-31T00:00:00+02:00\",\"gerichtkategorieID\":1095,\"reihenfolgeInGerichtkategorie\":1,\"gerichtname\":\"H\\u00c4HNCHENKEULE | Karotten, Rosmarindrillinge, Bratensauce \",\"zusatzinformationenID\":243688,\"speiseplanAdvancedID\":7824,\"timestampLog\":\"2026-08-31T10:58:58\",\"benutzerID\":690},\"zusatzinformationen\":{\"id\":243688,\"gerichtnameAlternative\":\"CHICKEN LEG | carrots, rosemary baby potatoes, gravy \",\"mitarbeiterpreisDecimal2\":5.5,\"gaestepreisDecimal2\":null,\"ernaehrungsampelID\":null,\"nwkjInteger\":622,\"nwkcalInteger\":149,\"nwfettDecimal1\":8.5017,\"nwfettsaeurenDecimal1\":2.4193,\"nwkohlehydrateDecimal1\":8.2227,\"nwzuckerDecimal1\":3.1042,\"nweiweissDecimal1\":8.836,\"nwsalzDecimal1\":0.4505,\"nwbeDecimal2\":null,\"allowFeedback\":true,\"gerichtImage\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/speiseplangericht\\/1553HaehnchenkeuleKarotteDrillinge.jpg\",\"lieferanteninfo\":null,\"lieferanteninfoLink\":null,\"edFaktorDecimal1\":null,\"plu\":\"MID762884\",\"price3Decimal2\":null,\"price4Decimal2\":null,\"contingent\":null,\"taxRateDecimal2\":null,\"ingredientList\":null,\"sustainability\":{\"co2\":null,\"nutriscore\":null,\"gesoca\":null,\"trafficLight\":null}},\"allergeneIds\":\"863,858\",\"zusatzstoffeIds\":\"411\",\"gerichtmerkmaleIds\":\"23\"},{\"speiseplanAdvancedGericht\":{\"id\":244167,\"aktiv\":true,\"datum\":\"2026-08-31T00:00:00+02:00\",\"gerichtkategorieID\":1093,\"reihenfolgeInGerichtkategorie\":1,\"gerichtname\":\"SEMMELKN\\u00d6DEL | Schnittlauch-Veloute, gebratene Champignons \",\"zusatzinformationenID\":243689,\"speiseplanAdvancedID\":7824,\"timestampLog\":\"2026-08-31T10:58:40\",\"benutzerID\":690},\"zusatzinformationen\":{\"id\":243689,\"gerichtnameAlternative\":\"BREAD DUMPLINGS | chive velout\\u00e9, saut\\u00e9ed mushrooms \",\"mitarbeiterpreisDecimal2\":4.57,\"gaestepreisDecimal2\":null,\"ernaehrungsampelID\":null,\"nwkjInteger\":578,\"nwkcalInteger\":137,\"nwfettDecimal1\":4.9328,\"nwfettsaeurenDecimal1\":1.1978,\"nwkohlehydrateDecimal1\":14.5479,\"nwzuckerDecimal1\":3.22"
   },
   {
-    "idx": 53,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=capacity&location=8950&languagetype=1&_=1787950706679",
+    "idx": 52,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=capacity&location=8950&languagetype=1&_=1788196141267",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -486,8 +477,17 @@
     "body_excerpt": "{\"success\":true,\"content\":[{\"id\":3,\"maxSitzplaetze\":376,\"durchschnittVerweildauer\":30,\"auswertungszeitraumVon\":\"2025-10-14T08:01:00\",\"auswertungszeitraumBis\":\"2028-12-29T15:01:00\",\"vergleichstag\":7,\"intervall\":15,\"durchschnittsArtikelAnzahl\":2,\"berechnungszeitpunktAusdruck\":\"0 0 18 ? * TUE-SAT\",\"limitValueLowInteger\":60,\"limitValueMiddleInteger\":80,\"limitValueHighInteger\":100,\"lowRGBColor\":\"228B22\",\"middleRGBColor\":\"FFA500\",\"highRGBColor\":\"FF0000\",\"outletID\":64,\"timestampLog\":\"2025-11-05T14:20:18\",\"benutzerID\":733}]}"
   },
   {
+    "idx": 53,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=feedbackQuestionMeal&location=8950&languagetype=1&_=1788196141268",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 3,
+    "body_excerpt": "{\"success\":true,\"content\":{\"locationInfo\":{\"id\":8950,\"name\":\"AUMOVIO Regensburg (1553)\"},\"dishFeedbacks\":[]}}"
+  },
+  {
     "idx": 54,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dietPlanMasterData&location=8950&languagetype=1&_=1787950706681",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=dietPlanMasterData&location=8950&languagetype=1&_=1788196141269",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -496,15 +496,6 @@
   },
   {
     "idx": 55,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=feedbackQuestionMeal&location=8950&languagetype=1&_=1787950706680",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 3,
-    "body_excerpt": "{\"success\":true,\"content\":{\"locationInfo\":{\"id\":8950,\"name\":\"AUMOVIO Regensburg (1553)\"},\"dishFeedbacks\":[]}}"
-  },
-  {
-    "idx": 56,
     "url": "https://eurest.konkaapps.de/kms-resources/outlet/wsp_large_OUTLET_LOGO_Eurest_quer_grau_neu.png",
     "status": 200,
     "resource_type": "image",
@@ -513,8 +504,17 @@
     "body_excerpt": ""
   },
   {
+    "idx": 56,
+    "url": "https://eurest.webspeiseplan.de/translation.json?_=1788196141263",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\n  \"success\": \"true\",\n  \"content\":\n  [\n    {\n      \"translation_key\": \"gui_label_allergens_filter\",\n      \"lang_key\": \"1\",\n      \"value\": \"ALLERGENFILTER\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_filter\",\n      \"lang_key\": \"2\",\n      \"value\": \"ALLERGENS FILTER\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_popup_close\",\n      \"lang_key\": \"1\",\n      \"value\": \"SCHLIESSEN\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_popup_close\",\n      \"lang_key\": \"2\",\n      \"value\": \"CLOSE\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_reset\",\n      \"lang_key\": \"1\",\n      \"value\": \"ZURÜCKSETZEN\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_reset\",\n      \"lang_key\": \"2\",\n      \"value\": \"RESET\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_active\",\n      \"lang_key\": \"1\",\n      \"value\": \"aktiv\"\n    },\n    {\n      \"translation_key\": \"gui_label_allergens_active\",\n      \"lang_key\": \"2\",\n      \"value\": \"active\"\n    },\n    {\n      \"translation_key\": \"gui_label_monday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Montag\"\n    },\n    {\n      \"translation_key\": \"gui_label_monday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Monday\"\n    },\n    {\n      \"translation_key\": \"gui_label_tuesday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Dienstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_tuesday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Tuesday\"\n    },\n    {\n      \"translation_key\": \"gui_label_wednesday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Mittwoch\"\n    },\n    {\n      \"translation_key\": \"gui_label_wednesday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Wednesday\"\n    },\n    {\n      \"translation_key\": \"gui_label_thursday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Donnerstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_thursday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Thursday\"\n    },\n    {\n      \"translation_key\": \"gui_label_friday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Freitag\"\n    },\n    {\n      \"translation_key\": \"gui_label_friday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Friday\"\n    },\n    {\n      \"translation_key\": \"gui_label_saturday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Samstag\"\n    },\n    {\n      \"translation_key\": \"gui_label_saturday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Saturday\"\n    },\n    {\n      \"translation_key\": \"gui_label_sunday\",\n      \"lang_key\": \"1\",\n      \"value\": \"Sonntag\"\n    },\n    {\n      \"translation_key\": \"gui_label_sunday\",\n      \"lang_key\": \"2\",\n      \"value\": \"Sunday\"\n    },\n    {\n      \"translation_key\": \"gui_label_information\",\n      \"lang_key\": \"1\",\n      \"value\": \"Information\"\n    },\n    {\n      \"translation_key\": \"gui_label_information\",\n      \"lang_key\": \"2\",\n      \"value\": \"Information\"\n    },\n    {\n      \"translation_key\": \"gui_label_price\",\n      \"lang_key\": \"1\",\n      \"value\": \"Preis\"\n    },\n    {\n      \"translation_key\": \"gui_label_price\",\n      \"lang_key\": \"2\",\n      \"value\": \"Price\"\n    },\n    {\n      \"translation_key\": \"gui_label_guest_price\",\n      \"lan"
+  },
+  {
     "idx": 57,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=moduls&location=8950&languagetype=1&platform=5&_=1787950706682",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=moduls&location=8950&languagetype=1&platform=5&_=1788196141270",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -523,7 +523,7 @@
   },
   {
     "idx": 58,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mealCategory&location=8950&languagetype=1&_=1787950706683",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=mealCategory&location=8950&languagetype=1&_=1788196141271",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -532,7 +532,7 @@
   },
   {
     "idx": 59,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=componentCategory&location=8950&languagetype=1&_=1787950706684",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=componentCategory&location=8950&languagetype=1&_=1788196141272",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -541,7 +541,7 @@
   },
   {
     "idx": 60,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=signal&location=8950&languagetype=1&_=1787950706685",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=signal&location=8950&languagetype=1&_=1788196141273",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -550,7 +550,7 @@
   },
   {
     "idx": 61,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=textblock&location=8950&languagetype=1&_=1787950706687",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=textblock&location=8950&languagetype=1&_=1788196141275",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -559,7 +559,7 @@
   },
   {
     "idx": 62,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=language&location=8950&languagetype=1&_=1787950706688",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=language&location=8950&languagetype=1&_=1788196141276",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -568,7 +568,7 @@
   },
   {
     "idx": 63,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=additives&location=8950&languagetype=1&_=1787950706690",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=additives&location=8950&languagetype=1&_=1788196141278",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -577,7 +577,7 @@
   },
   {
     "idx": 64,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=allergens&location=8950&languagetype=1&_=1787950706691",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=allergens&location=8950&languagetype=1&_=1788196141279",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -586,7 +586,7 @@
   },
   {
     "idx": 65,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=features&location=8950&languagetype=1&_=1787950706692",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=features&location=8950&languagetype=1&_=1788196141280",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -595,7 +595,7 @@
   },
   {
     "idx": 66,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=news&location=8950&languagetype=1&_=1787950706693",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=news&location=8950&languagetype=1&_=1788196141281",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -604,7 +604,16 @@
   },
   {
     "idx": 67,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settings&location=8950&languagetype=1&platform=5&_=1787950706695",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=feedbackSettings&location=8950&languagetype=1&_=1788196141282",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":[]}"
+  },
+  {
+    "idx": 68,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settings&location=8950&languagetype=1&platform=5&_=1788196141283",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -612,26 +621,8 @@
     "body_excerpt": "{\"success\":true,\"content\":[{\"name\":\"MENU_LIST_SHOW_ALL_OUTLETS\",\"type\":\"LOCATIONBASED\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":8950}]},{\"name\":\"MENU_LIST_SHOW_MENUIMAGE\",\"type\":\"OUTLETBASED\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":64}]},{\"name\":\"MENU_LIST_SHOW_CATEGORY_NAVIGATION\",\"type\":\"OUTLETBASED\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":64}]},{\"name\":\"MENU_LIST_SORT_SHOW_CATEGORY_NAVIGATION\",\"type\":\"OUTLETBASED\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":64}]},{\"name\":\"SHOW_COMPANY_LOGO_IN_HEADER\",\"type\":\"LOCATIONBASED\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":8950}]},{\"name\":\"LIVECASH_CARDNUMBER_LENGTH\",\"type\":\"LOCATIONBASED\",\"settings\":[{\"value\":\"0\",\"organizationalUnitId\":8950}]},{\"name\":\"SHARE_MAIL_SEND_FORMAT_HTML\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_SHOW_OUTLET_SELECTION_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_DEFAULT_NAVIGATION_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"LOCATION_SELECTION\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"SHOW_POSITIONFINDER_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON_CICOLOR\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_SHOW_SINGLE_OUTLET\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"CONTACT_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"LEGAL_SHOW_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"VOTE_SHOW_WINNER_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WORKLOAD_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DATETIMEPICKER_FORECAST\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"21\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_MAX_NUMBER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"CAROUSEL_SLIDE_INTERVAL_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"fa-star\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_TEXT_MAX_INPUT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"200\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_PUBLIC_MODE_TIMEOUT_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"60\",\"organizationalUnitId\":null}]},{\"name\":\"APP_START_DASHBOARD_FAVOUTLET_CHECK\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_TIMESLOT_WARN_TIME_MINUTES\",\"type"
   },
   {
-    "idx": 68,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=feedbackSettings&location=8950&languagetype=1&_=1787950706694",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 2,
-    "body_excerpt": "{\"success\":true,\"content\":[]}"
-  },
-  {
     "idx": 69,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settingsGlobal&location=8950&languagetype=1&platform=5&_=1787950706696",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 2,
-    "body_excerpt": "{\"success\":true,\"content\":[{\"name\":\"SHARE_MAIL_SEND_FORMAT_HTML\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_SHOW_OUTLET_SELECTION_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_DEFAULT_NAVIGATION_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"LOCATION_SELECTION\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"SHOW_POSITIONFINDER_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON_CICOLOR\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_SHOW_SINGLE_OUTLET\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"CONTACT_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"LEGAL_SHOW_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"VOTE_SHOW_WINNER_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WORKLOAD_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DATETIMEPICKER_FORECAST\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"21\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_MAX_NUMBER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"CAROUSEL_SLIDE_INTERVAL_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"fa-star\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_TEXT_MAX_INPUT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"200\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_PUBLIC_MODE_TIMEOUT_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"60\",\"organizationalUnitId\":null}]},{\"name\":\"APP_START_DASHBOARD_FAVOUTLET_CHECK\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_TIMESLOT_WARN_TIME_MINUTES\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"10\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_SHOW_NONORDERABLE_MENUS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"OUTLET_SHOW_ROUTE_EXTERN\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_RADIUS_DEFAULT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"30\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_IN_RADIUS_ONLY\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER_OPTION1\",\"type\":\"GLOBAL\",\"settings\":[{\"val"
-  },
-  {
-    "idx": 70,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=feedbackQuestionOutlet&location=8950&languagetype=1&_=1787950706697",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=feedbackQuestionOutlet&location=8950&languagetype=1&_=1788196141285",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -639,8 +630,17 @@
     "body_excerpt": "{\"success\":true,\"content\":[]}"
   },
   {
+    "idx": 70,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=settingsGlobal&location=8950&languagetype=1&platform=5&_=1788196141284",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":[{\"name\":\"SHARE_MAIL_SEND_FORMAT_HTML\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_SHOW_OUTLET_SELECTION_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"WIZARD_DEFAULT_NAVIGATION_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"LOCATION_SELECTION\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"SHOW_POSITIONFINDER_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TYPE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"default\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_TILE_ICON_CICOLOR\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DASHBOARD_SHOW_SINGLE_OUTLET\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"CONTACT_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"LEGAL_SHOW_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"VOTE_SHOW_WINNER_IMAGE\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"WORKLOAD_SHOW_MAP\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"true\",\"organizationalUnitId\":null}]},{\"name\":\"DATETIMEPICKER_FORECAST\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"21\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_MAX_NUMBER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"CAROUSEL_SLIDE_INTERVAL_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"5\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_RATING_ICON\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"fa-star\",\"organizationalUnitId\":null}]},{\"name\":\"FEEDBACK_TEXT_MAX_INPUT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"200\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_PUBLIC_MODE_TIMEOUT_SECONDS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"60\",\"organizationalUnitId\":null}]},{\"name\":\"APP_START_DASHBOARD_FAVOUTLET_CHECK\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_TIMESLOT_WARN_TIME_MINUTES\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"10\",\"organizationalUnitId\":null}]},{\"name\":\"ORDER_SHOW_NONORDERABLE_MENUS\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"OUTLET_SHOW_ROUTE_EXTERN\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_RADIUS_DEFAULT\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"30\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_IN_RADIUS_ONLY\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER\",\"type\":\"GLOBAL\",\"settings\":[{\"value\":\"false\",\"organizationalUnitId\":null}]},{\"name\":\"POSITION_OUTLETS_MARKER_CLUSTER_OPTION1\",\"type\":\"GLOBAL\",\"settings\":[{\"val"
+  },
+  {
     "idx": 71,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=weblink&location=8950&languagetype=1&_=1787950706698",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=weblink&location=8950&languagetype=1&_=1788196141286",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -649,7 +649,7 @@
   },
   {
     "idx": 72,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=location&location=8950&languagetype=1&_=1787950706686",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=location&location=8950&languagetype=1&_=1788196141274",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -658,7 +658,7 @@
   },
   {
     "idx": 73,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=outlet&location=8950&languagetype=1&_=1787950706689",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&model=outlet&location=8950&languagetype=1&_=1788196141277",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -676,16 +676,16 @@
   },
   {
     "idx": 75,
-    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=2&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1787950706700",
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&request=pdf&menu=7824&time=1788196162153&lang=1&cw=36&type=day",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
-    "score": 2,
-    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/gerichtmerkmale\\/wsp_large_FEATURE_vegan_button.png\"}"
+    "score": 4,
+    "body_excerpt": "{\"success\":false,\"content\":\"\\n<!DOCTYPE html PUBLIC \\\"-\\/\\/W3C\\/\\/DTD XHTML 1.0 Transitional\\/\\/EN\\\" \\\"http:\\/\\/www.w3.org\\/TR\\/xhtml1\\/DTD\\/xhtml1-transitional.dtd\\\">\\n<html xmlns=\\\"http:\\/\\/www.w3.org\\/1999\\/xhtml\\\">\\n <head>\\n <meta http-equiv=\\\"Content-Type\\\" content=\\\"text\\/html; charset=UTF-8\\\" \\/>\\n <title>kama.sys GmbH<\\/title>\\n <\\/head>\\n <body>\\n <h3>Oops, something weng wrong.<\\/h3>\\n <\\/body>\\n<\\/html>\\n\\n\"}"
   },
   {
     "idx": 76,
-    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=1&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1787950706699",
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=1&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1788196141287",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
@@ -694,51 +694,42 @@
   },
   {
     "idx": 77,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&request=pdf&menu=7762&time=1787950727672&lang=1&cw=35&type=week",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 4,
-    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/exportfiles\\/sp\\/wosp_7762_35_1.pdf\"}"
-  },
-  {
-    "idx": 78,
-    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=25&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1787950706701",
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=16&data%5Bid%5D=243689&data%5Bresource%5D=3&data%5BscalingType%5D=5&_=1788196141288",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
     "score": 2,
-    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/gerichtmerkmale\\/wsp_large_FEATURE_fisch.png\"}"
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/speiseplangericht\\/wsp_large_MEAL_16_9_1553SemmelknoedelPilze.jpg\"}"
+  },
+  {
+    "idx": 78,
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=16&data%5Bid%5D=243690&data%5Bresource%5D=3&data%5BscalingType%5D=5&_=1788196141290",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/speiseplangericht\\/wsp_large_MEAL_16_9_1553FiletstreifenVeganReis.jpg\"}"
   },
   {
     "idx": 79,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&request=pdf&menu=7762&time=1787950727672&lang=1&cw=35&type=day",
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=1&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1788196141289",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/gerichtmerkmale\\/wsp_large_FEATURE_vegetarisch.png\"}"
+  },
+  {
+    "idx": 80,
+    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&request=pdf&menu=7824&time=1788196162152&lang=1&cw=36&type=week",
     "status": 200,
     "resource_type": "xhr",
     "content_type": "application/json",
     "score": 4,
-    "body_excerpt": "{\"success\":false,\"content\":\"\\n<!DOCTYPE html PUBLIC \\\"-\\/\\/W3C\\/\\/DTD XHTML 1.0 Transitional\\/\\/EN\\\" \\\"http:\\/\\/www.w3.org\\/TR\\/xhtml1\\/DTD\\/xhtml1-transitional.dtd\\\">\\n<html xmlns=\\\"http:\\/\\/www.w3.org\\/1999\\/xhtml\\\">\\n <head>\\n <meta http-equiv=\\\"Content-Type\\\" content=\\\"text\\/html; charset=UTF-8\\\" \\/>\\n <title>kama.sys GmbH<\\/title>\\n <\\/head>\\n <body>\\n <h3>Oops, something weng wrong.<\\/h3>\\n <\\/body>\\n<\\/html>\\n\\n\"}"
-  },
-  {
-    "idx": 80,
-    "url": "https://eurest.webspeiseplan.de/images/banner.jpg",
-    "status": 200,
-    "resource_type": "image",
-    "content_type": "image/jpeg",
-    "score": 0,
-    "body_excerpt": ""
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/exportfiles\\/sp\\/wosp_7824_36_1.pdf\"}"
   },
   {
     "idx": 81,
-    "url": "https://eurest.konkaapps.de/kms-resources/gerichtmerkmale/wsp_large_FEATURE_vegan_button.png",
-    "status": 200,
-    "resource_type": "image",
-    "content_type": "image/png",
-    "score": 0,
-    "body_excerpt": ""
-  },
-  {
-    "idx": 82,
     "url": "https://eurest.konkaapps.de/kms-resources/gerichtmerkmale/wsp_large_FEATURE_vegetarisch.png",
     "status": 200,
     "resource_type": "image",
@@ -747,7 +738,61 @@
     "body_excerpt": ""
   },
   {
+    "idx": 82,
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=2&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1788196141291",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/gerichtmerkmale\\/wsp_large_FEATURE_vegan_button.png\"}"
+  },
+  {
     "idx": 83,
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=23&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1788196141293",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/gerichtmerkmale\\/wsp_large_FEATURE_gefluegel.png\"}"
+  },
+  {
+    "idx": 84,
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=16&data%5Bid%5D=243688&data%5Bresource%5D=3&data%5BscalingType%5D=5&_=1788196141292",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/speiseplangericht\\/wsp_large_MEAL_16_9_1553HaehnchenkeuleKarotteDrillinge.jpg\"}"
+  },
+  {
+    "idx": 85,
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=16&data%5Bid%5D=243691&data%5Bresource%5D=3&data%5BscalingType%5D=5&_=1788196141294",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/speiseplangericht\\/wsp_large_MEAL_16_9_1553PizzaPesce.jpg\"}"
+  },
+  {
+    "idx": 86,
+    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=25&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1788196141295",
+    "status": 200,
+    "resource_type": "xhr",
+    "content_type": "application/json",
+    "score": 2,
+    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/gerichtmerkmale\\/wsp_large_FEATURE_fisch.png\"}"
+  },
+  {
+    "idx": 87,
+    "url": "https://eurest.webspeiseplan.de/images/banner.jpg",
+    "status": 200,
+    "resource_type": "image",
+    "content_type": "image/jpeg",
+    "score": 0,
+    "body_excerpt": ""
+  },
+  {
+    "idx": 88,
     "url": "https://eurest.konkaapps.de/kms-resources/gerichtmerkmale/wsp_large_FEATURE_fisch.png",
     "status": 200,
     "resource_type": "image",
@@ -756,58 +801,13 @@
     "body_excerpt": ""
   },
   {
-    "idx": 84,
-    "url": "https://eurest.webspeiseplan.de/images/blank.png",
+    "idx": 89,
+    "url": "https://eurest.konkaapps.de/kms-resources/speiseplangericht/wsp_large_MEAL_16_9_1553SemmelknoedelPilze.jpg",
     "status": 200,
     "resource_type": "image",
-    "content_type": "image/png",
+    "content_type": "image/jpeg",
     "score": 0,
     "body_excerpt": ""
-  },
-  {
-    "idx": 85,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&request=pdf&menu=7762&time=1787950754020&lang=1&cw=36&type=week",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 4,
-    "body_excerpt": "{\"success\":false,\"content\":\"\\n<!DOCTYPE html PUBLIC \\\"-\\/\\/W3C\\/\\/DTD XHTML 1.0 Transitional\\/\\/EN\\\" \\\"http:\\/\\/www.w3.org\\/TR\\/xhtml1\\/DTD\\/xhtml1-transitional.dtd\\\">\\n<html xmlns=\\\"http:\\/\\/www.w3.org\\/1999\\/xhtml\\\">\\n <head>\\n <meta http-equiv=\\\"Content-Type\\\" content=\\\"text\\/html; charset=UTF-8\\\" \\/>\\n <title>kama.sys GmbH<\\/title>\\n <\\/head>\\n <body>\\n <h3>Oops, something weng wrong.<\\/h3>\\n <\\/body>\\n<\\/html>\\n\\n\"}"
-  },
-  {
-    "idx": 86,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&request=pdf&menu=7762&time=1787950754021&lang=1&cw=36&type=day",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 4,
-    "body_excerpt": "{\"success\":false,\"content\":\"\\n<!DOCTYPE html PUBLIC \\\"-\\/\\/W3C\\/\\/DTD XHTML 1.0 Transitional\\/\\/EN\\\" \\\"http:\\/\\/www.w3.org\\/TR\\/xhtml1\\/DTD\\/xhtml1-transitional.dtd\\\">\\n<html xmlns=\\\"http:\\/\\/www.w3.org\\/1999\\/xhtml\\\">\\n <head>\\n <meta http-equiv=\\\"Content-Type\\\" content=\\\"text\\/html; charset=UTF-8\\\" \\/>\\n <title>kama.sys GmbH<\\/title>\\n <\\/head>\\n <body>\\n <h3>Oops, something weng wrong.<\\/h3>\\n <\\/body>\\n<\\/html>\\n\\n\"}"
-  },
-  {
-    "idx": 87,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&request=pdf&menu=7824&time=1787950754038&lang=1&cw=36&type=day",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 4,
-    "body_excerpt": "{\"success\":false,\"content\":\"\\n<!DOCTYPE html PUBLIC \\\"-\\/\\/W3C\\/\\/DTD XHTML 1.0 Transitional\\/\\/EN\\\" \\\"http:\\/\\/www.w3.org\\/TR\\/xhtml1\\/DTD\\/xhtml1-transitional.dtd\\\">\\n<html xmlns=\\\"http:\\/\\/www.w3.org\\/1999\\/xhtml\\\">\\n <head>\\n <meta http-equiv=\\\"Content-Type\\\" content=\\\"text\\/html; charset=UTF-8\\\" \\/>\\n <title>kama.sys GmbH<\\/title>\\n <\\/head>\\n <body>\\n <h3>Oops, something weng wrong.<\\/h3>\\n <\\/body>\\n<\\/html>\\n\\n\"}"
-  },
-  {
-    "idx": 88,
-    "url": "https://eurest.webspeiseplan.de/index.php?token=55ed21609e26bbf68ba2b19390bf7961&request=pdf&menu=7824&time=1787950754038&lang=1&cw=36&type=week",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 4,
-    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/exportfiles\\/sp\\/wosp_7824_36_1.pdf\"}"
-  },
-  {
-    "idx": 89,
-    "url": "https://eurest.webspeiseplan.de/index.php?request=image&token=55ed21609e26bbf68ba2b19390bf7961&data%5Bmodel%5D=6&data%5Bid%5D=23&data%5Bresource%5D=1&data%5BscalingType%5D=5&_=1787950706706",
-    "status": 200,
-    "resource_type": "xhr",
-    "content_type": "application/json",
-    "score": 2,
-    "body_excerpt": "{\"success\":true,\"content\":\"https:\\/\\/eurest.konkaapps.de\\/kms-resources\\/gerichtmerkmale\\/wsp_large_FEATURE_gefluegel.png\"}"
   },
   {
     "idx": 90,
@@ -815,6 +815,42 @@
     "status": 200,
     "resource_type": "image",
     "content_type": "image/png",
+    "score": 0,
+    "body_excerpt": ""
+  },
+  {
+    "idx": 91,
+    "url": "https://eurest.konkaapps.de/kms-resources/gerichtmerkmale/wsp_large_FEATURE_vegan_button.png",
+    "status": 200,
+    "resource_type": "image",
+    "content_type": "image/png",
+    "score": 0,
+    "body_excerpt": ""
+  },
+  {
+    "idx": 92,
+    "url": "https://eurest.konkaapps.de/kms-resources/speiseplangericht/wsp_large_MEAL_16_9_1553FiletstreifenVeganReis.jpg",
+    "status": 200,
+    "resource_type": "image",
+    "content_type": "image/jpeg",
+    "score": 0,
+    "body_excerpt": ""
+  },
+  {
+    "idx": 93,
+    "url": "https://eurest.konkaapps.de/kms-resources/speiseplangericht/wsp_large_MEAL_16_9_1553HaehnchenkeuleKarotteDrillinge.jpg",
+    "status": 200,
+    "resource_type": "image",
+    "content_type": "image/jpeg",
+    "score": 0,
+    "body_excerpt": ""
+  },
+  {
+    "idx": 94,
+    "url": "https://eurest.konkaapps.de/kms-resources/speiseplangericht/wsp_large_MEAL_16_9_1553PizzaPesce.jpg",
+    "status": 200,
+    "resource_type": "image",
+    "content_type": "image/jpeg",
     "score": 0,
     "body_excerpt": ""
   }

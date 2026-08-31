@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-08-31",
-  "target_day_label": "Mo 31.08",
-  "generated_at_utc": "2026-08-28T20:58:24.630391Z",
-  "generated_at_local": "2026-08-28T22:57:33.597631+02:00",
+  "target_date": "2026-09-01",
+  "target_day_label": "Di 01.09",
+  "generated_at_utc": "2026-08-31T17:08:59.371189Z",
+  "generated_at_local": "2026-08-31T19:08:09.787792+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,27 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SEMMELKNÖDEL | Schnittlauch-Veloute, gebratene Champignons",
+      "name": "KARTOFFEL-BLUMENKOHL-AUFLAUF | Emmentaler, Sonnenblumenkerne",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "PIZZA PESCE | Frutti di Mare, Knoblauch, Oregano",
-      "price": "7,50 €",
+      "name": "CORDON BLEU | vom Hähnchen, Zitrone, Pommes frites",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "SCHWEINERÜCKEN | Rahmkohlrabi, Kroketten",
-      "price": "5,10 €",
-      "vv": ""
+      "name": "KAPUSKA | Weißkohleintopf, Chili, Soja-Dip, Fladenbrot",
+      "price": "4,57 €",
+      "vv": "VG"
+    },
+    {
+      "category": "Reinhausen",
+      "name": "Add On | Baklava mit Walnuss",
+      "price": "2,40 €",
+      "vv": "V"
     }
   ]
 }

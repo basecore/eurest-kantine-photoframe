@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-08-31",
-  "target_day_label": "Mo 31.08",
-  "generated_at_utc": "2026-08-28T21:00:34.574466Z",
-  "generated_at_local": "2026-08-28T22:59:15.823844+02:00",
+  "target_date": "2026-09-01",
+  "target_day_label": "Di 01.09",
+  "generated_at_utc": "2026-08-31T17:11:07.867703Z",
+  "generated_at_local": "2026-08-31T19:09:48.790594+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Currywurst / Pommes frites / Currysoße",
-      "price": "3,00 €",
+      "name": "Schinkennudeln / Tomatensahnesoße",
+      "price": "3,20 €",
       "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Gransole Limone Basilico / Limettensoße / Ofentomaten / Grana Padano",
-      "price": "5,90 €",
+      "name": "Appenzeller Käsespätzle / Röstzwiebeln / mit Rucola",
+      "price": "5,80 €",
       "vv": "EV"
     },
     {
       "category": "Essen 3",
-      "name": "Schweinegulasch mit Paprika / Knöpfle",
-      "price": "6,10 €",
+      "name": "Pasta al forno / Hausgemacht",
+      "price": "6,00 €",
       "vv": ""
     }
   ]
