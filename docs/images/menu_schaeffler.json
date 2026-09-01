@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-09-01",
-  "target_day_label": "Di 01.09",
-  "generated_at_utc": "2026-08-31T17:08:59.371189Z",
-  "generated_at_local": "2026-08-31T19:08:09.787792+02:00",
+  "target_date": "2026-09-02",
+  "target_day_label": "Mi 02.09",
+  "generated_at_utc": "2026-09-01T14:13:50.885398Z",
+  "generated_at_local": "2026-09-01T16:13:00.320035+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,21 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "KARTOFFEL-BLUMENKOHL-AUFLAUF | Emmentaler, Sonnenblumenkerne",
-      "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Kumpfmühl",
-      "name": "CORDON BLEU | vom Hähnchen, Zitrone, Pommes frites",
-      "price": "6,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "KAPUSKA | Weißkohleintopf, Chili, Soja-Dip, Fladenbrot",
+      "name": "FUSILLI | Mandel-Veloute, Brokkoli",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
-      "category": "Reinhausen",
-      "name": "Add On | Baklava mit Walnuss",
-      "price": "2,40 €",
+      "category": "Kumpfmühl",
+      "name": "BURGER VEGGI | Knusperpatty, Mayo, Sweet-Chili, Salat, Farmersalat",
+      "price": "6,50 €",
       "vv": "V"
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "MIE-NUDELN-RAMEN-STYLE | Schweinebauch, Mie-Nudeln, Edamame, Ei",
+      "price": "6,50 €",
+      "vv": ""
     }
   ]
 }

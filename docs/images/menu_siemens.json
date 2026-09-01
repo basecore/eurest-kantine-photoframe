@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-09-01",
-  "target_day_label": "Di 01.09",
-  "generated_at_utc": "2026-08-31T17:11:07.867703Z",
-  "generated_at_local": "2026-08-31T19:09:48.790594+02:00",
+  "target_date": "2026-09-02",
+  "target_day_label": "Mi 02.09",
+  "generated_at_utc": "2026-09-01T14:16:00.486159Z",
+  "generated_at_local": "2026-09-01T16:14:41.499777+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Schinkennudeln / Tomatensahnesoße",
+      "name": "Fränkische Bratwurst / Sauerkraut / Bauernbrot",
       "price": "3,20 €",
       "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Appenzeller Käsespätzle / Röstzwiebeln / mit Rucola",
-      "price": "5,80 €",
+      "name": "Spinatknödel / Kürbissoße / Bergkäse / Geröstete Kürbiskerne",
+      "price": "6,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 3",
-      "name": "Pasta al forno / Hausgemacht",
-      "price": "6,00 €",
+      "name": "Bami Goreng mit Putenfleisch / Mie-Nudeln",
+      "price": "6,40 €",
       "vv": ""
     }
   ]
