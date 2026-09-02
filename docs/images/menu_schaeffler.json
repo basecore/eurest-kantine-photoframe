@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-09-02",
-  "target_day_label": "Mi 02.09",
-  "generated_at_utc": "2026-09-01T14:13:50.885398Z",
-  "generated_at_local": "2026-09-01T16:13:00.320035+02:00",
+  "target_date": "2026-09-03",
+  "target_day_label": "Do 03.09",
+  "generated_at_utc": "2026-09-02T13:45:52.844656Z",
+  "generated_at_local": "2026-09-02T15:45:02.317733+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,27 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "FUSILLI | Mandel-Veloute, Brokkoli",
+      "name": "SPINATSPÄTZLE | Rahm, Hartkäse",
       "price": "4,57 €",
-      "vv": "VG"
-    },
-    {
-      "category": "Kumpfmühl",
-      "name": "BURGER VEGGI | Knusperpatty, Mayo, Sweet-Chili, Salat, Farmersalat",
-      "price": "6,50 €",
       "vv": "V"
     },
     {
-      "category": "Stadtamhof",
-      "name": "MIE-NUDELN-RAMEN-STYLE | Schweinebauch, Mie-Nudeln, Edamame, Ei",
-      "price": "6,50 €",
+      "category": "Kumpfmühl",
+      "name": "SALTIMBOCCA | Hähnchen, Salbei, Polenta, Weißweinsauce",
+      "price": "6,90 €",
       "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "ALINAZIK | Auberginencreme, Rinderhackfleisch, Türkischer Reis",
+      "price": "7,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Reinhausen",
+      "name": "Add On | Baklava mit Walnuss",
+      "price": "2,40 €",
+      "vv": "V"
     }
   ]
 }

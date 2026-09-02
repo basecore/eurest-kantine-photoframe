@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-09-02",
-  "target_day_label": "Mi 02.09",
-  "generated_at_utc": "2026-09-01T14:16:00.486159Z",
-  "generated_at_local": "2026-09-01T16:14:41.499777+02:00",
+  "target_date": "2026-09-03",
+  "target_day_label": "Do 03.09",
+  "generated_at_utc": "2026-09-02T13:48:00.797966Z",
+  "generated_at_local": "2026-09-02T15:46:42.204679+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Fränkische Bratwurst / Sauerkraut / Bauernbrot",
+      "name": "Linsen-Dal / Naan Brot / Sojadip",
       "price": "3,20 €",
-      "vv": ""
-    },
-    {
-      "category": "Essen 2",
-      "name": "Spinatknödel / Kürbissoße / Bergkäse / Geröstete Kürbiskerne",
-      "price": "6,20 €",
       "vv": "EV"
     },
     {
+      "category": "Essen 2",
+      "name": "Hähnchenroulade / Kartoffelpüree / Mischgemüse / Rahmsoße",
+      "price": "6,30 €",
+      "vv": ""
+    },
+    {
       "category": "Essen 3",
-      "name": "Bami Goreng mit Putenfleisch / Mie-Nudeln",
-      "price": "6,40 €",
+      "name": "Cordon bleu vom Schwein / Pommes frites / Zitronenecke",
+      "price": "6,20 €",
       "vv": ""
     }
   ]

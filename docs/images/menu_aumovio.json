@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-09-02",
-  "target_day_label": "Mi 02.09",
-  "generated_at_utc": "2026-09-01T14:14:41.342931Z",
-  "generated_at_local": "2026-09-01T16:13:51.057804+02:00",
+  "target_date": "2026-09-03",
+  "target_day_label": "Do 03.09",
+  "generated_at_utc": "2026-09-02T13:46:42.081241Z",
+  "generated_at_local": "2026-09-02T15:45:52.981688+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,27 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SPINATSPÄTZLE | Rahm, Hartkäse",
+      "name": "KARTOFFEL-BLUMENKOHL-AUFLAUF | Emmentaler, Sonnenblumenkerne",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "ERDNUSS-KICHERERBSEN-CURRY | Limette, Garam Masala, Kokosreis",
-      "price": "5,10 €",
+      "name": "FALAFEL-WRAP | Curry-Hummus, Bohnensalat",
+      "price": "7,50 €",
       "vv": "VG"
     },
     {
       "category": "Brandlberg",
-      "name": "BRATWURST | Kartoffelstampf, Zwiebelsauce",
-      "price": "5,10 €",
+      "name": "CORDON BLEU | vom Hähnchen, Zitrone, Pommes frites",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "ALINAZIK | Auberginencreme, Rinderhackfleisch, Türkischer Reis",
-      "price": "7,50 €",
-      "vv": ""
+      "name": "KAPUSKA | Weißkohleintopf, Chili, Soja-Dip, Fladenbrot",
+      "price": "4,57 €",
+      "vv": "VG"
     }
   ]
 }
