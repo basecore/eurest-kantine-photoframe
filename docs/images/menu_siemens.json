@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-09-03",
-  "target_day_label": "Do 03.09",
-  "generated_at_utc": "2026-09-02T13:48:00.797966Z",
-  "generated_at_local": "2026-09-02T15:46:42.204679+02:00",
+  "target_date": "2026-09-04",
+  "target_day_label": "Fr 04.09",
+  "generated_at_utc": "2026-09-03T13:43:37.769837Z",
+  "generated_at_local": "2026-09-03T15:42:18.929553+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Linsen-Dal / Naan Brot / Sojadip",
+      "name": "Germknödel mit Pflaumenfüllung / Vanillesoße",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Hähnchenroulade / Kartoffelpüree / Mischgemüse / Rahmsoße",
-      "price": "6,30 €",
+      "name": "Asiatische Schweinefleischpfanne / Kräuterreis",
+      "price": "5,60 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Cordon bleu vom Schwein / Pommes frites / Zitronenecke",
-      "price": "6,20 €",
+      "name": "Atlantischer Butt in Petersilienkruste / Zitronenkartoffeln / Rahmgemüse",
+      "price": "6,30 €",
       "vv": ""
     }
   ]

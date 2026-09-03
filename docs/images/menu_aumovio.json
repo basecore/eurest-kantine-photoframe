@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-09-03",
-  "target_day_label": "Do 03.09",
-  "generated_at_utc": "2026-09-02T13:46:42.081241Z",
-  "generated_at_local": "2026-09-02T15:45:52.981688+02:00",
+  "target_date": "2026-09-04",
+  "target_day_label": "Fr 04.09",
+  "generated_at_utc": "2026-09-03T13:42:18.774979Z",
+  "generated_at_local": "2026-09-03T15:41:29.491767+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,15 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "KARTOFFEL-BLUMENKOHL-AUFLAUF | Emmentaler, Sonnenblumenkerne",
+      "name": "GNOCCHI | Mangold, Frischkäse, Pesto Rosso",
       "price": "4,57 €",
       "vv": "V"
     },
     {
-      "category": "Weichs",
-      "name": "FALAFEL-WRAP | Curry-Hummus, Bohnensalat",
-      "price": "7,50 €",
-      "vv": "VG"
-    },
-    {
       "category": "Brandlberg",
-      "name": "CORDON BLEU | vom Hähnchen, Zitrone, Pommes frites",
-      "price": "6,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Königswiesen",
-      "name": "KAPUSKA | Weißkohleintopf, Chili, Soja-Dip, Fladenbrot",
-      "price": "4,57 €",
-      "vv": "VG"
+      "name": "CHURROS | Zimt-Zucker, Vanillequark",
+      "price": "4,90 €",
+      "vv": "V"
     }
   ]
 }

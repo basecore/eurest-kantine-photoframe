@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W36",
   "kw": 36,
-  "target_date": "2026-09-03",
-  "target_day_label": "Do 03.09",
-  "generated_at_utc": "2026-09-02T13:45:52.844656Z",
-  "generated_at_local": "2026-09-02T15:45:02.317733+02:00",
+  "target_date": "2026-09-04",
+  "target_day_label": "Fr 04.09",
+  "generated_at_utc": "2026-09-03T13:41:29.307983Z",
+  "generated_at_local": "2026-09-03T15:40:38.294642+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,15 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SPINATSPÄTZLE | Rahm, Hartkäse",
+      "name": "GNOCCHI | Spinat, Frischkäse, Pesto Rosso",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SALTIMBOCCA | Hähnchen, Salbei, Polenta, Weißweinsauce",
-      "price": "6,90 €",
+      "name": "PANNFISCH | Hamburger Art, Senfsauce, Bratkartoffeln",
+      "price": "8,90 €",
       "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "ALINAZIK | Auberginencreme, Rinderhackfleisch, Türkischer Reis",
-      "price": "7,50 €",
-      "vv": ""
-    },
-    {
-      "category": "Reinhausen",
-      "name": "Add On | Baklava mit Walnuss",
-      "price": "2,40 €",
-      "vv": "V"
     }
   ]
 }
