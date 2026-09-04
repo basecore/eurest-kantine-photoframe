@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W36",
-  "kw": 36,
-  "target_date": "2026-09-04",
-  "target_day_label": "Fr 04.09",
-  "generated_at_utc": "2026-09-03T13:41:29.307983Z",
-  "generated_at_local": "2026-09-03T15:40:38.294642+02:00",
+  "label": "2026-W37",
+  "kw": 37,
+  "target_date": "2026-09-07",
+  "target_day_label": "Mo 07.09",
+  "generated_at_utc": "2026-09-04T13:37:45.312680Z",
+  "generated_at_local": "2026-09-04T15:36:53.693656+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,15 +18,21 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "GNOCCHI | Spinat, Frischkäse, Pesto Rosso",
+      "name": "OFENKARTOFFEL | Bunter Quinoa-Sauerrahm, Avocado, Kürbiskerne",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "PANNFISCH | Hamburger Art, Senfsauce, Bratkartoffeln",
-      "price": "8,90 €",
+      "name": "HÄHNCHENGESCHNETZELTES | Erbsenvollkornreis, glasierte Möhren",
+      "price": "6,10 €",
       "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "BUFFOLO CHICKEN WINGS I gegrillter Maiskolben & Pommes Frites",
+      "price": "6,90 €",
+      "vv": "V"
     }
   ]
 }

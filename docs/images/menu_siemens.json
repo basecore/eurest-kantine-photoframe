@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W36",
-  "kw": 36,
-  "target_date": "2026-09-04",
-  "target_day_label": "Fr 04.09",
-  "generated_at_utc": "2026-09-03T13:43:37.769837Z",
-  "generated_at_local": "2026-09-03T15:42:18.929553+02:00",
+  "label": "2026-W37",
+  "kw": 37,
+  "target_date": "2026-09-07",
+  "target_day_label": "Mo 07.09",
+  "generated_at_utc": "2026-09-04T13:39:56.112587Z",
+  "generated_at_local": "2026-09-04T15:38:36.925588+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Germknödel mit Pflaumenfüllung / Vanillesoße",
-      "price": "3,20 €",
-      "vv": "EV"
-    },
-    {
-      "category": "Essen 2",
-      "name": "Asiatische Schweinefleischpfanne / Kräuterreis",
-      "price": "5,60 €",
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
       "vv": ""
     },
     {
+      "category": "Essen 2",
+      "name": "Spinatspätzle / Waldpilzrahmsoße / Geschmorte Tomaten",
+      "price": "5,60 €",
+      "vv": "EV"
+    },
+    {
       "category": "Essen 3",
-      "name": "Atlantischer Butt in Petersilienkruste / Zitronenkartoffeln / Rahmgemüse",
-      "price": "6,30 €",
+      "name": "Hacksteak \"Croatia\" / Countrykartoffeln / Bohnengemüse",
+      "price": "5,90 €",
       "vv": ""
     }
   ]
