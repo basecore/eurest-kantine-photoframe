@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>AUMOVIO Regensburg – Speiseplan</title>
 		<link>http://basecore.bplaced.net</link>
 		<description></description>
-		<pubDate>Fri, 04 Sep 2026 13:39:56 +0000</pubDate>
-		<lastBuildDate>Fri, 04 Sep 2026 13:39:56 +0000</lastBuildDate>
+		<pubDate>Mon, 07 Sep 2026 15:10:25 +0000</pubDate>
+		<lastBuildDate>Mon, 07 Sep 2026 15:10:25 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net</generator>
 		<image>
 			<url>http://basecore.bplaced.net/images/icon.jpg</url>
@@ -19,12 +19,12 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 			<link>http://basecore.bplaced.net</link>
 		</image>
 		<item>
-			<title>Tagesplan Mo 07.09 – AUMOVIO Regensburg</title>
+			<title>Tagesplan Di 08.09 – AUMOVIO Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">aumovio::kantine_2026-W37_2026-09-07_aumovio.jpg::2026-09-04T13:38:36.772238Z</guid>
-			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W37_2026-09-07_aumovio.jpg&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W37&quot;/&gt;</description>
-			<pubDate>Mon, 07 Sep 2026 06:00:00 +0000</pubDate>
-			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W37_2026-09-07_aumovio.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">aumovio::kantine_2026-W37_2026-09-08_aumovio.jpg::2026-09-07T15:09:06.426303Z</guid>
+			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W37_2026-09-08_aumovio.jpg&quot; alt=&quot;AUMOVIO Regensburg Speiseplan 2026-W37&quot;/&gt;</description>
+			<pubDate>Tue, 08 Sep 2026 06:00:00 +0000</pubDate>
+			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W37_2026-09-08_aumovio.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>

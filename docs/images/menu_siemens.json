@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "target_date": "2026-09-07",
-  "target_day_label": "Mo 07.09",
-  "generated_at_utc": "2026-09-04T13:39:56.112587Z",
-  "generated_at_local": "2026-09-04T15:38:36.925588+02:00",
+  "target_date": "2026-09-08",
+  "target_day_label": "Di 08.09",
+  "generated_at_utc": "2026-09-07T15:10:25.241404Z",
+  "generated_at_local": "2026-09-07T17:09:06.543758+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Currywurst / Pommes frites / Currysoße",
-      "price": "3,00 €",
-      "vv": ""
-    },
-    {
-      "category": "Essen 2",
-      "name": "Spinatspätzle / Waldpilzrahmsoße / Geschmorte Tomaten",
-      "price": "5,60 €",
+      "name": "Schupfnudel-Pilz-Pfanne / Feldsalat",
+      "price": "3,20 €",
       "vv": "EV"
     },
     {
+      "category": "Essen 2",
+      "name": "Cannelloni mit Fleischfüllung / Tomatensoße / Gouda, gerieben / mit Rucola",
+      "price": "5,70 €",
+      "vv": ""
+    },
+    {
       "category": "Essen 3",
-      "name": "Hacksteak \"Croatia\" / Countrykartoffeln / Bohnengemüse",
-      "price": "5,90 €",
+      "name": "Putenschnitzel, gebacken / Kartoffeltwisters / BBQ-Dip",
+      "price": "6,00 €",
       "vv": ""
     }
   ]

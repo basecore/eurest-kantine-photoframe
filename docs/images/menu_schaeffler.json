@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "target_date": "2026-09-07",
-  "target_day_label": "Mo 07.09",
-  "generated_at_utc": "2026-09-04T13:37:45.312680Z",
-  "generated_at_local": "2026-09-04T15:36:53.693656+02:00",
+  "target_date": "2026-09-08",
+  "target_day_label": "Di 08.09",
+  "generated_at_utc": "2026-09-07T15:08:16.727377Z",
+  "generated_at_local": "2026-09-07T17:07:27.145224+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "OFENKARTOFFEL | Bunter Quinoa-Sauerrahm, Avocado, Kürbiskerne",
+      "name": "POLENTA | Cremig, Zucchini, Rucola-Frisee-Salat, Balsamico",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HÄHNCHENGESCHNETZELTES | Erbsenvollkornreis, glasierte Möhren",
-      "price": "6,10 €",
+      "name": "PAELLA | Muschelfleisch, Garnelen, Oliven, Fenchel",
+      "price": "7,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "BUFFOLO CHICKEN WINGS I gegrillter Maiskolben & Pommes Frites",
-      "price": "6,90 €",
-      "vv": "V"
+      "name": "SCHWEINSHAXE | Knödel, Sauce, Krautsalat",
+      "price": "7,90 €",
+      "vv": ""
     }
   ]
 }

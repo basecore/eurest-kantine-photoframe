@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "target_date": "2026-09-07",
-  "target_day_label": "Mo 07.09",
-  "generated_at_utc": "2026-09-04T13:38:36.772470Z",
-  "generated_at_local": "2026-09-04T15:37:45.481991+02:00",
+  "target_date": "2026-09-08",
+  "target_day_label": "Di 08.09",
+  "generated_at_utc": "2026-09-07T15:09:06.426466Z",
+  "generated_at_local": "2026-09-07T17:08:16.866091+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,25 +18,37 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SPAGHETTI AGLIO E OLIO | Rucola, Knoblauch",
-      "price": "4,57 €",
-      "vv": "VG"
-    },
-    {
-      "category": "Weichs",
-      "name": "OFENKARTOFFEL | Bunter Quinoa-Sauerrahm, Avocado, Kürbiskerne",
+      "name": "MINESTRONE | Tomate, weiße Bohnen, Basilikum",
       "price": "4,57 €",
       "vv": "V"
     },
     {
+      "category": "Weichs",
+      "name": "FLADENBROTPIZZA | Hummus, Feta, Oliven, Spinat, Kreuzkümmel",
+      "price": "5,90 €",
+      "vv": "V"
+    },
+    {
       "category": "Brandlberg",
-      "name": "HÄHNCHENGESCHNETZELTES | Erbsenvollkornreis, glasierte Möhren",
-      "price": "6,10 €",
+      "name": "SAITEN-WÜRSTCHEN | Linsen, Spätzle",
+      "price": "5,90 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "HIMMEL & ERDE | DIE LEICHTE VERSION - Lachs, Apfel, Rösti, Bohnen",
+      "name": "RINDERFRIKADELLE | Kartoffelstampf, Romanesco, Senfkornjus",
+      "price": "7,90 €",
+      "vv": ""
+    },
+    {
+      "category": "Oberwinzer",
+      "name": "SCHNITZEL I vom Schwein, Pommes Frites",
+      "price": "",
+      "vv": ""
+    },
+    {
+      "category": "Niederwinzer",
+      "name": "PIZZA SALAMI SUPREME I mit extra viel Salami, Käse, Tomatensauce",
       "price": "7,90 €",
       "vv": ""
     }
