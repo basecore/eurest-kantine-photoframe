@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "target_date": "2026-09-08",
-  "target_day_label": "Di 08.09",
-  "generated_at_utc": "2026-09-07T15:08:16.727377Z",
-  "generated_at_local": "2026-09-07T17:07:27.145224+02:00",
+  "target_date": "2026-09-09",
+  "target_day_label": "Mi 09.09",
+  "generated_at_utc": "2026-09-08T13:44:14.461040Z",
+  "generated_at_local": "2026-09-08T15:43:23.163664+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "POLENTA | Cremig, Zucchini, Rucola-Frisee-Salat, Balsamico",
+      "name": "WALNUSSBOLOGNESE | Orrecchiette, Basilikum",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "PAELLA | Muschelfleisch, Garnelen, Oliven, Fenchel",
-      "price": "7,50 €",
+      "name": "SCHNITZEL | vom Schwein, Radieschen-Kartoffelsalat, Preiselbeeren",
+      "price": "7,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "SCHWEINSHAXE | Knödel, Sauce, Krautsalat",
-      "price": "7,90 €",
+      "name": "GRÜNES CURRY | Hühnerstreifen, Gemüse, Basmatireis",
+      "price": "6,50 €",
       "vv": ""
     }
   ]
