@@ -4,13 +4,13 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "image": "kantine_2026-W37_2026-09-09_all_main.jpg",
+  "image": "kantine_2026-W37_2026-09-10_all_main.jpg",
   "latest": "latest_all_main.jpg",
   "dish_count": 10,
   "is_holiday": "",
-  "generated_at_utc": "2026-09-08T13:46:23.560287Z",
-  "generated_at_local": "2026-09-08T15:46:23.496304+02:00",
-  "target_date": "2026-09-09",
-  "target_day_label": "Mi 09.09",
+  "generated_at_utc": "2026-09-09T13:50:31.976039Z",
+  "generated_at_local": "2026-09-09T15:50:31.910803+02:00",
+  "target_date": "2026-09-10",
+  "target_day_label": "Do 10.09",
   "week_monday": "2026-09-07"
 }

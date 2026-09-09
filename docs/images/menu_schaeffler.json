@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "target_date": "2026-09-09",
-  "target_day_label": "Mi 09.09",
-  "generated_at_utc": "2026-09-08T13:44:14.461040Z",
-  "generated_at_local": "2026-09-08T15:43:23.163664+02:00",
+  "target_date": "2026-09-10",
+  "target_day_label": "Do 10.09",
+  "generated_at_utc": "2026-09-09T13:48:31.855895Z",
+  "generated_at_local": "2026-09-09T15:47:42.547121+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "WALNUSSBOLOGNESE | Orrecchiette, Basilikum",
+      "name": "SPAGHETTI AGLIO E OLIO | Rucola, Knoblauch",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SCHNITZEL | vom Schwein, Radieschen-Kartoffelsalat, Preiselbeeren",
+      "name": "RINDERFRIKADELLE | Kartoffelstampf, Romanesco, Senfkornjus",
       "price": "7,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "GRÜNES CURRY | Hühnerstreifen, Gemüse, Basmatireis",
-      "price": "6,50 €",
+      "name": "CHIPOTLECHICKEN | Romanasalat, schwarze Bohnen, Limette, Jalapenos",
+      "price": "8,10 €",
       "vv": ""
     }
   ]

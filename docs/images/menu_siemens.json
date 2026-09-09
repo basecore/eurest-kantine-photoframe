@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "target_date": "2026-09-09",
-  "target_day_label": "Mi 09.09",
-  "generated_at_utc": "2026-09-08T13:46:23.417500Z",
-  "generated_at_local": "2026-09-08T15:45:04.553923+02:00",
+  "target_date": "2026-09-10",
+  "target_day_label": "Do 10.09",
+  "generated_at_utc": "2026-09-09T13:50:31.828696Z",
+  "generated_at_local": "2026-09-09T15:49:13.135146+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Spinat-Feta-Strudel / Erbsen und Karotten in Rahm",
+      "name": "Fusilli / Gorgonzolarahmsoße",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Rindergulasch nach ungarischer Art / Tagliatelle / Schmand-Klecks",
+      "name": "Rindergulasch nach ungarischer Art / Drillinge / Schmand-Klecks",
       "price": "6,80 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Schweineschnitzel / Pommes frites / Zitronenecke",
-      "price": "6,00 €",
+      "name": "Dönerteller mit Hähnchenfleisch / Weißkrautsalat / Tzatziki / Pommes frites",
+      "price": "6,90 €",
       "vv": ""
     }
   ]

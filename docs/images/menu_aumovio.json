@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "target_date": "2026-09-09",
-  "target_day_label": "Mi 09.09",
-  "generated_at_utc": "2026-09-08T13:45:04.395702Z",
-  "generated_at_local": "2026-09-08T15:44:14.634597+02:00",
+  "target_date": "2026-09-10",
+  "target_day_label": "Do 10.09",
+  "generated_at_utc": "2026-09-09T13:49:12.978039Z",
+  "generated_at_local": "2026-09-09T15:48:32.028178+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,25 +18,25 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "POLENTA | Cremig, Zucchini, Rucola-Frisee-Salat, Balsamico",
-      "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Weichs",
-      "name": "DREIERLEI VOM BLUMENKOHL | Kartoffeln, Sonnenblumenkerne",
+      "name": "WALNUSSBOLOGNESE | Orrecchiette, Basilikum",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
+      "category": "Weichs",
+      "name": "HÄHNCHENOBERKEULE | Levante, Couscous-Trockenfrüchte",
+      "price": "5,90 €",
+      "vv": ""
+    },
+    {
       "category": "Brandlberg",
-      "name": "PAELLA | Muschelfleisch, Garnelen, Oliven, Fenchel",
-      "price": "7,50 €",
+      "name": "GRÜNES CURRY | Hühnerstreifen, Gemüse, Basmatireis",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "SCHWEINSHAXE | Knödel, Sauce, Krautsalat",
+      "name": "SCHNITZEL | vom Schwein, Radieschen-Kartoffelsalat, Preiselbeeren",
       "price": "7,90 €",
       "vv": ""
     }
