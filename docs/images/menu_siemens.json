@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W37",
   "kw": 37,
-  "target_date": "2026-09-10",
-  "target_day_label": "Do 10.09",
-  "generated_at_utc": "2026-09-09T13:50:31.828696Z",
-  "generated_at_local": "2026-09-09T15:49:13.135146+02:00",
+  "target_date": "2026-09-11",
+  "target_day_label": "Fr 11.09",
+  "generated_at_utc": "2026-09-10T13:46:21.061262Z",
+  "generated_at_local": "2026-09-10T15:45:02.465815+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Fusilli / Gorgonzolarahmsoße",
+      "name": "Quarkstrudel / mit heißen Beeren",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Rindergulasch nach ungarischer Art / Drillinge / Schmand-Klecks",
-      "price": "6,80 €",
-      "vv": ""
+      "name": "Tiroler Gröstl-Kartoffelgericht / Rührei / mit Petersilie",
+      "price": "5,80 €",
+      "vv": "EV"
     },
     {
       "category": "Essen 3",
-      "name": "Dönerteller mit Hähnchenfleisch / Weißkrautsalat / Tzatziki / Pommes frites",
-      "price": "6,90 €",
+      "name": "Seelachsfilet in Tempurateig / Kartoffel-Radieschen-Salat / Mayonnaise",
+      "price": "6,10 €",
       "vv": ""
     }
   ]
