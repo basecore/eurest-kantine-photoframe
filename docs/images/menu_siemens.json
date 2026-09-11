@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W37",
-  "kw": 37,
-  "target_date": "2026-09-11",
-  "target_day_label": "Fr 11.09",
-  "generated_at_utc": "2026-09-10T13:46:21.061262Z",
-  "generated_at_local": "2026-09-10T15:45:02.465815+02:00",
+  "label": "2026-W38",
+  "kw": 38,
+  "target_date": "2026-09-14",
+  "target_day_label": "Mo 14.09",
+  "generated_at_utc": "2026-09-11T13:43:13.731315Z",
+  "generated_at_local": "2026-09-11T15:41:55.295074+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Quarkstrudel / mit heißen Beeren",
-      "price": "3,20 €",
-      "vv": "EV"
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
+      "vv": ""
     },
     {
       "category": "Essen 2",
-      "name": "Tiroler Gröstl-Kartoffelgericht / Rührei / mit Petersilie",
-      "price": "5,80 €",
-      "vv": "EV"
+      "name": "Frühlingsrolle mit Gemüse / Gebratene Asia-Nudeln / Süß-saure Chinasoße",
+      "price": "5,60 €",
+      "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Seelachsfilet in Tempurateig / Kartoffel-Radieschen-Salat / Mayonnaise",
-      "price": "6,10 €",
+      "name": "Putensteak",
+      "price": "",
       "vv": ""
     }
   ]

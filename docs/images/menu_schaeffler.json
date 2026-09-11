@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W37",
-  "kw": 37,
-  "target_date": "2026-09-11",
-  "target_day_label": "Fr 11.09",
-  "generated_at_utc": "2026-09-10T13:44:13.350954Z",
-  "generated_at_local": "2026-09-10T15:43:22.156918+02:00",
+  "label": "2026-W38",
+  "kw": 38,
+  "target_date": "2026-09-14",
+  "target_day_label": "Mo 14.09",
+  "generated_at_utc": "2026-09-11T13:41:04.727410Z",
+  "generated_at_local": "2026-09-11T15:40:11.873619+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,14 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "SPAGHETTI AGLIO E OLIO | Rucola, Knoblauch",
+      "name": "KARTOFFEL-BROKKLI-AUFLAUF | Kartoffel, Gouda, Sonnenblumenkerne, Beilagensalat",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HÄHNCHENOBERKEULE | Levante, Couscous-Trockenfrüchte",
-      "price": "5,90 €",
+      "name": "PIZZA PULLED PORK | Rote Zwiebeln, BBQ-Sauce",
+      "price": "7,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "LINGUINE FRUTTI DI MARE | Meeresfrüchte, Weißwein, Knoblauch",
+      "price": "5,50 €",
       "vv": ""
     }
   ]
