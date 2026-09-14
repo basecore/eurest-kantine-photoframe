@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>SCHAEFFLER Regensburg – Speiseplan</title>
 		<link>http://basecore.bplaced.net</link>
 		<description></description>
-		<pubDate>Fri, 11 Sep 2026 13:43:13 +0000</pubDate>
-		<lastBuildDate>Fri, 11 Sep 2026 13:43:13 +0000</lastBuildDate>
+		<pubDate>Mon, 14 Sep 2026 06:45:44 +0000</pubDate>
+		<lastBuildDate>Mon, 14 Sep 2026 06:45:44 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net</generator>
 		<image>
 			<url>http://basecore.bplaced.net/images/icon.jpg</url>
@@ -21,7 +21,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<item>
 			<title>Tagesplan Mo 14.09 – SCHAEFFLER Regensburg</title>
 			<link>http://basecore.bplaced.net</link>
-			<guid isPermaLink="false">schaeffler::kantine_2026-W38_2026-09-14_schaeffler.jpg::2026-09-11T13:41:04.727261Z</guid>
+			<guid isPermaLink="false">schaeffler::kantine_2026-W38_2026-09-14_schaeffler.jpg::2026-09-14T06:43:36.242985Z</guid>
 			<description>&lt;img src=&quot;http://basecore.bplaced.net/images/kantine_2026-W38_2026-09-14_schaeffler.jpg&quot; alt=&quot;SCHAEFFLER Regensburg Speiseplan 2026-W38&quot;/&gt;</description>
 			<pubDate>Mon, 14 Sep 2026 06:00:00 +0000</pubDate>
 			<media:content url="http://basecore.bplaced.net/images/kantine_2026-W38_2026-09-14_schaeffler.jpg" type="image/jpeg" height="600" width="800"/>
