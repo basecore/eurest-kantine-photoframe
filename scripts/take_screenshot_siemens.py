@@ -653,7 +653,7 @@ VEG_LIKELY_KEYWORDS = {
     "omelette", "omelett", "omelet", "eierspeise", "spiegelei", "ruehrei", "eiersalat",
     "quiche", "zwiebelkuchen", "flammkuchen vegetarisch",
     "pizza margherita", "pizza verdure", "pizza spinaci", "pizza quattro formaggi", "pizza funghi",
-    "feta", "hirtenkaese", "ziegenkaese", "camembert", "brie", "raclette", "fondue kaese",
+    "feta", "hirtenkaese", "ziegenkaese", "camembert", "brie", "raclette", "fondue kaese", "fruehlingsrolle mit gemuese"
 }
 
 
