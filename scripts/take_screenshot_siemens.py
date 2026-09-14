@@ -632,7 +632,7 @@ NON_VEG_KEYWORDS = {
     "forelle", "zander", "kabeljau", "dorsch", "rotbarsch", "pangasius",
     "thunfisch", "tunfisch", "matjes", "hering", "makrele", "sardine", "sardinen",
     "calamari", "tintenfisch", "pulpo", "oktopus", "garnele", "garnelen", "shrimp",
-    "scampi", "muscheln", "miesmuscheln", "meerestiere", "meeresfruechte", "seafood",
+    "scampi", "muscheln", "miesmuscheln", "meerestiere", "meeresfruechte", "seafood", "frutti di mare", 
     "paella valenciana", "paella marinera", "krautwickel", "pute", "puten", "schaschlik", "forno", "schaschlikpfanne", "gröstl", "groestl"
 }
 
