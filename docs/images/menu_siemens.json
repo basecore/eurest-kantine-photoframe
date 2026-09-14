@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-14",
-  "target_day_label": "Mo 14.09",
-  "generated_at_utc": "2026-09-14T06:45:44.736374Z",
-  "generated_at_local": "2026-09-14T08:44:25.765911+02:00",
+  "target_date": "2026-09-15",
+  "target_day_label": "Di 15.09",
+  "generated_at_utc": "2026-09-14T15:59:31.046805Z",
+  "generated_at_local": "2026-09-14T17:58:11.822961+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Currywurst / Pommes frites / Currysoße",
-      "price": "3,00 €",
-      "vv": ""
+      "name": "Vollkorn-Spaghetti / Feurige Paprikasoße / Gouda, gerieben",
+      "price": "3,20 €",
+      "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Frühlingsrolle mit Gemüse / Gebratene Asia-Nudeln / Süß-saure Chinasoße",
-      "price": "5,60 €",
+      "name": "Schweinebraten / Knödel / Bayrisch Kraut",
+      "price": "5,80 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Putensteak / Ratatouille / Risoléekartoffeln / Kräuterbutter",
-      "price": "6,20 €",
+      "name": "Rinderhüftsteak / Gorgonzola-Birnen-Soße / Herzoginkartoffeln / Blattspinat",
+      "price": "9,70 €",
       "vv": ""
     }
   ]

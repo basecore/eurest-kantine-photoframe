@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-14",
-  "target_day_label": "Mo 14.09",
-  "generated_at_utc": "2026-09-14T06:43:36.243215Z",
-  "generated_at_local": "2026-09-14T08:42:44.561927+02:00",
+  "target_date": "2026-09-15",
+  "target_day_label": "Di 15.09",
+  "generated_at_utc": "2026-09-14T15:57:29.007485Z",
+  "generated_at_local": "2026-09-14T17:56:46.328598+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "KARTOFFEL-BROKKLI-AUFLAUF | Kartoffel, Gouda, Sonnenblumenkerne, Beilagensalat",
+      "name": "FUSILLI | Pesto Rosso, Rucola, Hartkäse",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "PIZZA PULLED PORK | Rote Zwiebeln, BBQ-Sauce",
-      "price": "7,50 €",
+      "name": "HÄHNCHENSCHNITZEL | Rahmsauce, Pommes frites",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "LINGUINE FRUTTI DI MARE | Meeresfrüchte, Weißwein, Knoblauch",
-      "price": "5,50 €",
+      "name": "ZANDERFILET | Kartoffel-Pfifferlingsragout, Babyspinat",
+      "price": "9,50 €",
       "vv": ""
     }
   ]

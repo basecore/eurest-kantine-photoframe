@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-14",
-  "target_day_label": "Mo 14.09",
-  "generated_at_utc": "2026-09-14T06:44:25.619593Z",
-  "generated_at_local": "2026-09-14T08:43:36.406924+02:00",
+  "target_date": "2026-09-15",
+  "target_day_label": "Di 15.09",
+  "generated_at_utc": "2026-09-14T15:58:11.673349Z",
+  "generated_at_local": "2026-09-14T17:57:29.175327+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,32 +18,32 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "FLAMMKUCHEN | Tomatenschmand, Hirtenkäse, Basilikum",
+      "name": "THAI PENNE | Tofu, Lauchzwiebeln, Koriander",
       "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Weichs",
-      "name": "TACO | Soja-Hack, Mango-Chili, Paprika, Beilagensalat",
-      "price": "6,90 €",
       "vv": "VG"
     },
     {
-      "category": "Brandlberg",
-      "name": "HÄHNCHENKEULE | Letscho, Vollkornreis",
-      "price": "5,90 €",
+      "category": "Weichs",
+      "name": "CURRYWURST | Klassik, Pommes Frites",
+      "price": "6,10 €",
       "vv": ""
     },
     {
+      "category": "Brandlberg",
+      "name": "SPINATKNÖDEL | Tomatensugo, braune Butter, Grana Padano",
+      "price": "6,90 €",
+      "vv": "V"
+    },
+    {
       "category": "Königswiesen",
-      "name": "LINGUINE FRUTTI DI MARE | Meeresfrüchte, Weißwein, Knoblauch",
-      "price": "5,50 €",
+      "name": "CRISPY CHICKEN BURGER | Eisberg, Sweet-Chili-Mayo, Chips",
+      "price": "9,90 €",
       "vv": ""
     },
     {
       "category": "Oberwinzer",
-      "name": "ERDNUSS CHILI NUDELN | Ente, Reisnudeln, Karotten, Brokkoli",
-      "price": "9,90 €",
+      "name": "OFENLACHS WRAP | Lachs, Salat, Meerrettich, Gurke, Muhammara Dip",
+      "price": "8,50 €",
       "vv": ""
     }
   ]
