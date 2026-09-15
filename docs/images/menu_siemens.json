@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-15",
-  "target_day_label": "Di 15.09",
-  "generated_at_utc": "2026-09-14T15:59:31.046805Z",
-  "generated_at_local": "2026-09-14T17:58:11.822961+02:00",
+  "target_date": "2026-09-16",
+  "target_day_label": "Mi 16.09",
+  "generated_at_utc": "2026-09-15T14:25:57.097078Z",
+  "generated_at_local": "2026-09-15T16:24:38.173997+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Vollkorn-Spaghetti / Feurige Paprikasoße / Gouda, gerieben",
+      "name": "Kartoffelgratin / mit Gemüse / Rucola",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Schweinebraten / Knödel / Bayrisch Kraut",
-      "price": "5,80 €",
+      "name": "Piccata alla milanese vom Schwein / Tomatenspaghetti",
+      "price": "6,00 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Rinderhüftsteak / Gorgonzola-Birnen-Soße / Herzoginkartoffeln / Blattspinat",
-      "price": "9,70 €",
+      "name": "Putengulasch / Curry-Kokos-Soße / Duftreis mit Gewürzen",
+      "price": "6,20 €",
       "vv": ""
     }
   ]

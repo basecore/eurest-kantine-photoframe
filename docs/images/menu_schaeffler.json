@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-15",
-  "target_day_label": "Di 15.09",
-  "generated_at_utc": "2026-09-14T15:57:29.007485Z",
-  "generated_at_local": "2026-09-14T17:56:46.328598+02:00",
+  "target_date": "2026-09-16",
+  "target_day_label": "Mi 16.09",
+  "generated_at_utc": "2026-09-15T14:23:48.575636Z",
+  "generated_at_local": "2026-09-15T16:22:59.129355+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "FUSILLI | Pesto Rosso, Rucola, Hartkäse",
+      "name": "THAI PENNE | Tofu, Lauchzwiebeln, Koriander",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HÄHNCHENSCHNITZEL | Rahmsauce, Pommes frites",
-      "price": "6,50 €",
+      "name": "CURRYWURST | Klassik, Pommes Frites",
+      "price": "6,10 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "ZANDERFILET | Kartoffel-Pfifferlingsragout, Babyspinat",
-      "price": "9,50 €",
+      "name": "CRISPY CHICKEN BURGER | Eisberg, Sweet-Chili-Mayo, Chips",
+      "price": "9,90 €",
       "vv": ""
     }
   ]

@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-15",
-  "target_day_label": "Di 15.09",
-  "generated_at_utc": "2026-09-14T15:58:11.673349Z",
-  "generated_at_local": "2026-09-14T17:57:29.175327+02:00",
+  "target_date": "2026-09-16",
+  "target_day_label": "Mi 16.09",
+  "generated_at_utc": "2026-09-15T14:24:38.015187Z",
+  "generated_at_local": "2026-09-15T16:23:48.751712+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,33 +18,39 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "THAI PENNE | Tofu, Lauchzwiebeln, Koriander",
+      "name": "TELLERRÖSTI | Zucchinisalat, Dill-Sauerrahm-Balkankäse",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "CURRYWURST | Klassik, Pommes Frites",
-      "price": "6,10 €",
+      "name": "HACKBRATEN | Pilzrahmsauce, Lauchspätzle",
+      "price": "5,90 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "SPINATKNÖDEL | Tomatensugo, braune Butter, Grana Padano",
-      "price": "6,90 €",
+      "name": "MELANZANE | alla Parmigano, Aubergine, Tomate, Mozzarella, Salat",
+      "price": "8,90 €",
       "vv": "V"
     },
     {
       "category": "Königswiesen",
-      "name": "CRISPY CHICKEN BURGER | Eisberg, Sweet-Chili-Mayo, Chips",
-      "price": "9,90 €",
+      "name": "ZANDERFILET | Kartoffel-Pfifferlingsragout, Babyspinat",
+      "price": "9,50 €",
       "vv": ""
     },
     {
       "category": "Oberwinzer",
-      "name": "OFENLACHS WRAP | Lachs, Salat, Meerrettich, Gurke, Muhammara Dip",
-      "price": "8,50 €",
+      "name": "SALAT VITAL | Balsamico Dressing, marinierter Reis, Tomate, Gurke, Karotte, Hähnchenbrust",
+      "price": "7,90 €",
       "vv": ""
+    },
+    {
+      "category": "Niederwinzer",
+      "name": "ADD ON | Beerentiramisu",
+      "price": "1,60 €",
+      "vv": "V"
     }
   ]
 }
