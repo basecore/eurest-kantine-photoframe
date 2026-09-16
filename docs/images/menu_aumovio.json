@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-16",
-  "target_day_label": "Mi 16.09",
-  "generated_at_utc": "2026-09-15T14:24:38.015187Z",
-  "generated_at_local": "2026-09-15T16:23:48.751712+02:00",
+  "target_date": "2026-09-17",
+  "target_day_label": "Do 17.09",
+  "generated_at_utc": "2026-09-16T14:17:02.552092Z",
+  "generated_at_local": "2026-09-16T16:16:13.601089+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,39 +18,33 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "TELLERRÖSTI | Zucchinisalat, Dill-Sauerrahm-Balkankäse",
+      "name": "FUSILLI | Pesto Rosso, Rucola, Hartkäse",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "HACKBRATEN | Pilzrahmsauce, Lauchspätzle",
-      "price": "5,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Brandlberg",
-      "name": "MELANZANE | alla Parmigano, Aubergine, Tomate, Mozzarella, Salat",
-      "price": "8,90 €",
+      "name": "CHILI POPPER SALAT | Honig-Sriracha-Mayo, Mais-Bohnen-Reis, Chili-Cheese Nuggets",
+      "price": "6,90 €",
       "vv": "V"
     },
     {
+      "category": "Brandlberg",
+      "name": "GESCHNETZELTES | vom Schwein Züricher Art, Brokkoli, Röstitaler",
+      "price": "6,50 €",
+      "vv": ""
+    },
+    {
       "category": "Königswiesen",
-      "name": "ZANDERFILET | Kartoffel-Pfifferlingsragout, Babyspinat",
-      "price": "9,50 €",
+      "name": "HÄHNCHENSCHNITZEL | Rahmsauce, Pommes frites",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Oberwinzer",
-      "name": "SALAT VITAL | Balsamico Dressing, marinierter Reis, Tomate, Gurke, Karotte, Hähnchenbrust",
-      "price": "7,90 €",
-      "vv": ""
-    },
-    {
-      "category": "Niederwinzer",
-      "name": "ADD ON | Beerentiramisu",
-      "price": "1,60 €",
-      "vv": "V"
+      "name": "KAROTTE | geschmort, Radieschensalat, Spargel-Couscous",
+      "price": "5,50 €",
+      "vv": "VG"
     }
   ]
 }

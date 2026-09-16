@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-16",
-  "target_day_label": "Mi 16.09",
-  "generated_at_utc": "2026-09-15T14:23:48.575636Z",
-  "generated_at_local": "2026-09-15T16:22:59.129355+02:00",
+  "target_date": "2026-09-17",
+  "target_day_label": "Do 17.09",
+  "generated_at_utc": "2026-09-16T14:16:13.462518Z",
+  "generated_at_local": "2026-09-16T16:15:24.395530+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,21 +18,27 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "THAI PENNE | Tofu, Lauchzwiebeln, Koriander",
+      "name": "TELLERRÖSTI | Zucchinisalat, Dill-Sauerrahm-Balkankäse",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "CURRYWURST | Klassik, Pommes Frites",
-      "price": "6,10 €",
+      "name": "HONEY GARLIC PORC WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "CRISPY CHICKEN BURGER | Eisberg, Sweet-Chili-Mayo, Chips",
-      "price": "9,90 €",
-      "vv": ""
+      "name": "MELANZANE | alla Parmigano, Aubergine, Tomate, Mozzarella, Salat",
+      "price": "8,90 €",
+      "vv": "V"
+    },
+    {
+      "category": "Reinhausen",
+      "name": "ADD ON | Beerentiramisu",
+      "price": "1,60 €",
+      "vv": "V"
     }
   ]
 }
