@@ -6,13 +6,13 @@
   "week_offset": 0,
   "label": "2026-W38",
   "kw": 38,
-  "image": "kantine_2026-W38_2026-09-17_aumovio.jpg",
+  "image": "kantine_2026-W38_2026-09-18_aumovio.jpg",
   "latest": "latest_aumovio.jpg",
   "dish_count": 5,
   "is_holiday": "",
-  "generated_at_utc": "2026-09-16T14:17:02.551926Z",
-  "generated_at_local": "2026-09-16T16:16:13.601089+02:00",
-  "target_date": "2026-09-17",
-  "target_day_label": "Do 17.09",
+  "generated_at_utc": "2026-09-17T14:22:58.956186Z",
+  "generated_at_local": "2026-09-17T16:22:09.728771+02:00",
+  "target_date": "2026-09-18",
+  "target_day_label": "Fr 18.09",
   "week_monday": "2026-09-14"
 }

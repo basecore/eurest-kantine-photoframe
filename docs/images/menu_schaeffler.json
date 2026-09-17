@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W38",
   "kw": 38,
-  "target_date": "2026-09-17",
-  "target_day_label": "Do 17.09",
-  "generated_at_utc": "2026-09-16T14:16:13.462518Z",
-  "generated_at_local": "2026-09-16T16:15:24.395530+02:00",
+  "target_date": "2026-09-18",
+  "target_day_label": "Fr 18.09",
+  "generated_at_utc": "2026-09-17T14:22:09.609677Z",
+  "generated_at_local": "2026-09-17T16:21:19.059781+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,15 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "TELLERRÖSTI | Zucchinisalat, Dill-Sauerrahm-Balkankäse",
+      "name": "FLAMMKUCHEN | Tomatenschmand, Hirtenkäse, Basilikum",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "HONEY GARLIC PORC WOK | Brokkoli, Sesam, Zitronengras, Basmatireis",
-      "price": "6,90 €",
+      "name": "ORECCHIETTE SALSICCIA | Weißwein, Fenchel, Knoblauch, rote Zwiebel, Grana Padano",
+      "price": "7,50 €",
       "vv": ""
-    },
-    {
-      "category": "Stadtamhof",
-      "name": "MELANZANE | alla Parmigano, Aubergine, Tomate, Mozzarella, Salat",
-      "price": "8,90 €",
-      "vv": "V"
-    },
-    {
-      "category": "Reinhausen",
-      "name": "ADD ON | Beerentiramisu",
-      "price": "1,60 €",
-      "vv": "V"
     }
   ]
 }
