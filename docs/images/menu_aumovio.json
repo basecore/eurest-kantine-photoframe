@@ -2,12 +2,12 @@
   "location_name": "aumovio",
   "location_label": "AUMOVIO Regensburg",
   "display_mode": "day",
-  "label": "2026-W38",
-  "kw": 38,
-  "target_date": "2026-09-18",
-  "target_day_label": "Fr 18.09",
-  "generated_at_utc": "2026-09-17T14:22:58.956336Z",
-  "generated_at_local": "2026-09-17T16:22:09.728771+02:00",
+  "label": "2026-W39",
+  "kw": 39,
+  "target_date": "2026-09-21",
+  "target_day_label": "Mo 21.09",
+  "generated_at_utc": "2026-09-18T13:43:24.263508Z",
+  "generated_at_local": "2026-09-18T15:42:33.657060+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,33 +18,27 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PAPRIKASCHOTE | vegetarisch gefüllt, Tomatensauce, Langkornreis",
-      "price": "4,57 €",
-      "vv": "V"
-    },
-    {
-      "category": "Weichs",
-      "name": "ORECCHIETTE SALSICCIA | Weißwein, Fenchel, Knoblauch, rote Zwiebel, Grana Padano",
-      "price": "7,50 €",
-      "vv": ""
-    },
-    {
-      "category": "Brandlberg",
-      "name": "KOH TAO | Kokosmilchreis-Vegan, Mango, Kokoschips",
+      "name": "VEGANE MAULTASCHEN | Erbsennage, Mandelcrunch",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
-      "category": "Königswiesen",
-      "name": "ZANDERFILET | Tomaten-Nudeln, Zitronensauce",
-      "price": "7,90 €",
+      "category": "Weichs",
+      "name": "GEBACKENE OFENKARTOFFEL | Hähnchenbruststreifen, Sour Cream, Salatgarnitur",
+      "price": "6,10 €",
+      "vv": ""
+    },
+    {
+      "category": "Brandlberg",
+      "name": "LAMMHACKSTEAK | Ajvar-Käse-Dip, Pilawreis, Granatapfel",
+      "price": "7,50 €",
       "vv": ""
     },
     {
       "category": "Niederwinzer",
-      "name": "ADD ON | Tomatensalat, frisches Basilikum",
-      "price": "1,50 €",
-      "vv": "V"
+      "name": "SCHWEINERÜCKEN | Kräuterbutter, Pommes Frites",
+      "price": "5,90 €",
+      "vv": ""
     }
   ]
 }

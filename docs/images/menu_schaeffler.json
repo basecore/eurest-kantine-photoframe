@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W38",
-  "kw": 38,
-  "target_date": "2026-09-18",
-  "target_day_label": "Fr 18.09",
-  "generated_at_utc": "2026-09-17T14:22:09.609677Z",
-  "generated_at_local": "2026-09-17T16:21:19.059781+02:00",
+  "label": "2026-W39",
+  "kw": 39,
+  "target_date": "2026-09-21",
+  "target_day_label": "Mo 21.09",
+  "generated_at_utc": "2026-09-18T13:42:33.492306Z",
+  "generated_at_local": "2026-09-18T15:41:42.529547+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,13 +18,19 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "FLAMMKUCHEN | Tomatenschmand, Hirtenkäse, Basilikum",
+      "name": "DIM SUM RED-CURRY | Kokosnussmilch, Kürbiskernöl, Kokos Chips",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "ORECCHIETTE SALSICCIA | Weißwein, Fenchel, Knoblauch, rote Zwiebel, Grana Padano",
+      "name": "SCHWEINERÜCKEN | Kräuterbutter, Pommes Frites",
+      "price": "5,90 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "PIZZA HAWAII | Putenbrust, Ananas, Goudakäse",
       "price": "7,50 €",
       "vv": ""
     }

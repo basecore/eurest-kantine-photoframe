@@ -4,15 +4,15 @@
   "display_mode": "day",
   "display_day": "",
   "week_offset": 0,
-  "label": "2026-W38",
-  "kw": 38,
-  "image": "kantine_2026-W38_2026-09-18_siemens.jpg",
+  "label": "2026-W39",
+  "kw": 39,
+  "image": "kantine_2026-W39_2026-09-21_siemens.jpg",
   "latest": "latest_siemens.jpg",
   "dish_count": 4,
   "is_holiday": "",
-  "generated_at_utc": "2026-09-17T14:24:18.558398Z",
-  "generated_at_local": "2026-09-17T16:22:59.077249+02:00",
-  "target_date": "2026-09-18",
-  "target_day_label": "Fr 18.09",
-  "week_monday": "2026-09-14"
+  "generated_at_utc": "2026-09-18T13:44:43.586054Z",
+  "generated_at_local": "2026-09-18T15:43:24.407643+02:00",
+  "target_date": "2026-09-21",
+  "target_day_label": "Mo 21.09",
+  "week_monday": "2026-09-21"
 }

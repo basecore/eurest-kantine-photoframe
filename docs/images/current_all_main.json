@@ -2,15 +2,15 @@
   "location_name": "all_main",
   "location_label": "ALLE Hauptgerichte Regensburg",
   "display_mode": "day",
-  "label": "2026-W38",
-  "kw": 38,
-  "image": "kantine_2026-W38_2026-09-18_all_main.jpg",
+  "label": "2026-W39",
+  "kw": 39,
+  "image": "kantine_2026-W39_2026-09-21_all_main.jpg",
   "latest": "latest_all_main.jpg",
   "dish_count": 10,
   "is_holiday": "",
-  "generated_at_utc": "2026-09-17T14:24:18.677421Z",
-  "generated_at_local": "2026-09-17T16:24:18.617077+02:00",
-  "target_date": "2026-09-18",
-  "target_day_label": "Fr 18.09",
-  "week_monday": "2026-09-14"
+  "generated_at_utc": "2026-09-18T13:44:43.729944Z",
+  "generated_at_local": "2026-09-18T15:44:43.658832+02:00",
+  "target_date": "2026-09-21",
+  "target_day_label": "Mo 21.09",
+  "week_monday": "2026-09-21"
 }
