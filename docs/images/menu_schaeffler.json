@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W39",
   "kw": 39,
-  "target_date": "2026-09-21",
-  "target_day_label": "Mo 21.09",
-  "generated_at_utc": "2026-09-18T13:42:33.492306Z",
-  "generated_at_local": "2026-09-18T15:41:42.529547+02:00",
+  "target_date": "2026-09-22",
+  "target_day_label": "Di 22.09",
+  "generated_at_utc": "2026-09-21T15:58:50.516681Z",
+  "generated_at_local": "2026-09-21T17:57:46.383010+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "DIM SUM RED-CURRY | Kokosnussmilch, Kürbiskernöl, Kokos Chips",
+      "name": "PASTA E PISELLI | Penne, grüne Erbsen, Ricotta, Grana Padano",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": "V"
     },
     {
       "category": "Kumpfmühl",
-      "name": "SCHWEINERÜCKEN | Kräuterbutter, Pommes Frites",
-      "price": "5,90 €",
+      "name": "BAMI GORENG | Bratnudeln, Hähnchen, Gemüse",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "PIZZA HAWAII | Putenbrust, Ananas, Goudakäse",
-      "price": "7,50 €",
+      "name": "CRISPY HÄHNCHENSCHNITZEL | Bratkartoffeln, Spiegelei",
+      "price": "7,90 €",
+      "vv": ""
+    },
+    {
+      "category": "Reinhausen",
+      "name": "ADD ON | Pancetta knusprig gebraten",
+      "price": "2,00 €",
       "vv": ""
     }
   ]

@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W39",
   "kw": 39,
-  "target_date": "2026-09-21",
-  "target_day_label": "Mo 21.09",
-  "generated_at_utc": "2026-09-18T13:44:43.586302Z",
-  "generated_at_local": "2026-09-18T15:43:24.407643+02:00",
+  "target_date": "2026-09-22",
+  "target_day_label": "Di 22.09",
+  "generated_at_utc": "2026-09-21T16:01:11.596369Z",
+  "generated_at_local": "2026-09-21T17:59:52.661007+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Currywurst / Pommes frites / Currysoße",
-      "price": "3,00 €",
-      "vv": ""
+      "name": "Spinat-Feta-Strudel / Erbsen und Karotten in Rahm",
+      "price": "3,20 €",
+      "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Samosas mit veganer Füllung / Wokgemüse / Curryreis",
-      "price": "5,80 €",
-      "vv": "VG"
+      "name": "Putengulasch / Tagliatelle / Mediterranes Gemüse",
+      "price": "6,40 €",
+      "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Bauernfrikadelle / Kartoffelpüree / mit Rahmpilzen",
-      "price": "6,30 €",
+      "name": "Schweinesteak, gebraten / Kartoffelsalat mit Gurke / Schmelzzwiebeln",
+      "price": "6,20 €",
       "vv": ""
     }
   ]

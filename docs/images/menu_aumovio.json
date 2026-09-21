@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W39",
   "kw": 39,
-  "target_date": "2026-09-21",
-  "target_day_label": "Mo 21.09",
-  "generated_at_utc": "2026-09-18T13:43:24.263508Z",
-  "generated_at_local": "2026-09-18T15:42:33.657060+02:00",
+  "target_date": "2026-09-22",
+  "target_day_label": "Di 22.09",
+  "generated_at_utc": "2026-09-21T15:59:52.516274Z",
+  "generated_at_local": "2026-09-21T17:58:50.680702+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,26 +18,38 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "VEGANE MAULTASCHEN | Erbsennage, Mandelcrunch",
+      "name": "QUINOA BOWL | geschmorte Karotte, Babyspinat, Cranberries, Vollkornreis",
       "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "GEBACKENE OFENKARTOFFEL | Hähnchenbruststreifen, Sour Cream, Salatgarnitur",
-      "price": "6,10 €",
+      "name": "KÖNIGSBERGER KLOPSE | Kapernsauce, Salzkartoffeln",
+      "price": "4,90 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "LAMMHACKSTEAK | Ajvar-Käse-Dip, Pilawreis, Granatapfel",
-      "price": "7,50 €",
+      "name": "PINSA FINOCCHIONA | Fenchelsalami, Tomate, Mozzarella, Basilikum",
+      "price": "9,90 €",
+      "vv": ""
+    },
+    {
+      "category": "Königswiesen",
+      "name": "ADD ON | Zucchini Minze-Salat",
+      "price": "1,16 €",
+      "vv": "VG"
+    },
+    {
+      "category": "Oberwinzer",
+      "name": "BAMI GORENG | Bratnudeln, Hähnchen, Gemüse",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Niederwinzer",
-      "name": "SCHWEINERÜCKEN | Kräuterbutter, Pommes Frites",
-      "price": "5,90 €",
+      "name": "KARTOFFELPUFFER | Meerrettich-Dill-Schmand, Räucherlachs, Gurkensalat",
+      "price": "11,90 €",
       "vv": ""
     }
   ]
