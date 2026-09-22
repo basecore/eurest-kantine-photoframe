@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W39",
   "kw": 39,
-  "target_date": "2026-09-22",
-  "target_day_label": "Di 22.09",
-  "generated_at_utc": "2026-09-21T15:58:50.516681Z",
-  "generated_at_local": "2026-09-21T17:57:46.383010+02:00",
+  "target_date": "2026-09-23",
+  "target_day_label": "Mi 23.09",
+  "generated_at_utc": "2026-09-22T14:07:02.837279Z",
+  "generated_at_local": "2026-09-22T16:06:00.278688+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,27 +18,27 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PASTA E PISELLI | Penne, grüne Erbsen, Ricotta, Grana Padano",
+      "name": "QUINOA BOWL | geschmorte Karotte, Babyspinat, Cranberries, Vollkornreis",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Kumpfmühl",
-      "name": "BAMI GORENG | Bratnudeln, Hähnchen, Gemüse",
-      "price": "6,50 €",
+      "name": "PINSA FINOCCHIONA | Fenchelsalami, Tomate, Mozzarella, Basilikum",
+      "price": "9,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "CRISPY HÄHNCHENSCHNITZEL | Bratkartoffeln, Spiegelei",
-      "price": "7,90 €",
+      "name": "PUTENGYROS | Krautsalat, Kräuterquark, Reis",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Reinhausen",
-      "name": "ADD ON | Pancetta knusprig gebraten",
-      "price": "2,00 €",
-      "vv": ""
+      "name": "ADD ON | Zucchini Minze-Salat",
+      "price": "1,06 €",
+      "vv": "VG"
     }
   ]
 }
