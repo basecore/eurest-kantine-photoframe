@@ -4,8 +4,8 @@
 		<title>Kantinenvergleich Regensburg – Alle Hauptgerichte</title>
 		<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		<description></description>
-		<pubDate>Tue, 22 Sep 2026 14:09:23 +0000</pubDate>
-		<lastBuildDate>Tue, 22 Sep 2026 14:09:23 +0000</lastBuildDate>
+		<pubDate>Wed, 23 Sep 2026 14:21:46 +0000</pubDate>
+		<lastBuildDate>Wed, 23 Sep 2026 14:21:46 +0000</lastBuildDate>
 		<generator>https://basecore.github.io/eurest-kantine-photoframe</generator>
 		<image>
 			<url>https://basecore.github.io/eurest-kantine-photoframe/images/icon.jpg</url>
@@ -13,12 +13,12 @@
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
 		</image>
 		<item>
-			<title>Alle Hauptgerichte Mi 23.09 – Regensburg</title>
+			<title>Alle Hauptgerichte Do 24.09 – Regensburg</title>
 			<link>https://basecore.github.io/eurest-kantine-photoframe</link>
-			<guid isPermaLink="false">all_main::kantine_2026-W39_2026-09-23_all_main.jpg::2026-09-22T14:09:23.182114Z</guid>
-			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W39_2026-09-23_all_main.jpg&quot; alt=&quot;ALLE Hauptgerichte Regensburg Speiseplan 2026-W39&quot;/&gt;</description>
-			<pubDate>Wed, 23 Sep 2026 06:00:00 +0000</pubDate>
-			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W39_2026-09-23_all_main.jpg" type="image/jpeg" height="600" width="800"/>
+			<guid isPermaLink="false">all_main::kantine_2026-W39_2026-09-24_all_main.jpg::2026-09-23T14:21:46.519142Z</guid>
+			<description>&lt;img src=&quot;https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W39_2026-09-24_all_main.jpg&quot; alt=&quot;ALLE Hauptgerichte Regensburg Speiseplan 2026-W39&quot;/&gt;</description>
+			<pubDate>Thu, 24 Sep 2026 06:00:00 +0000</pubDate>
+			<media:content url="https://basecore.github.io/eurest-kantine-photoframe/images/kantine_2026-W39_2026-09-24_all_main.jpg" type="image/jpeg" height="600" width="800"/>
 		</item>
 	</channel>
 </rss>
