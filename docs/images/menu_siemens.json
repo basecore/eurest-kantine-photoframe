@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W39",
   "kw": 39,
-  "target_date": "2026-09-24",
-  "target_day_label": "Do 24.09",
-  "generated_at_utc": "2026-09-23T14:21:46.367360Z",
-  "generated_at_local": "2026-09-23T16:20:27.667082+02:00",
+  "target_date": "2026-09-25",
+  "target_day_label": "Fr 25.09",
+  "generated_at_utc": "2026-09-24T14:19:37.632051Z",
+  "generated_at_local": "2026-09-24T16:18:18.552694+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,21 +18,21 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Chili sin carne / Kichererbsen / Baguette",
+      "name": "Apfelstrudel / Vanillesoße",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Adana Kebab - Rinderhackspieße / Türkischer Reis / Türkischer Hirtensalat / Joghurtdip",
-      "price": "6,80 €",
+      "name": "Putenbraten / Kartoffelpüree mit Sellerie / Buntes Gemüse",
+      "price": "6,40 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Kasselerrücken / Rösti / Sauerkraut",
-      "price": "6,20 €",
-      "vv": "EV"
+      "name": "Alaska-Seelachsfilet, gebacken / Hausgemachter Kartoffelsalat / Remouladensoße",
+      "price": "6,00 €",
+      "vv": ""
     }
   ]
 }

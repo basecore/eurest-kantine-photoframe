@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W39",
   "kw": 39,
-  "target_date": "2026-09-24",
-  "target_day_label": "Do 24.09",
-  "generated_at_utc": "2026-09-23T14:20:27.519743Z",
-  "generated_at_local": "2026-09-23T16:19:33.217404+02:00",
+  "target_date": "2026-09-25",
+  "target_day_label": "Fr 25.09",
+  "generated_at_utc": "2026-09-24T14:18:18.408139Z",
+  "generated_at_local": "2026-09-24T16:17:24.507991+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,32 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "PASTA E PISELLI | Penne, grüne Erbsen, Ricotta, Grana Padano",
+      "name": "DIM SUM RED-CURRY | Kokosnussmilch, Kürbiskernöl, Kokos Chips",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "PUTENGYROS | Krautsalat, Kräuterquark, Reis",
-      "price": "6,50 €",
+      "name": "SEELACHS | Pochiert, Senfsauce, Dillkartoffeln",
+      "price": "7,10 €",
       "vv": ""
     },
     {
-      "category": "Königswiesen",
-      "name": "ADD ON | Pancetta knusprig gebraten",
-      "price": "2,00 €",
-      "vv": ""
-    },
-    {
-      "category": "Oberwinzer",
-      "name": "TANDOORI-CHICKEN | Naan Brot, Karotten-Rosinensalat",
-      "price": "8,50 €",
-      "vv": ""
-    },
-    {
-      "category": "Niederwinzer",
-      "name": "SCHWEINESCHNITZEL | Bratkartoffeln, Spiegelei",
-      "price": "7,90 €",
+      "category": "Brandlberg",
+      "name": "CURRYWURST | Geflügel-Bratwurst, Curry-Sauce, Pommes frites",
+      "price": "6,10 €",
       "vv": ""
     }
   ]
