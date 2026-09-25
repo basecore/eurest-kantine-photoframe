@@ -2,12 +2,12 @@
   "location_name": "aumovio",
   "location_label": "AUMOVIO Regensburg",
   "display_mode": "day",
-  "label": "2026-W39",
-  "kw": 39,
-  "target_date": "2026-09-25",
-  "target_day_label": "Fr 25.09",
-  "generated_at_utc": "2026-09-24T14:18:18.408139Z",
-  "generated_at_local": "2026-09-24T16:17:24.507991+02:00",
+  "label": "2026-W40",
+  "kw": 40,
+  "target_date": "2026-09-28",
+  "target_day_label": "Mo 28.09",
+  "generated_at_utc": "2026-09-25T14:41:54.935320Z",
+  "generated_at_local": "2026-09-25T16:40:50.717463+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,38 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "DIM SUM RED-CURRY | Kokosnussmilch, Kürbiskernöl, Kokos Chips",
-      "price": "4,57 €",
+      "name": "VEGANE MAULTASCHEN | Erbsennage, Mandelcrunch (AA,HA/02,03)",
+      "price": "4,57 €",
       "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "SEELACHS | Pochiert, Senfsauce, Dillkartoffeln",
-      "price": "7,10 €",
+      "name": "GEBACKENE OFENKARTOFFEL | Hähnchenbruststreifen, Sour Cream, Salatgarnitur (C,G)",
+      "price": "7,10 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "CURRYWURST | Geflügel-Bratwurst, Curry-Sauce, Pommes frites",
-      "price": "6,10 €",
+      "name": "LAMMHACKSTEAK | Ajvar-Käse-Dip, Pilawreis, Granatapfel (AA,C,G,I/02)",
+      "price": "6,10 €",
+      "vv": ""
+    },
+    {
+      "category": "Königswiesen",
+      "name": "ADD ON | Zucchini Minze- Salat (L/03,08)",
+      "price": "2,00 €",
+      "vv": ""
+    },
+    {
+      "category": "Oberwinzer",
+      "name": "BAMI GORENG | Bratnudeln, Hähnchen, Gemüse (AA,F/01,02,99)",
+      "price": "6,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Niederwinzer",
+      "name": "SCHWEINERÜCKEN | Kräuterbutter, Pommes Frites (G/03)",
+      "price": "6,90 €",
       "vv": ""
     }
   ]

@@ -10,8 +10,8 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
 		<title>Kantinenvergleich Regensburg – Alle Hauptgerichte</title>
 		<link>http://basecore.bplaced.net</link>
 		<description></description>
-		<pubDate>Thu, 24 Sep 2026 14:19:37 +0000</pubDate>
-		<lastBuildDate>Thu, 24 Sep 2026 14:19:37 +0000</lastBuildDate>
+		<pubDate>Fri, 25 Sep 2026 14:43:14 +0000</pubDate>
+		<lastBuildDate>Fri, 25 Sep 2026 14:43:14 +0000</lastBuildDate>
 		<generator>http://basecore.bplaced.net</generator>
 		<image>
 			<url>http://basecore.bplaced.net/images/icon.jpg</url>
