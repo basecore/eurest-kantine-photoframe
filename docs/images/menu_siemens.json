@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-09-28",
-  "target_day_label": "Mo 28.09",
-  "generated_at_utc": "2026-09-25T14:43:14.301178Z",
-  "generated_at_local": "2026-09-25T16:41:55.109983+02:00",
+  "target_date": "2026-09-29",
+  "target_day_label": "Di 29.09",
+  "generated_at_utc": "2026-09-28T17:47:42.429413Z",
+  "generated_at_local": "2026-09-28T19:46:23.217084+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Currywurst / Pommes frites / Currysoße",
-      "price": "3,00 €",
-      "vv": ""
-    },
-    {
-      "category": "Essen 2",
-      "name": "Tajine mit Kürbis / Orientalischer Couscous / Tahina-Dip",
-      "price": "5,80 €",
+      "name": "Kräuterpolenta / Ratatouille / mit Radicchio",
+      "price": "3,20 €",
       "vv": "EV"
     },
     {
+      "category": "Essen 2",
+      "name": "Schweinegeschnetzeltes / Ajvar / Erbsenreis",
+      "price": "5,80 €",
+      "vv": ""
+    },
+    {
       "category": "Essen 3",
-      "name": "Hähnchenroulade / Kartoffelkroketten / Romanesco",
-      "price": "6,00 €",
+      "name": "Rinderroulade nach Hausfrauenart / Kartoffelpüree / Blaukraut",
+      "price": "8,60 €",
       "vv": ""
     }
   ]

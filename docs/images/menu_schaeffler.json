@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W39",
-  "kw": 39,
-  "target_date": "2026-09-25",
-  "target_day_label": "Fr 25.09",
-  "generated_at_utc": "2026-09-24T14:17:24.357671Z",
-  "generated_at_local": "2026-09-24T16:16:30.176648+02:00",
+  "label": "2026-W40",
+  "kw": 40,
+  "target_date": "2026-09-29",
+  "target_day_label": "Di 29.09",
+  "generated_at_utc": "2026-09-28T17:45:20.677801Z",
+  "generated_at_local": "2026-09-28T19:44:26.303366+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,14 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "VEGANE MAULTASCHEN | Erbsennage, Mandelcrunch",
+      "name": "CHILI SIN CARNE | Kurkuma-Dip, Nachos",
       "price": "4,57 €",
-      "vv": "VG"
+      "vv": ""
     },
     {
       "category": "Kumpfmühl",
-      "name": "CURRYWURST | Geflügel-Bratwurst, Curry-Sauce, Pommes frites",
-      "price": "6,10 €",
+      "name": "HÄHNCHENSCHNITZEL | Pommes Frites, Preiselbeeren, Zitrone",
+      "price": "6,50 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "HOLZFÄLLERSTEAK | vom Nacken, Zwiebelsauce, Rosenkohl, Knöpfle",
+      "price": "6,90 €",
       "vv": ""
     }
   ]

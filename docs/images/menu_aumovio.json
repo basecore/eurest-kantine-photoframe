@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-09-28",
-  "target_day_label": "Mo 28.09",
-  "generated_at_utc": "2026-09-25T14:41:54.935320Z",
-  "generated_at_local": "2026-09-25T16:40:50.717463+02:00",
+  "target_date": "2026-09-29",
+  "target_day_label": "Di 29.09",
+  "generated_at_utc": "2026-09-28T17:46:23.057249Z",
+  "generated_at_local": "2026-09-28T19:45:20.852062+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,38 +18,32 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "VEGANE MAULTASCHEN | Erbsennage, Mandelcrunch (AA,HA/02,03)",
-      "price": "4,57 €",
-      "vv": "VG"
+      "name": "BANDNUDELN | Blumenkohl-Haselnuss-Creme, Ricotta, Tomate",
+      "price": "4,57 €",
+      "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "GEBACKENE OFENKARTOFFEL | Hähnchenbruststreifen, Sour Cream, Salatgarnitur (C,G)",
-      "price": "7,10 €",
-      "vv": ""
+      "name": "BLUMENKOHLCURRY | Samosa, Langkornreis",
+      "price": "6,90 €",
+      "vv": "VG"
     },
     {
       "category": "Brandlberg",
-      "name": "LAMMHACKSTEAK | Ajvar-Käse-Dip, Pilawreis, Granatapfel (AA,C,G,I/02)",
-      "price": "6,10 €",
+      "name": "FRIKADELLE | vom Schwein & Rind, Cremewirsing, Kartoffeln, Kräuterjus",
+      "price": "7,90 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "ADD ON | Zucchini Minze- Salat (L/03,08)",
-      "price": "2,00 €",
-      "vv": ""
-    },
-    {
-      "category": "Oberwinzer",
-      "name": "BAMI GORENG | Bratnudeln, Hähnchen, Gemüse (AA,F/01,02,99)",
-      "price": "6,50 €",
+      "name": "ROTES THAI CURRY | Gemüse, Basmati, Golden Duck",
+      "price": "9,10 €",
       "vv": ""
     },
     {
       "category": "Niederwinzer",
-      "name": "SCHWEINERÜCKEN | Kräuterbutter, Pommes Frites (G/03)",
-      "price": "6,90 €",
+      "name": "KABELJAU | Blumenkohl, Nussbutter, Kartoffelwürfel",
+      "price": "10,90 €",
       "vv": ""
     }
   ]
