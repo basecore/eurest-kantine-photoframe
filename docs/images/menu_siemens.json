@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-09-29",
-  "target_day_label": "Di 29.09",
-  "generated_at_utc": "2026-09-28T17:47:42.429413Z",
-  "generated_at_local": "2026-09-28T19:46:23.217084+02:00",
+  "target_date": "2026-09-30",
+  "target_day_label": "Mi 30.09",
+  "generated_at_utc": "2026-09-29T16:03:52.780430Z",
+  "generated_at_local": "2026-09-29T18:02:34.158068+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Kräuterpolenta / Ratatouille / mit Radicchio",
+      "name": "Penne all'arrabbiata",
       "price": "3,20 €",
       "vv": "EV"
     },
     {
       "category": "Essen 2",
-      "name": "Schweinegeschnetzeltes / Ajvar / Erbsenreis",
-      "price": "5,80 €",
+      "name": "Schweinebraten / Knödel / Sauerkraut",
+      "price": "6,20 €",
       "vv": ""
     },
     {
       "category": "Essen 3",
-      "name": "Rinderroulade nach Hausfrauenart / Kartoffelpüree / Blaukraut",
-      "price": "8,60 €",
+      "name": "Putengeschnetzeltes nach Gyros Art / Tzatziki / Pommes frites / wahlweise dazu / Fladenbrot",
+      "price": "6,40 €",
       "vv": ""
     }
   ]

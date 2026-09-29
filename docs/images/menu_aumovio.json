@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-09-29",
-  "target_day_label": "Di 29.09",
-  "generated_at_utc": "2026-09-28T17:46:23.057249Z",
-  "generated_at_local": "2026-09-28T19:45:20.852062+02:00",
+  "target_date": "2026-09-30",
+  "target_day_label": "Mi 30.09",
+  "generated_at_utc": "2026-09-29T16:02:34.015197Z",
+  "generated_at_local": "2026-09-29T18:01:32.897782+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,33 +18,33 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "BANDNUDELN | Blumenkohl-Haselnuss-Creme, Ricotta, Tomate",
+      "name": "LINSENLASAGNE | rote Linsen, Tomaten, Schmand",
       "price": "4,57 €",
       "vv": "V"
     },
     {
       "category": "Weichs",
-      "name": "BLUMENKOHLCURRY | Samosa, Langkornreis",
-      "price": "6,90 €",
-      "vv": "VG"
+      "name": "KASSLER | Sauerkraut, Kartoffelpüree, Jus",
+      "price": "5,10 €",
+      "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "FRIKADELLE | vom Schwein & Rind, Cremewirsing, Kartoffeln, Kräuterjus",
-      "price": "7,90 €",
+      "name": "ROULADE | vom Schwein, Rotkohl, Salzkartoffeln",
+      "price": "8,50 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "ROTES THAI CURRY | Gemüse, Basmati, Golden Duck",
-      "price": "9,10 €",
+      "name": "TOGARASHI-BASMATIREIS | Rinderhackfleisch, Sojasauce, Gemüse, Spiegelei",
+      "price": "10,50 €",
       "vv": ""
     },
     {
       "category": "Niederwinzer",
-      "name": "KABELJAU | Blumenkohl, Nussbutter, Kartoffelwürfel",
-      "price": "10,90 €",
-      "vv": ""
+      "name": "FALAFEL BURGER | Brioche, Hummus, Falafelbällchen, Tomaten-Gurken-Kichererbsensalat",
+      "price": "5,90 €",
+      "vv": "VG"
     }
   ]
 }

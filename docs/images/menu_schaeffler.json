@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-09-29",
-  "target_day_label": "Di 29.09",
-  "generated_at_utc": "2026-09-28T17:45:20.677801Z",
-  "generated_at_local": "2026-09-28T19:44:26.303366+02:00",
+  "target_date": "2026-09-30",
+  "target_day_label": "Mi 30.09",
+  "generated_at_utc": "2026-09-29T16:01:32.736156Z",
+  "generated_at_local": "2026-09-29T18:00:31.298953+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,19 +18,19 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "CHILI SIN CARNE | Kurkuma-Dip, Nachos",
+      "name": "BANDNUDELN | Blumenhohl-Haselnuss-Creme, Ricotta, Tomate",
       "price": "4,57 €",
       "vv": ""
     },
     {
       "category": "Kumpfmühl",
-      "name": "HÄHNCHENSCHNITZEL | Pommes Frites, Preiselbeeren, Zitrone",
-      "price": "6,50 €",
+      "name": "KRUSTENBRATEN | von der Schweineschulter, Jus, Knödel, Krautsalat",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "HOLZFÄLLERSTEAK | vom Nacken, Zwiebelsauce, Rosenkohl, Knöpfle",
+      "name": "CHICKEN KORMA | Hähnchenragout, Kurkuma, Wildreismischung",
       "price": "6,90 €",
       "vv": ""
     }
