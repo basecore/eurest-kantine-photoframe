@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-09-30",
-  "target_day_label": "Mi 30.09",
-  "generated_at_utc": "2026-09-29T16:02:34.015197Z",
-  "generated_at_local": "2026-09-29T18:01:32.897782+02:00",
+  "target_date": "2026-10-01",
+  "target_day_label": "Do 01.10",
+  "generated_at_utc": "2026-09-30T16:06:50.942046Z",
+  "generated_at_local": "2026-09-30T18:06:08.489520+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,33 +18,33 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "LINSENLASAGNE | rote Linsen, Tomaten, Schmand",
+      "name": "CHILI SIN CARNE | Kurkuma-Dip, Nachos",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": "VG"
     },
     {
       "category": "Weichs",
-      "name": "KASSLER | Sauerkraut, Kartoffelpüree, Jus",
-      "price": "5,10 €",
-      "vv": ""
+      "name": "SCHUPFNUDELN | Spitzkohl, Pilze, Frühlingslauch",
+      "price": "5,90 €",
+      "vv": "V"
     },
     {
       "category": "Brandlberg",
-      "name": "ROULADE | vom Schwein, Rotkohl, Salzkartoffeln",
-      "price": "8,50 €",
+      "name": "HÄHNCHENSCHNITZEL | Pommes Frites, Preiselbeeren, Zitrone",
+      "price": "6,50 €",
       "vv": ""
     },
     {
       "category": "Königswiesen",
-      "name": "TOGARASHI-BASMATIREIS | Rinderhackfleisch, Sojasauce, Gemüse, Spiegelei",
-      "price": "10,50 €",
+      "name": "HOLZFÄLLERSTEAK | vom Nacken, Zwiebelsauce, Rosenkohl, Knöpfle",
+      "price": "6,90 €",
       "vv": ""
     },
     {
       "category": "Niederwinzer",
-      "name": "FALAFEL BURGER | Brioche, Hummus, Falafelbällchen, Tomaten-Gurken-Kichererbsensalat",
-      "price": "5,90 €",
-      "vv": "VG"
+      "name": "RINDERHACKSTEAK | Waldpilzragout, Röstitaler",
+      "price": "9,50 €",
+      "vv": ""
     }
   ]
 }

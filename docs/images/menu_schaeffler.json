@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-09-30",
-  "target_day_label": "Mi 30.09",
-  "generated_at_utc": "2026-09-29T16:01:32.736156Z",
-  "generated_at_local": "2026-09-29T18:00:31.298953+02:00",
+  "target_date": "2026-10-01",
+  "target_day_label": "Do 01.10",
+  "generated_at_utc": "2026-09-30T16:06:08.323936Z",
+  "generated_at_local": "2026-09-30T18:05:25.708719+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "BANDNUDELN | Blumenhohl-Haselnuss-Creme, Ricotta, Tomate",
+      "name": "LINSENLASAGNE | rote Linsen, Tomaten, Schmand",
       "price": "4,57 €",
       "vv": ""
     },
     {
       "category": "Kumpfmühl",
-      "name": "KRUSTENBRATEN | von der Schweineschulter, Jus, Knödel, Krautsalat",
-      "price": "6,90 €",
+      "name": "RINDERHACKSTEAK | Waldpilzragout, Röstitaler",
+      "price": "9,50 €",
       "vv": ""
     },
     {
       "category": "Stadtamhof",
-      "name": "CHICKEN KORMA | Hähnchenragout, Kurkuma, Wildreismischung",
-      "price": "6,90 €",
+      "name": "PIZZA CHORIZO | Chili, Honig, Provolone",
+      "price": "7,50 €",
       "vv": ""
     }
   ]

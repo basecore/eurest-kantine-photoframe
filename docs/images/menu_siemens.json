@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-09-30",
-  "target_day_label": "Mi 30.09",
-  "generated_at_utc": "2026-09-29T16:03:52.780430Z",
-  "generated_at_local": "2026-09-29T18:02:34.158068+02:00",
+  "target_date": "2026-10-01",
+  "target_day_label": "Do 01.10",
+  "generated_at_utc": "2026-09-30T16:08:10.253238Z",
+  "generated_at_local": "2026-09-30T18:06:51.090033+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Penne all'arrabbiata",
+      "name": "Bayerischer Leberkäse / Kartoffel-Radieschen-Salat",
       "price": "3,20 €",
-      "vv": "EV"
-    },
-    {
-      "category": "Essen 2",
-      "name": "Schweinebraten / Knödel / Sauerkraut",
-      "price": "6,20 €",
       "vv": ""
     },
     {
+      "category": "Essen 2",
+      "name": "Lasagne mit Grillgemüse",
+      "price": "5,60 €",
+      "vv": "EV"
+    },
+    {
       "category": "Essen 3",
-      "name": "Putengeschnetzeltes nach Gyros Art / Tzatziki / Pommes frites / wahlweise dazu / Fladenbrot",
-      "price": "6,40 €",
+      "name": "Rinderhackbällchen / Kartoffelpüree / Erbsen / Preiselbeeren",
+      "price": "5,90 €",
       "vv": ""
     }
   ]
