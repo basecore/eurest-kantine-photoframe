@@ -6,13 +6,13 @@
   "week_offset": 0,
   "label": "2026-W40",
   "kw": 40,
-  "image": "kantine_2026-W40_2026-10-01_siemens.jpg",
+  "image": "kantine_2026-W40_2026-10-02_siemens.jpg",
   "latest": "latest_siemens.jpg",
   "dish_count": 4,
   "is_holiday": "",
-  "generated_at_utc": "2026-09-30T16:08:10.252948Z",
-  "generated_at_local": "2026-09-30T18:06:51.090033+02:00",
-  "target_date": "2026-10-01",
-  "target_day_label": "Do 01.10",
+  "generated_at_utc": "2026-10-01T16:37:20.426929Z",
+  "generated_at_local": "2026-10-01T18:36:01.443171+02:00",
+  "target_date": "2026-10-02",
+  "target_day_label": "Fr 02.10",
   "week_monday": "2026-09-28"
 }

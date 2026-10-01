@@ -4,10 +4,10 @@
   "display_mode": "day",
   "label": "2026-W40",
   "kw": 40,
-  "target_date": "2026-10-01",
-  "target_day_label": "Do 01.10",
-  "generated_at_utc": "2026-09-30T16:06:50.942046Z",
-  "generated_at_local": "2026-09-30T18:06:08.489520+02:00",
+  "target_date": "2026-10-02",
+  "target_day_label": "Fr 02.10",
+  "generated_at_utc": "2026-10-01T16:36:01.323932Z",
+  "generated_at_local": "2026-10-01T18:35:11.402907+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,32 +18,20 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "CHILI SIN CARNE | Kurkuma-Dip, Nachos",
+      "name": "LINSENLASAGNE | rote Linsen, Tomaten, Schmand",
       "price": "4,57 €",
-      "vv": "VG"
-    },
-    {
-      "category": "Weichs",
-      "name": "SCHUPFNUDELN | Spitzkohl, Pilze, Frühlingslauch",
-      "price": "5,90 €",
       "vv": "V"
     },
     {
-      "category": "Brandlberg",
-      "name": "HÄHNCHENSCHNITZEL | Pommes Frites, Preiselbeeren, Zitrone",
-      "price": "6,50 €",
-      "vv": ""
-    },
-    {
-      "category": "Königswiesen",
-      "name": "HOLZFÄLLERSTEAK | vom Nacken, Zwiebelsauce, Rosenkohl, Knöpfle",
+      "category": "Weichs",
+      "name": "GENUSSRETTER I ROULADE I vom Schwein, Rotkohl, Kartoffelpüree",
       "price": "6,90 €",
       "vv": ""
     },
     {
-      "category": "Niederwinzer",
-      "name": "RINDERHACKSTEAK | Waldpilzragout, Röstitaler",
-      "price": "9,50 €",
+      "category": "Brandlberg",
+      "name": "KABELJAU | Tomatenspaghetti, Romanesco",
+      "price": "6,90 €",
       "vv": ""
     }
   ]
