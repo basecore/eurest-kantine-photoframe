@@ -2,12 +2,12 @@
   "location_name": "aumovio",
   "location_label": "AUMOVIO Regensburg",
   "display_mode": "day",
-  "label": "2026-W40",
-  "kw": 40,
-  "target_date": "2026-10-02",
-  "target_day_label": "Fr 02.10",
-  "generated_at_utc": "2026-10-01T16:36:01.323932Z",
-  "generated_at_local": "2026-10-01T18:35:11.402907+02:00",
+  "label": "2026-W41",
+  "kw": 41,
+  "target_date": "2026-10-05",
+  "target_day_label": "Mo 05.10",
+  "generated_at_utc": "2026-10-02T16:40:00.812429Z",
+  "generated_at_local": "2026-10-02T18:39:09.794357+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,20 +18,26 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "LINSENLASAGNE | rote Linsen, Tomaten, Schmand",
+      "name": "LINSEN DAL | Linsencurry, Ingwer, Kokosnussmilch, Soja-Dip, Naanbrot",
       "price": "4,57 €",
-      "vv": "V"
+      "vv": ""
     },
     {
       "category": "Weichs",
-      "name": "GENUSSRETTER I ROULADE I vom Schwein, Rotkohl, Kartoffelpüree",
-      "price": "6,90 €",
+      "name": "SPAGHETTI BOLOGNESE | vom Rind, Grana Padano",
+      "price": "5,90 €",
       "vv": ""
     },
     {
       "category": "Brandlberg",
-      "name": "KABELJAU | Tomatenspaghetti, Romanesco",
-      "price": "6,90 €",
+      "name": "RADICCHIO-RISOTTO | Garnelen, Grana Padano",
+      "price": "7,90 €",
+      "vv": ""
+    },
+    {
+      "category": "Königswiesen",
+      "name": "MATJESFILET | Apfel-Zwiebel-Schmand, Dill, Salzkartoffeln",
+      "price": "7,50 €",
       "vv": ""
     }
   ]

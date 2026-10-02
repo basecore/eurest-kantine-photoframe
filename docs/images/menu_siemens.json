@@ -2,12 +2,12 @@
   "location_name": "siemens",
   "location_label": "SIEMENS Regensburg",
   "display_mode": "day",
-  "label": "2026-W40",
-  "kw": 40,
-  "target_date": "2026-10-02",
-  "target_day_label": "Fr 02.10",
-  "generated_at_utc": "2026-10-01T16:37:20.427241Z",
-  "generated_at_local": "2026-10-01T18:36:01.443171+02:00",
+  "label": "2026-W41",
+  "kw": 41,
+  "target_date": "2026-10-05",
+  "target_day_label": "Mo 05.10",
+  "generated_at_utc": "2026-10-02T16:41:19.650286Z",
+  "generated_at_local": "2026-10-02T18:40:00.967661+02:00",
   "is_holiday": "",
   "source": "siemens.cateringportal.io",
   "theme": {
@@ -18,20 +18,20 @@
   "main_dishes": [
     {
       "category": "Essen 1",
-      "name": "Kaiserschmarrn / Apfelmus",
-      "price": "3,20 €",
-      "vv": "EV"
-    },
-    {
-      "category": "Essen 2",
-      "name": "Rindergulasch nach ungarischer Art / Langkornreis / oder / Penne rigate",
-      "price": "6,40 €",
+      "name": "Currywurst / Pommes frites / Currysoße",
+      "price": "3,00 €",
       "vv": ""
     },
     {
+      "category": "Essen 2",
+      "name": "Rustico Finferli / Waldpilzrahmsoße / Feldsalat",
+      "price": "6,00 €",
+      "vv": "EV"
+    },
+    {
       "category": "Essen 3",
-      "name": "Piri Piri Forelle / Rosmarinkartoffeln / Joghurt-Zitronen-Dip",
-      "price": "6,90 €",
+      "name": "Cevapcici (5 Stück) / Djuvecreis / Weißkrautsalat / Tzatziki",
+      "price": "6,10 €",
       "vv": ""
     }
   ]

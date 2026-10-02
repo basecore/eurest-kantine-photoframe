@@ -2,12 +2,12 @@
   "location_name": "schaeffler",
   "location_label": "SCHAEFFLER Regensburg",
   "display_mode": "day",
-  "label": "2026-W40",
-  "kw": 40,
-  "target_date": "2026-10-02",
-  "target_day_label": "Fr 02.10",
-  "generated_at_utc": "2026-10-01T16:35:11.264948Z",
-  "generated_at_local": "2026-10-01T18:34:20.072169+02:00",
+  "label": "2026-W41",
+  "kw": 41,
+  "target_date": "2026-10-05",
+  "target_day_label": "Mo 05.10",
+  "generated_at_utc": "2026-10-02T16:39:09.620351Z",
+  "generated_at_local": "2026-10-02T18:38:15.820155+02:00",
   "is_holiday": "",
   "source": "eurest.webspeiseplan.de",
   "theme": {
@@ -18,13 +18,19 @@
   "main_dishes": [
     {
       "category": "Ostenviertel",
-      "name": "LINSENLASAGNE | rote Linsen, Tomaten, Schmand",
+      "name": "BRATREIS | Weißkohl, Karotte, Sesamöl, Cashewkerne",
       "price": "4,57 €",
       "vv": ""
     },
     {
       "category": "Kumpfmühl",
-      "name": "FRIKADELLE | vom Schwein & Rind, Cremewirsing, Kartoffel-Knödel, Kräuterjus",
+      "name": "SPAGHETTI BOLOGNESE | vom Rind, Grana Padano",
+      "price": "5,90 €",
+      "vv": ""
+    },
+    {
+      "category": "Stadtamhof",
+      "name": "PIZZA | Salami-Milano, getrocknete Tomaten",
       "price": "7,90 €",
       "vv": ""
     }
