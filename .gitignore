@@ -10,3 +10,5 @@ venv/
 
 # RSS-Feeds werden committed, lokale Test-Outputs ignorieren
 *.log
+.playwright-browsers/
+*.bak.*
